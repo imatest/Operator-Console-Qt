@@ -280,7 +280,7 @@ void OperatorConsoleDialog::qsoShow(bool visible)
 
 void OperatorConsoleDialog::quit()
 {
-    console->Quit();    // this may not be needed because it gets called in the OperatorConsole destructor.
+ //   console->Quit();    // this may not be needed because it gets called in the OperatorConsole destructor.
     qApp->quit();
 
 }

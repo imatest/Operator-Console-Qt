@@ -211,6 +211,7 @@ protected:
     void                UpdateFPS(QString &fps);
     void                LogMessage(QTextStream &text, bool timestamp=true);
     void                LogMessage(QString &str, bool timestamp = true);
+    void                LogMessage(const char *str, bool timestamp = true);
     void                UpdateSummary(QString &results);
 
 protected:

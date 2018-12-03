@@ -85,13 +85,17 @@ OperatorConsole::OperatorConsole()
 
 OperatorConsole::~OperatorConsole()
 {
+    LogMessage("Quitting");
     Quit();         // kill all the threads
+
     CloseLibs();    // close libs (do this after threads are killed, in case a thread is using a lib function)
 
     if (m_cameraImage != nullptr)
 	{
 		delete [] m_cameraImage;
 	}
+
+    SaveLog(LOG_FILENAME);
 }
 
 
@@ -381,18 +385,21 @@ void OperatorConsole::CloseLibs()
 {
 	if (m_flags.imatestIT)
 	{
-		imatest_libraryTerminate();
+        LogMessage("Closing Imatest library.");
+        imatest_libraryTerminate();
 		m_flags.imatestIT = false;
 	}
 
 	if (m_flags.imatestAcq)
 	{
-		imatest_acquisitionTerminate();
+        LogMessage("Closing Imatest Acquisition library.");
+        imatest_acquisitionTerminate();
 		m_flags.imatestAcq = false;
 	}
 
 	if (m_flags.matlab)
 	{
+        LogMessage("Closing MATLAB libraries.");
 		mclTerminateApplication();	// terminate MATLAB runtime
 		m_flags.matlab = false;
 	}
@@ -503,36 +510,42 @@ void OperatorConsole::Quit()
 
     if (m_flags.QCameraThread)
     {
+        LogMessage("Waiting for QCamera thread to quit");
         m_QCameraControl.Quit(); // wait for the QCamera thread to quit
         m_flags.QCameraThread = false;
     }
 
     if (m_flags.ImatestCameraThread)
     {
+        LogMessage("Waiting for Imatest Camera thread to quit");
         m_ImatestCameraControl.Quit(); // wait for the Imatest library camera thread to quit
         m_flags.ImatestCameraThread = false;
     }
 
     if (m_flags.FileCameraThread)
     {
+        LogMessage("Waiting for FileCamera thread to quit");
         m_FileCameraControl.Quit(); // wait for the file camera thread to quit
         m_flags.FileCameraThread = false;
     }
 
     if (m_flags.sfrplusThread)
 	{
-		m_sfrPlusControl.Quit();	// wait for the sfrplus thread to quit
+        LogMessage("Waiting for SFRPlus thread to quit");
+        m_sfrPlusControl.Quit();	// wait for the sfrplus thread to quit
 		m_flags.sfrplusThread = false;
 	}
 
 	if (m_flags.blemishThread)
 	{
-		m_blemishControl.Quit();	// wait for the blemish thread to quit
+        LogMessage("Waiting for Blemish thread to quit");
+        m_blemishControl.Quit();	// wait for the blemish thread to quit
 		m_flags.blemishThread = false;
 	}
 
     if (m_flags.arbitraryChartThread)
     {
+        LogMessage("Waiting for arbitrary Chart thread to quit");
         m_arbitraryChartControl.Quit();
         m_flags.arbitraryChartThread = false;
     }
@@ -549,12 +562,6 @@ void OperatorConsole::Quit()
 		m_flags.stdErr = false;
 	}
 #endif
-	// TDC 2014/08/07 Calling SaveLog() anywhere in Quit() will NOT copy the contents of 
-	// c_log as c_log.GetWindowText returns an empty string instead of the contents of c_log. Additionally,
-	// if you use SetSel to set to the entire edit box, the values it returns have nStart > nStop.
-    SaveLog(LOG_FILENAME);
-	
-	
 }
 
 void OperatorConsole::OnRunTest()
@@ -940,10 +947,12 @@ void OperatorConsole::SetFileCamera()
 
 void OperatorConsole::SetQCamera()
 {
+    QGuiApplication::setOverrideCursor(Qt::WaitCursor);
     m_qcam.Close();
     m_qcam.Open(m_setup.qcam_deviceID);
     m_camera        = &m_qcam;
     m_cameraControl = &m_QCameraControl;
+    QGuiApplication::restoreOverrideCursor();
 }
 
 bool OperatorConsole::ReadyForTesting()
@@ -953,7 +962,12 @@ bool OperatorConsole::ReadyForTesting()
 	//
 	// If we're doing an Arbitrary Chart test, make sure that a chart definition file has been selected
 	//
-	if (m_test == &m_arbitraryChartControl)
+    if (m_image_source == no_source)
+    {
+        QMessageBox::warning(m_dlg, "No Device selected", "You must select a camera before you can run a test (to select a camera, click on Setup).");
+        ready = false;
+    }
+    else if (m_test == &m_arbitraryChartControl)
 	{
         if (!m_arbitraryChart.HaveChartDef())
 		{
@@ -968,6 +982,12 @@ bool OperatorConsole::ReadyForTesting()
 void OperatorConsole::LogMessage(QString &str, bool timestamp)
 {
     m_dlg->log_message(str, timestamp);
+}
+
+void OperatorConsole::LogMessage(const char *str, bool timestamp)
+{
+    QString msg = str;
+    m_dlg->log_message(msg, timestamp);
 }
 
 void OperatorConsole::LogMessage(QTextStream &text, bool timestamp)
