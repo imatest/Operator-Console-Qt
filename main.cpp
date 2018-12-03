@@ -1,13 +1,19 @@
 #include "operatorconsoledialog.h"
 #include <QApplication>
+#include <QFile>
 #include <QProcess>
+#include <QTextStream>
+using namespace std;
 
-static void outputready();
 
 int main(int argc, char *argv[])
 {
+    QFile   out;
+
+    out.open(stdout, QIODevice::ReadOnly);
     QApplication a(argc, argv);
-    OperatorConsoleDialog w;
+
+    OperatorConsoleDialog w(nullptr, &out);
 
     w.show();
 

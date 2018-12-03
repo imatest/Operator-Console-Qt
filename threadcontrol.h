@@ -32,11 +32,6 @@
 ///
 ////////////////////////////////////////////////////////////////////////
 
-//#define USE_ATOMIC
-
-#if defined(USE_ATOMIC)
-#include <QAtomicInt>
-#endif
 #include <QMutex>
 #include <QThread>
 #include <QWaitCondition>

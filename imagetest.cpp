@@ -68,20 +68,10 @@ static const char *tocstr(QString &qstr)
 
 void ImageTest::Init(void *raw_pixels, int width, int height, const Config *config)
 {
-	m_rawPixels            = raw_pixels;
-	m_width                = width;
-	m_height               = height;
-#if 0
-    m_fileroot             = config->m_fileRoot;
-    m_serialNumber         = config->m_serialNumber;
-    m_partNumber           = config->m_partNumber;
-    m_extension            = config->m_extension;
-    m_iniFilePathName      = config->m_iniFilePathName;
-    m_chartDefFilePathName = config->m_chartDefFilePathName;
-    m_programPath          = config->m_programPath;
-    m_config->m_ncolors    = config->m_config->m_ncolors;
-#endif
-    m_config = config;
+    m_rawPixels = raw_pixels;
+    m_width     = width;
+    m_height    = height;
+    m_config    = config;
 
 	AllocateRGB();
 }
@@ -95,7 +85,7 @@ bool ImageTest::AllocateRGB()
     if (m_config->m_ncolors == 3)
 	{
 		DeleteRGB();
-        m_rgb = new unsigned char[m_width * m_height * 3];
+        m_rgb = new unsigned char[static_cast<unsigned long long>(m_width * m_height * 3)];
 	}
 
     return m_rgb != nullptr;
@@ -201,34 +191,10 @@ void ImageTest::Run()
 	json_string		test_settings;
 	int				crop_borders[4] = {0,0,0,0};
 
-	InitResults();	// clear out strings, set m_passed to false
+    InitResults();  	// clear out strings, set m_passed to false
+    PlanesFromRGB();    // convert m_rawPixels from rgba format to planar format for MATLAB
 
-//#ifdef IMATEST_CAMERA
-//	RGBFromPlanes((UINT *)m_rawPixels);	
-//#else
-	PlanesFromRGB();					// convert m_rawPixels from rgba format to planar format for MATLAB
-//#endif
-	//	RGBFromPlanes((UINT *)m_rawPixels);	// convert it back, just for fun
-
-#if 0
-	//
-	// Save the data as a png file
-	//
-	UINT *tmp = new UINT[m_width*m_height];
-	RGBFromPlanes(tmp);	
-	SaveImage((RGBQUAD *)tmp, "image.png");
-	delete [] tmp;
-#endif
     prepareTestSettings(m_width, m_height, m_config->m_ncolors, m_config->m_extension.c_str(), m_config->m_fileRoot.c_str(), m_config->m_serialNumber.c_str(), m_config->m_partNumber.c_str(), crop_borders, test_settings);
-
-#if 0
-    const char	*operation_flag[] = {INI_RAW_JSON_MODE};
-    const char	*file_name[]      = {""};
-    const char	*program_path[]   = {m_programPath};
-    const char	*iniFile[]        = {m_iniFilePathName};
-    const char	*json_options[]   = {test_settings.c_str()}; // make sure to call prepareTestSettings() first
-    const char	*input_keys[]     = {"JSON"};
-#endif
 
 	try
 	{
@@ -255,10 +221,9 @@ void ImageTest::Run()
         mwArray pathParam(m_config->m_programPath.c_str());
         mwArray iniFileParam(m_config->m_iniFilePathName.c_str());
         mwArray	json_options_param(test_settings.c_str());						// JSON options describing the RAW file;
-        mwArray keysParam(json.c_str());           									// Argument 3 - Mode of Control
-        mwArray modeParam(rawMode.c_str());         								// Argument 4 - Operation Flag
+        mwArray keysParam(json.c_str());           								// Argument 3 - Mode of Control
+        mwArray modeParam(rawMode.c_str());         							// Argument 4 - Operation Flag
 #endif
-//		mwArray rawFileParam(m_width * m_height, 1, mxUINT16_CLASS, mxREAL);	// Argument 6 - Raw Data
         mwArray rawFileParam(static_cast<mwSize>(m_width * m_height * 3), 1, mxUINT8_CLASS, mxREAL);	// Argument 6 - RGB Data
 		mwArray	vararginParam(1,3,mxCELL_CLASS);								// The remaining arguments go in this param
 		mwArray	out;															// this will hold returned data
@@ -280,11 +245,7 @@ void ImageTest::Run()
 		{
 			m_imatestFunc(1, out, fileParam, pathParam, keysParam, modeParam, vararginParam);
 		}
-#if 0
-		extern LIB_imatest_library_CPP_API void MW_CALL_CONV arbitrary_charts_shell(int nargout, mwArray& output, const mwArray& inputData, const mwArray& chartFile, const mwArray& iniFileName, const mwArray& averageMode, const mwArray& optionsJson);
-		extern LIB_imatest_library_CPP_API void MW_CALL_CONV blemish_shell         (int nargout, mwArray& nret,   const mwArray& inputFile, const mwArray& rootDir,   const mwArray& inputKeys,   const mwArray& opMode,      const mwArray& varargin);
-		extern LIB_imatest_library_CPP_API void MW_CALL_CONV sfrplus_shell         (int nargout, mwArray& nret,   const mwArray& inputFile, const mwArray& rootDir,   const mwArray& inputKeys,   const mwArray& opMode,      const mwArray& varargin);
-#endif
+
         //
         // Copy the output of the module to a System::String object
         //
@@ -303,7 +264,6 @@ void ImageTest::Run()
         QString crlf("\r\n");
 
         text << m_timestamp.Get() << " Error running " << m_name << " test" << endl << e.what();
-//        AppendLog(text, lf, crlf);	// the exception may have '\n' characters that we need to replace with "\r\n"
         AppendLog(str);
 		cout << "Run Error!" << endl;
 		cerr << e.what() << endl;

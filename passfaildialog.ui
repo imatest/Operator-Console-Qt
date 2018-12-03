@@ -2,16 +2,19 @@
 <ui version="4.0">
  <class>PassFailDialog</class>
  <widget class="QDialog" name="PassFailDialog">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>413</width>
     <height>569</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Pass Fail Settings</string>
   </property>
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
@@ -29,24 +32,51 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QTreeView" name="treeView">
+  <widget class="QTreeWidget" name="treeWidget">
    <property name="geometry">
     <rect>
-     <x>16</x>
+     <x>20</x>
      <y>10</y>
-     <width>370</width>
-     <height>111</height>
+     <width>371</width>
+     <height>311</height>
     </rect>
    </property>
+   <column>
+    <property name="text">
+     <string>1</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>New Column</string>
+    </property>
+   </column>
+   <column>
+    <property name="text">
+     <string>New Column</string>
+    </property>
+   </column>
   </widget>
-  <widget class="QTableView" name="tableView">
+  <widget class="QLabel" name="description">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>130</y>
-     <width>256</width>
-     <height>192</height>
+     <x>20</x>
+     <y>340</y>
+     <width>371</width>
+     <height>71</height>
     </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string>TextLabel</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+   </property>
+   <property name="wordWrap">
+    <bool>true</bool>
    </property>
   </widget>
  </widget>

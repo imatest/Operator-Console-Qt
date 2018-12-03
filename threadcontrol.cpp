@@ -57,9 +57,6 @@ void ThreadControl::run()
 {
     forever
     {
-        //
-        // See if we should quit ('quit' is an AtomicInt, so we have to call a function to get its value)
-        //
         if (quit)
             break;
         //

@@ -59,7 +59,7 @@ public:
 //
 //    int         m_source_ID;		//!< The source ID for acquire_image() that indicates what type of device is in use
 //    int         m_device_ID;		//!< [Used Epiphan only]: indicates from which of the two sources to capture
-//    std::string m_ini_file; //!< The fully-qualified name (including full path) of an Imatest INI file
+//    std::string m_ini_file;       //!< The fully-qualified name (including full path) of an Imatest INI file
 
 protected:
 	CriticalBuf		m_frame;		//!< shared memory to hold copy of current frame

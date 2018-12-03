@@ -1,7 +1,7 @@
 #ifndef OPERATORCONSOLE_H
 #define OPERATORCONSOLE_H
 
-
+#include <QFile>
 #include <QString>
 #include <QTextStream>
 #include <QWaitCondition>
@@ -13,12 +13,10 @@
 #include "imageacquisition.h"
 #include "imagetest.h"
 #include "imatestdefines.h"
-
 #include "imatestlibacq.h"
 #include "passfailsettings.h"
 #include "setup_settings.h"
 #include "sfrplustest.h"
-//#include "simpledirectshowacq.h"
 //#include "stderrredirect.h"
 //#include "stderrthread.h"
 //#include "stdoutredirect.h"
@@ -33,9 +31,7 @@
 // IMAGE_NAME is the name of the static file to be displayed in the application window (until live acquisition is implemented)
 //
 #define LOGO_NAME			"Data\\imatest_logo.png"	// imatest logo to be displayed in dialog
-#define IMAGE_NAME			"Data\\sfrplus.raw.jpg"			// image file to be displayed in the application window (until live acquisition is implemented)
-//#define IMAGE_NAME          "Data\\blemish_example.jpg"
-//#define IMAGE_NAME			"Data\\test.jpg"			// image file to be displayed in the application window (until live acquisition is implemented)
+#define IMAGE_NAME			"Data\\sfrplus.raw.jpg"			// image file to be used for acquisition from a file (mainly used during development)
 // #define ADMIN_PASSWORD		"Imatest%840cX"						// password for Administrator access to the pass/fail settings
 #define ADMIN_PASSWORD		"a"						// password for Administrator access to the pass/fail settings
 
@@ -105,7 +101,6 @@ typedef struct AppFlags
     unsigned int	blemishThread:1;
     unsigned int	sfrplusThread : 1;
     unsigned int	arbitraryChartThread : 1;
-    unsigned int	cameraThread:1;
     unsigned int	matlab:1;			//!< MATLAB lib has been initialized
     unsigned int	imatestIT:1;		//!< imatestIT lib has been initialized
     unsigned int    imatestAcq:1;		//!< Imatest IT acquisition lib has been initialized
@@ -127,18 +122,7 @@ typedef enum image_source_t
     file_source         //!< loading a file for the image source
 } image_source_t;
 
-#ifdef INI_SEPARATE_PARAMS  // this is defined in imatestdefines.h
-void MW_CALL_CONV inifile(int nargout, mwArray& varargout, const mwArray& varargin);
-
-void MW_CALL_CONV inifile(int nargout, mwArray& varargout);
-
-void MW_CALL_CONV inifile(const mwArray& varargin);
-#endif
-
-
 class OperatorConsoleDialog;
-
-
 
 class OperatorConsole : public QObject
 {
@@ -148,16 +132,9 @@ public:
     OperatorConsole();
     virtual ~OperatorConsole();
 
-    int					GetImageWidth()  {return m_setup.width;}
-    int					GetImageHeight() {return m_setup.height;}
     bool                Init1(OperatorConsoleDialog *dialog);
     void                Quit();
-    bool				ReadINISettings(void);					//!< This function reads in items for the setup dialog from imatest.ini
-    bool				ReadPassFail(void);						//!< This function reads in the pass/fail variable values as in the pass/fail file listed in the imatest INI file
-    bool				ReadyForTesting();						//!< This function gets called before a test is run to amke sure ecverything is ready
-    bool				ReInit(void);							//!< This function allows for reallocation of the various image buffers when we change the image size
-    void				WriteINISettings(void);					//!< This function writes items for the setup dialog to imatest.ini
-    bool				WritePassFail(void);					//!< This function writes the pass/fail variables to the pass/fail file listed in the imatest INI file
+    bool				ReadyForTesting();						//!< This function gets called before a test is run to amke sure everything is ready
 
 public slots:
     //
@@ -189,8 +166,6 @@ public slots:
     void				OnStart();              //!< Called after MSG_START is received
     void				OnSetup();              //!< Called after MSG_SETUP is received
 
-
-
 protected:
     bool				AllocateImageBuf();
     bool				CheckFiles(QString &msg);
@@ -211,13 +186,14 @@ protected:
     bool				LoadConfig();
     void				MakeHandles();
 
+    bool				ReInit(void);							//!< This function allows for reallocation of the various image buffers when we change the image size
+
     void				SetImatestCamera();
     void                SetQCamera();
     void				SetFileCamera();
 
     bool				SaveConfig();
     void				SaveLog(const QString& filePathName);
-    BOOL				SendAppMessage(int msg);
 
     void				LogTime();
     void                TestDone();
@@ -239,7 +215,7 @@ protected:
 
 protected:
     AppStatus				m_status;
-    Config					m_config;		//!< for using rgb data:   will eventually come from a dialog (uses hard coded values for now)
+    Config					m_config;   		//!< for using rgb data:   will eventually come from a dialog (uses hard coded values for now)
     byte					*m_cameraImage;		//!< buffer to hold a single image frame from the camera (will eventually be combined with m_fileImage)
     ImatestLibAcq			m_imatest_cam;		//!< live acquisition using Imatest acquire_image()
     CameraAcquisition       m_qcam;             //!< live acquisition using a camera controlled by QCamera interface

@@ -20,9 +20,7 @@
 #ifndef BLEMISH_TEST_H
 #define BLEMISH_TEST_H
 
-//#include <string>
 #include "imagetest.h"
-//#include "threadcontrol.h"
 
 ///
 /// contains the details of an Blemish test to be performed including all relevant fields for determining pass or fail

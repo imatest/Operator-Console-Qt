@@ -74,19 +74,6 @@ void SetupDialog::Init()
     // fill the combo box with QCamera device descriptions (i.e. names)
     setCameraList();
 
-
-#if 0
-    // file the combo-box of DirectShow device names
-   for (int i = 0; i < m_settings.directshow_device_names.size(); ++i)
-   {
-       str = m_settings.directshow_device_names[i];
-       ui->qcamera->addItem(str);
-   }
-
-   if (m_settings.directshow_device_names.size() > 0)
-      ui->qcamera->setCurrentIndex(m_settings.directshow_deviceID);
-#endif
-
     //
     // Select the stored value for the device and hide/show objects accordingly
     //
@@ -335,7 +322,6 @@ void SetupDialog::on_okay()
     m_settings.width               = ui->width->text().toInt();
     m_settings.height              = ui->height->text().toInt();
     m_settings.bayer               = getBayer();
-//    m_settings.directshow_deviceID = ui->qcamera->currentIndex();
     m_settings.omnivision_reg_file = ui->pathRegister->text();
     m_settings.part_number         = ui->partNumber->text();
     m_settings.serial_number       = ui->serialNumber->text();
@@ -399,24 +385,11 @@ void SetupDialog::on_deviceList_itemSelectionChanged()
     }
 }
 
-// add other message handlers and data functions from MFC version here
 
 int SetupDialog::getBitsPerPixel()
 {
     QString str;
     int value= ui->bitdepth->currentText().toInt();
-
-#if 0
-    //
-    // if the value is invalid, set it to the default of 8
-    //
-    QVector<int>::iterator itr = std::find(m_settings.allowed_bits_per_pixel.begin(), m_settings.allowed_bits_per_pixel.end(), value);
-
-    if ( itr == m_settings.allowed_bits_per_pixel.end())
-    {
-        value = 8;
-    }
-#endif
 
     return value;
 }
@@ -525,5 +498,6 @@ void SetupDialog::getCamera()
     QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
 
     m_settings.qcam_deviceID = cameras[index].deviceName();
-    m_settings.qcam_description = cameras[index].description();
+    m_settings.width  = m_settings.qcam_list[m_settings.qcam_deviceID].width();
+    m_settings.height = m_settings.qcam_list[m_settings.qcam_deviceID].height();
 }

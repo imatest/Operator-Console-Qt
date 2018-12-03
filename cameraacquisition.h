@@ -21,13 +21,13 @@ public:
     CameraAcquisition(QString &deviceID);   // this is a non-human-readable string
     ~CameraAcquisition();
 
-    bool	CaptureFrame();
-    bool	Close();
-    QString &DeviceID() {return m_deviceID;}
-    int     NumCameras();
-    bool	Open();
-    bool    Open(QString &deviceID);
-
+    bool        CaptureFrame();
+    bool        Close();
+    QString&    DeviceID() {return m_deviceID;}
+    int         NumCameras();
+    bool        Open();
+    bool        Open(QString &deviceID);
+    static void GetCameraList(QMap<QString, QSize> &list);
     static void ViewfinderDebug(QCamera *camera);
 
 protected:
@@ -37,6 +37,7 @@ protected:
     bool        GetCameraInfo(int index);
     bool        GetCameraInfo();
     void        imageFromVideoFrame(const QVideoFrame& buffer);
+    void        MakeCameraList();
 
 private slots :
     void image_error(int id, QCameraImageCapture::Error error, const QString &errorString);
@@ -56,6 +57,7 @@ protected:
     QCameraViewfinder           m_viewfinder;
     QCameraImageCapture::Error  m_error;
     QImage                      m_imageFrame;
+    QMap<QString, QSize>        m_cameraList;   // list of camera names and (width, height)
 };
 
 #endif // QCAMERAACQUISITION_H

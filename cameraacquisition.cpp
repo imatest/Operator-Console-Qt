@@ -11,11 +11,11 @@ CameraAcquisition::CameraAcquisition() : m_capture(nullptr), m_camera(nullptr), 
 
 CameraAcquisition::CameraAcquisition(QCameraInfo &info) : m_capture(nullptr), m_camera(nullptr), m_info(info), m_open(false), m_error(QCameraImageCapture::NoError)
 {
+    m_info = info;
 }
 
 CameraAcquisition::CameraAcquisition(QString &deviceID) : m_capture(nullptr), m_camera(nullptr), m_deviceID(deviceID), m_open(false), m_error(QCameraImageCapture::NoError)
 {
-    GetCameraInfo(deviceID);
 }
 
 CameraAcquisition::~CameraAcquisition()
@@ -77,7 +77,7 @@ bool CameraAcquisition::Open()
 
     QList<QCameraViewfinderSettings> list = m_camera->supportedViewfinderSettings();
     m_settings = list[0];   // just use first settings object in list
-    DumpViewfinderSettings(m_settings, 0, true);
+//    DumpViewfinderSettings(m_settings, 0, true);
 
     m_capture = new QCameraImageCapture(m_camera);
     m_capture->setCaptureDestination(QCameraImageCapture::CaptureToBuffer);
@@ -262,13 +262,12 @@ void CameraAcquisition::imageFromVideoFrame(const QVideoFrame& buffer)
 
 void  CameraAcquisition::CopyFrame(const QVideoFrame &constFrame)
 {
-    QVideoFrame frame(constFrame);  // make a non-const copy so we can call map() to get the pixels in to app memory
+    QVideoFrame frame(constFrame);  // make a non-const copy so we can call map() to get the pixels into app memory
     frame.map(QAbstractVideoBuffer::ReadOnly);
 
     int width         = frame.width();
     int height        = frame.height();
     int bytesPerLine  = frame.bytesPerLine();
-    int numBytes      = frame.mappedBytes();
     QImage::Format imageFormat = QVideoFrame::imageFormatFromPixelFormat(frame.pixelFormat());
 
     //
@@ -294,4 +293,26 @@ void  CameraAcquisition::CopyFrame(const QVideoFrame &constFrame)
     }
 
     frame.unmap();
+}
+
+void CameraAcquisition::GetCameraList(QMap<QString, QSize> &list)
+{
+    //
+    // for each available camera
+    //   get its info
+    //   load the camera
+    //   get list of viewfinders
+    //   get width and height of first viewfinder
+    //   store camera deviceName and resolution in m_cameraList (deviceName is not an actual human-readable name)
+    //
+    QList<QCameraInfo>  cameras = QCameraInfo::availableCameras();
+
+    for (int i = 0; i < cameras.count(); ++i)
+    {
+        QCamera camera(cameras[i]);
+        camera.load();   // this allows us to read camera viewfinder settings
+        QList<QCameraViewfinderSettings> settings = camera.supportedViewfinderSettings();
+        list.insert(cameras[i].deviceName(), settings[0].resolution());
+        camera.unload();
+    }
 }

@@ -107,7 +107,7 @@ template <typename T> void vecEntry<T>::assign_value( const std::vector<T>& inpu
 	{
 		this->value.resize(input.size());
 		this->b_isUsed = true;
-        for (std::size_t idx=0; idx < input.size(); ++idx;)
+        for (std::size_t idx=0; idx < input.size(); ++idx)
 		{
 			this->value[idx] = input[idx];
 		}
@@ -133,7 +133,7 @@ typedef struct SFRplusPassFail
 	entry<long>			Mirrored_chart;
 	entry<double>		MTF50P_ratio_min;
 	entry<double>		MTF50P_CP_weighted_mean_min;
-    entry<std::string>		passfail_ini_file_date;
+    entry<std::string> 	passfail_ini_file_date;         // does this need to be a string?  It looks like it's an integer value in the file
 	entry<double>		Rotation_degrees_max;
 	entry<double>		Secondary_readout_1_center_mean_min;
 	entry<double>		Secondary_readout_1_outer_mean_min;

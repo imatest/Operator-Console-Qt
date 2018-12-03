@@ -39,7 +39,8 @@ using namespace std;
 
 static const TestID gTestID[] = 
 {
-	{"Dead_pixels_passed", "Dead Pixels"},
+#if 0
+    {"Dead_pixels_passed", "Dead Pixels"},
 	{"Hot_pixels_passed", "Hot Pixels"},
 	{"Optical_center_offset_X_passed", "Center Offset X" },
 	{"Optical_center_offset_Y_passed", "Center Offset Y" },
@@ -48,7 +49,8 @@ static const TestID gTestID[] =
 	{"Relative_illumination_corner_diff_pct_passed", "Corner Delta"},
 	{"Uniformity_RoverG_corners_pct_passed", "R over G "},
 	{"Uniformity_BoverG_corners_pct_passed", "B over G "},
-	{"Blemishes_all_passed", "Blemishes"},
+#endif
+    {"ArbitraryChart_all_passed", "ArbitraryChart"},
 };
 
 
@@ -133,7 +135,7 @@ void ArbitraryChartTest::Run()	// we need to override the parent method because 
 		mwArray	out;
 
 
-	   arbitrary_charts_shell(1, out, inputDataParam, chartFileParam, iniFileParam, averageModeParam, optionsJsonParam);
+        arbitrary_charts_shell(1, out, inputDataParam, chartFileParam, iniFileParam, averageModeParam, optionsJsonParam);
 
 		//
 		// Copy the output of the module to a System::String object
@@ -175,7 +177,7 @@ void ArbitraryChartTest::ParseResults(string &results)
     if (dynamic_cast<ImageTest*>(this)->GetDataNode(results, data) && dynamic_cast<ImageTest*>(this)->GetPassFailNode(data, passfail))// this will copy any errors into m_log
 	{
 		//
-		// Get the pass/fail results.  Depending on the format of the resutls, this may need to be reworked.
+        // Get the pass/fail results.  Depending on the format of the results, this may need to be reworked.
 		// 
 		try 
 		{

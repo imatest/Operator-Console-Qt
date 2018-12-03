@@ -32,7 +32,7 @@ Timestamp::~Timestamp(void)
 const QString &Timestamp::Get()
 {
     m_time = QTime::currentTime();
-    m_str  = m_time.toString("hh:mm:ss ");	// just the time, no date hh:mm::ss (e.g. 13:24:36)
+    m_str  = m_time.toString("hh:mm:ss ");	// just the time (no date), in hh:mm::ss format (e.g. 13:24:36)
 
 	return m_str;
 }

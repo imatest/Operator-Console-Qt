@@ -1,7 +1,14 @@
 #ifndef IMATESTDEFINES_H
 #define IMATESTDEFINES_H
 
+///
 /// Define different keys for differing Imatest interfaces based on version
+///
+/// Set the Imatest version by adding the appropriate IMATEST version
+/// to the DEFINES variable in OperatorConsole.pro.  For example:
+/// DEFINES += IMATEST_5_1
+///
+
 #if defined IMATEST_4_2
 
 #define INI_INCLUDE_SUBSECTION

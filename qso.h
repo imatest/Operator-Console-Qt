@@ -30,7 +30,7 @@
 ///   ---x---
 ///   x-----x
 ///
-/// This is the order of the quadrants in the data
+/// This is the order of the quadrants in the data:
 ///
 typedef enum EQuadrant
 {

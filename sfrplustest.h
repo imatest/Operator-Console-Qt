@@ -43,8 +43,7 @@ protected:
 	void		ParseOverlay(JSONNode &data, JSONNode &passfail);
 
 protected:
-	bool		m_qso[eNumQuadrants];	//!< pass/fail for each quadrant
-	
+	bool		m_qso[eNumQuadrants];	//!< pass/fail for each quadrant	
 };
 
 #endif

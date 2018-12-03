@@ -2,13 +2,14 @@
 #include "operatorconsole.h"
 #include "ui_operatorconsoledialog.h"
 #include "timestamp.h"
-#include <QApplication>
+#include <QTextStream>
 
-OperatorConsoleDialog::OperatorConsoleDialog(QWidget *parent) :
+OperatorConsoleDialog::OperatorConsoleDialog(QWidget *parent, QFile *out, QFile *err) :
     QDialog(parent),
+    m_out(out),
+    m_err(err),
     ui(new Ui::OperatorConsoleDialog)
 {
-
     ui->setupUi(this);
     console = new OperatorConsole;
     console->Init1(this);    // init the operator console object
@@ -25,8 +26,7 @@ OperatorConsoleDialog::~OperatorConsoleDialog()
 
 void OperatorConsoleDialog::setupSignals()
 {
-    connect(ui->btnQuit, &QPushButton::clicked, qApp, &QApplication::quit);
-
+//    connect(ui->btnQuit,      &QPushButton::clicked,  qApp,    &QApplication::quit);
     connect(ui->radioBlemish, &QRadioButton::clicked, console, &OperatorConsole::OnSetBlemish);
     connect(ui->radioSfr,     &QRadioButton::clicked, console, &OperatorConsole::OnSetSFRplus);
     connect(ui->radioCharts,  &QRadioButton::clicked, console, &OperatorConsole::OnSetArbitraryChart);
@@ -36,8 +36,16 @@ void OperatorConsoleDialog::setupSignals()
 
     connect(this, &OperatorConsoleDialog::startTest, console, &OperatorConsole::OnStart);
     connect(this, &OperatorConsoleDialog::stopTest,  console, &OperatorConsole::OnStop);
+
+    connect(m_out, &QFile::readyRead, this, &OperatorConsoleDialog::on_ready_read);
 }
 
+void OperatorConsoleDialog::on_ready_read()
+{
+    QTextStream stream(m_out);
+    QString str = stream.readAll();
+    log_message(str, false);
+}
 
 void OperatorConsoleDialog::on_btnStart_clicked()
 {
@@ -56,24 +64,17 @@ void OperatorConsoleDialog::on_btnStop_clicked()
     console->OnStop();  // ideally we would emit a signal, but for now just call the method directly (that should be okay aslong as it returns right away)
 }
 
-void OperatorConsoleDialog::calcImageSize()
+void OperatorConsoleDialog::save_log(const QString &filename)
 {
-    //
-    // If the size of the image is smaller than the screen size, resize the image to full size
-    // Otherwise we need to resize the window to fill the screen, then resize the image (while
-    // preserving its aspect ratio) so that it fits in the available space.
-    //
-    // The available space is equal to the window area minus a border around the image item
-    // and leaving space for the widgets contained in moveableWidget collection
-    //
-    // get screen size
-    // subtract width of moveable widget
-    // subtract 2 * border width and 2* border height (use current image left and top)
-    // resulting rect is available space
-    // will image fit?
-    // if yes, fiture
-}
+    QFile file(filename);
 
+    if (file.open(QIODevice::ReadWrite | QIODevice::Text))
+    {
+        QTextStream stream(&file);
+        stream << ui->logText->toPlainText();
+        file.close();
+    }
+}
 
 void OperatorConsoleDialog::set_image_size(const QSize &newSize)
 {
@@ -96,7 +97,7 @@ void OperatorConsoleDialog::set_image_size(const QSize &newSize)
 
     //
     // TODO:  we need to handle cases when the image is larger than the screen size.  Two options would be to scale the image
-    // (preserving the aspec ratior) so that the entire window would fit on the screen, or keep the image full-ize, but add
+    // (preserving the aspect ratio) so that the entire window would fit on the screen, or keep the image full-ize, but add
     // scroll bars.
     //
 
@@ -192,7 +193,6 @@ void OperatorConsoleDialog::log_message(QString &msg, bool timestamp)
         Timestamp now;
         QString time = now.Get();
         msg.prepend(time);
-//      ui->logText->setPlainText(time);
     }
 
     ui->logText->appendPlainText(msg);
@@ -245,13 +245,9 @@ void OperatorConsoleDialog::qsoMove()
     // Now move each qso widget so that it's centered at the center of its quadrant
     //
     //-----------
-    //
     //  +     +
-    //
     //     +
-    //
     //  +     +
-    //
     //-----------
     //
     moveCenter(ui->qsoUL,     center.x() - dx, center.y() - dy);	// upper left
@@ -280,4 +276,21 @@ void OperatorConsoleDialog::qsoShow(bool visible)
     {
         qso[i]->setVisible(visible);
     }
+}
+
+void OperatorConsoleDialog::quit()
+{
+    console->Quit();    // this may not be needed because it gets called in the OperatorConsole destructor.
+    qApp->quit();
+
+}
+void OperatorConsoleDialog::on_btnQuit_clicked()
+{
+    quit();
+
+}
+
+void OperatorConsoleDialog::on_OperatorConsoleDialog_accepted()
+{
+    quit();
 }

@@ -63,8 +63,8 @@ typedef LIB_imatest_library_CPP_API void (MW_CALL_CONV *ImatestShellFunc)(int na
 ///////////////////////////////////////////////////////////////////////
 /// An abstract class that defines an image test to be performed.
 ///
-/// ImageTest is an abstract class that defines an image test to be performed (e.g. blemish, 
-/// SFRplus).  To use this class, create a subclass and implement the ParseResults() method.
+/// ImageTest is an abstract class that defines an image test to be performed (e.g. Blemish, SFRrplus,
+/// Arbitrary Chart).  To use this class, create a subclass and implement the ParseResults() method.
 ///
 /// Some member variables are used by more than 1 thread.  To prevent these variables from being accessed
 /// simultaneously from multiple threads, they are protected by critical sections, which limit access to one

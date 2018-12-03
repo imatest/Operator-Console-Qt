@@ -41,7 +41,6 @@ public:
     bool    Open(const char *filename);
 
 protected:
-//    QImage	m_image;
     QString	m_filename;		//!< fully-qualified image file name
 };
 

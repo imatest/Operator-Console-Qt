@@ -54,9 +54,6 @@ ImatestLibAcq::~ImatestLibAcq(void)
 
 bool ImatestLibAcq::Open()
 {
-   //struct SimpleCapParams	params;
-   bool					success = false;
-
    m_inited = true;
 
    if (m_width == 0 || m_height == 0)	// these get set in Init()
@@ -94,12 +91,12 @@ bool ImatestLibAcq::CaptureFrame()
    //raw_pixels_char = load_raw_file(BLEMISH_RAW_FILE, &pixel_count);
    mwArray im_orig, vstr;
 
-   mwArray source_id((mxDouble)m_source_ID);
+   mwArray source_id(static_cast<mxDouble>(m_source_ID));
 
    mwArray toRGBrows =  mwArray(1,1,mxDOUBLE_CLASS);
    toRGBrows=1.0;// by being TRUE we call for the image to be in column major format
 
-   mwArray deviceID((mxDouble)m_device_ID);// select which source we are using
+   mwArray deviceID(static_cast<mxDouble>(m_device_ID));// select which source we are using
 
    mwArray ini_file(m_ini_file.c_str());	// the Omnivision part of acquire_image needs to read from
    // the correct imatest.ini file

@@ -27,7 +27,7 @@ PassFailSettings::PassFailSettings(void): b_isReadOnly(false)
 	long long_bad_val = -1;
 	double dbl_bad_val = -1.0;
 	std::vector<long> long_bad_vec(3,-1);
-	std::vector<double> dbl_bad_vec(3,-1);
+    std::vector<double> dbl_bad_vec(3,-1);
 	//////////////////////////////////////////////
 	// sfrplus section
 	//////////////////////////////////////////////
@@ -172,15 +172,16 @@ PassFailSettings::PassFailSettings(void): b_isReadOnly(false)
 
 	sfrplus.passfail_ini_file_date.data_type.append("");
     sfrplus.passfail_ini_file_date.name= "passfail_ini_file_date";
-	sfrplus.passfail_ini_file_date.value = "";
+    sfrplus.passfail_ini_file_date.value = "";
 
 #ifdef LOWER_CASE_INI_SECTIONS
     sfrplus.name= "sfrplus";
 #else
     sfrplus.name= "SFRplus";
 #endif
-	sfrplus.numEntries = 27;
-	sfrplus.b_enable = false;
+//    sfrplus.numEntries = 27;
+    sfrplus.numEntries = 25;    //Spec-v2.ini has 25 entries
+    sfrplus.b_enable = false;
 	//////////////////////////////////////////////
 	// blemish section
 	//////////////////////////////////////////////
@@ -260,8 +261,9 @@ PassFailSettings::PassFailSettings(void): b_isReadOnly(false)
 #else
     blemish.name= "Blemish";
 #endif
-	blemish.numEntries = 14; 
-	blemish.b_enable = false;
+//    blemish.numEntries = 14;
+    blemish.numEntries = 11;    // Spec-v2.ini has 11 Blemish entries
+    blemish.b_enable = false;
 
 	//////////////////////////////////////////////
 	// ois section
@@ -273,7 +275,7 @@ PassFailSettings::PassFailSettings(void): b_isReadOnly(false)
 
 	ois.R_improve_H_dB_min.data_type = "i";
     ois.R_improve_H_dB_min.name= "R_improve_H_dB_min";
-	ois.R_improve_H_dB_min.value = long_bad_val;
+    ois.R_improve_H_dB_min.value = long_bad_val;
 
 	ois.R_improve_V_dB_min.data_type = "i";
     ois.R_improve_V_dB_min.name= "R_improve_V_dB_min";

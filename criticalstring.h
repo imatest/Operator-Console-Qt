@@ -26,7 +26,7 @@
 #include <QTextStream>
 
 ///
-/// A null-terminated string class for which all access is controlled by critical sections
+/// A QString class for which all access is controlled by critical sections
 ///
 class CriticalString
 {

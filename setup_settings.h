@@ -22,6 +22,7 @@
 
 #include <QVector>
 #include <QCameraInfo>
+#include "cameraacquisition.h"
 
 typedef enum EDevIndex
 {
@@ -60,7 +61,7 @@ struct setup_settings
     QVector<QString>	device_list;			//!< The list of allowed device names used to fill the c_device_list CListBox in Setup.h/cpp
     QVector<QString>	bayer_list;				//!< The list of allowed Bayer patterns used to fill the c_combo_bayer CComboBox in Setup.h/cpp
     QVector<int>        allowed_bits_per_pixel; //!< The list of allowed bits-per-pixels used to fill the c_combo_bits_per_pixel CComboBox in Setup.h/cpp
-    QString             qcam_description;       //!< Human-readable decription of the QCamera
+    QMap<QString,QSize> qcam_list;              //!< list of camera names and (width, height)
 
 
     ///
@@ -100,6 +101,8 @@ struct setup_settings
 		//allowed_bits_per_pixel.resize(3,8);
 		//allowed_bits_per_pixel[1] = 10;
 		//allowed_bits_per_pixel[2] = 12;
+
+        CameraAcquisition::GetCameraList(qcam_list);    // get list of camera names and resolutions
     }
 
 };

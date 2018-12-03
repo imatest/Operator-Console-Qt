@@ -7,6 +7,7 @@ PasswordDialog::PasswordDialog(QWidget *parent) :
 {
     unlock = false;
     ui->setupUi(this);
+    ui->password->setFocus();
 }
 
 PasswordDialog::~PasswordDialog()
