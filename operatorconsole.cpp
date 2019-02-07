@@ -1632,9 +1632,12 @@ bool OperatorConsole::ReadPassFail(void)
 
         std::vector<int> intVecBuf;
         std::size_t vecSize;
+         mwArray temp;
+
         vecSize = readSett.Get(1,1).Get(1,1).NumberOfElements();
         intVecBuf.resize(vecSize);
-        readSett.Get(1,1).Get(1,1).GetData(&intVecBuf[0], vecSize);
+        temp = readSett.Get(1,1).Get(1,1);
+        temp.GetData(&intVecBuf[0], vecSize);
         m_PFSettings.blemish.Blemish_maximum_count.value.resize(vecSize);
         if (intVecBuf[0] != badval)
         {
@@ -1649,7 +1652,8 @@ bool OperatorConsole::ReadPassFail(void)
         intVecBuf.clear();
         intVecBuf.resize(vecSize);
         m_PFSettings.blemish.Blemish_size_pixels.value.resize(vecSize);
-        readSett.Get(1,1).Get(1,2).GetData(&intVecBuf[0], vecSize);
+        temp = readSett.Get(1,1).Get(1,2);
+        temp.GetData(&intVecBuf[0], vecSize);
         if (intVecBuf[0] != badval)
         {
             for ( std::size_t idx=0; idx < vecSize; ++idx)
@@ -1661,41 +1665,54 @@ bool OperatorConsole::ReadPassFail(void)
 
         int intBuf = 0;
         double dblBuf = 0.0;
+       
 
-        readSett.Get(1,1).Get(1,3).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,3);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.blemish.Dead_pixels_max.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,4).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,4);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.blemish.Dead_pixel_clusters_max.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,5).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,5);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.blemish.Defective_pixels_max_count.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,6).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,6);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.blemish.Hot_pixel_clusters_max.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,7).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,7);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.blemish.Hot_pixels_max.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,8).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,8);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.blemish.Optical_center_offset_max.assign_value(dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,9).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,9);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.blemish.Optical_center_offset_X_max.assign_value(dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,10).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,10);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.blemish.Optical_center_offset_Y_max.assign_value(dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,11).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,11);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.blemish.Relative_illumination_corner_diff_pct_max.assign_value(dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,12).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,12);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.blemish.Relative_illumination_worst_corner_pct_min.assign_value(dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,13).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,13);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.blemish.Uniformity_BoverG_corners_pct_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,14).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,14);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.blemish.Uniformity_RoverG_corners_pct_max.assign_value(dblBuf,static_cast<double>(badval));
 
 
@@ -1797,48 +1814,64 @@ bool OperatorConsole::ReadPassFail(void)
             e.print_stack_trace();
         }
         // copy the values read from file to the appropriate entries in m_PFSettings.sfrplus
-        readSett.Get(1,1).Get(1,1).GetData(&intBuf, 1);
+        mwArray temp;
+
+        temp = readSett.Get(1,1).Get(1,1);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.sfrplus.All_Edge_IDs_detected.assign_value( intBuf,badval);
 
-        readSett.Get(1,1).Get(1,2).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,2);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.sfrplus.Bayer_decode.assign_value( intBuf,badval);
 
         std::size_t vecSize = readSett.Get(1,1).Get(1,3).NumberOfElements();
         dblVecBuf.resize(vecSize);
-        readSett.Get(1,1).Get(1,3).GetData(&dblVecBuf[0], vecSize);
+        temp = readSett.Get(1,1).Get(1,3);
+        temp.GetData(&dblVecBuf[0], vecSize);
         m_PFSettings.sfrplus.Chart_mean_pixel_level_bounds.assign_value(dblVecBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,4).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,4);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Chart_radial_pixel_shift_max.assign_value( dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,5).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,5);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.sfrplus.Color_expected_detected.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,6).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,6);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Convergence_angle_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,6).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,6);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.DeltaE_00_mean_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,7).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,7);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.FOV_degrees_diagonal_min.assign_value(dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,8).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,8);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.High_pixel_saturation_fraction_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,9).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,9);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.sfrplus.Horizontal_bars_OK_min.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,10).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,10);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Low_pixel_saturation_fraction_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,11).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,11);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.sfrplus.Mirrored_chart.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,12).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,12);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.MTF50P_CP_weighted_mean_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,13).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,13);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.MTF50P_ratio_min.assign_value(dblBuf,static_cast<double>(badval));
 
         m_PFSettings.sfrplus.passfail_ini_file_date.value = readSett.Get(1,1).Get(1,14).ToString();
@@ -1857,43 +1890,56 @@ bool OperatorConsole::ReadPassFail(void)
             m_PFSettings.sfrplus.passfail_ini_file_date.b_isUsed = false;
         }
 
-        readSett.Get(1,1).Get(1,15).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,15);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Rotation_degrees_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,16).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,16);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Secondary_readout_1_center_mean_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,17).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,17);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Secondary_readout_1_outer_mean_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,18).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,18);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Secondary_readout_1_outer_min_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,19).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,19);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Secondary_readout_1_outer_quadrant_delta_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,20).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,20);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Secondary_readout_1_outer_quadrant_mean_min_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,21).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,21);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Secondary_readout_2_center_mean_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,22).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,22);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Secondary_readout_2_outer_mean_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,23).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,23);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Secondary_readout_2_outer_min_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,24).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,24);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Secondary_readout_2_outer_quadrant_delta_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,25).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,25);
+        temp.GetData(&dblBuf, 1);
         m_PFSettings.sfrplus.Secondary_readout_2_outer_quadrant_mean_min_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,26).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,26);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.sfrplus.Stepchart_expected_detected.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,27).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,27);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.sfrplus.upside_down.assign_value(intBuf,badval);
 
     }
@@ -1960,16 +2006,21 @@ bool OperatorConsole::ReadPassFail(void)
             e.print_stack_trace();
         }
         // copy the values read from file to the appropriate entries in m_PFSettings.ois
-        readSett.Get(1,1).Get(1,1).GetData(&intBuf, 1);
+        mwArray temp;
+        temp = readSett.Get(1,1).Get(1,1);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.ois.L_MTF50_delta2_gain_summary_all_dB_min.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,2).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,2);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.ois.R_improve_ALL_dB_min.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,3).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,3);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.ois.R_improve_H_dB_min.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,4).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,4);
+        temp.GetData(&intBuf, 1);
         m_PFSettings.ois.R_improve_V_dB_min.assign_value(intBuf,badval);
     }
 
