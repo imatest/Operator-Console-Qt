@@ -1005,7 +1005,7 @@ bool OperatorConsole::ReadINISettings(void)
 	try
 	{
         inifile(1, readSett,vararginParam);
-        temp_source_id = static_cast<int>(readSett.Get(1,1).Get(1,1));
+        temp_source_id = static_cast<int>(readSett.Get(1,1).Get(1,1).Get(1,1));
 		m_setup.sourceID = temp_source_id;
 
 	}
@@ -1102,12 +1102,13 @@ bool OperatorConsole::ReadINISettings(void)
 	try
 	{
         inifile(1, readSett,vararginParam);
-        temp_epiphan_deviceid =	static_cast<int>(readSett.Get(1,1).Get(1,1));
-        temp_width =			static_cast<int>(readSett.Get(1,1).Get(1,2));
-        temp_height =			static_cast<int>(readSett.Get(1,1).Get(1,3));
-        temp_bits_per_pixel =	static_cast<int>(readSett.Get(1,1).Get(1,4));
-        temp_bayer =			static_cast<int>(readSett.Get(1,1).Get(1,5));
-        temp_reg_file =			readSett.Get(1,1).Get(1,6).ToString();
+        mwArray settings = readSett.Get(1,1);
+        temp_epiphan_deviceid =	static_cast<int>(settings.Get(1,1).Get(1,1));
+        temp_width =			static_cast<int>(settings.Get(1,2).Get(1,1));
+        temp_height =			static_cast<int>(settings.Get(1,3).Get(1,1));
+        temp_bits_per_pixel =	static_cast<int>(settings.Get(1,4).Get(1,1));
+        temp_bayer =			static_cast<int>(settings.Get(1,5).Get(1,1));
+        temp_reg_file =			settings.Get(1,6).ToString();
 
 		// copy the values into the corresponding fields in m_setup
 		m_setup.epiphan_deviceID =		temp_epiphan_deviceid;
