@@ -10,11 +10,13 @@ OperatorConsoleDialog::OperatorConsoleDialog(QWidget *parent) :
 {
 
     ui->setupUi(this);
+    setupTextDisplays();
+
     console = new OperatorConsole;
     console->Init1(this);    // init the operator console object
     setupSignals();
     qsoInit();
-    qsoShow(false);
+    qsoShow(true);
 }
 
 OperatorConsoleDialog::~OperatorConsoleDialog()
@@ -38,6 +40,12 @@ void OperatorConsoleDialog::setupSignals()
     connect(this, &OperatorConsoleDialog::stopTest,  console, &OperatorConsole::OnStop);
 }
 
+void OperatorConsoleDialog::setupTextDisplays()
+{
+    ui->reasonText->setReadOnly(true);
+    ui->summaryText->setReadOnly(true);
+    ui->logText->setReadOnly(true);
+}
 
 void OperatorConsoleDialog::on_btnStart_clicked()
 {
