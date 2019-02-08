@@ -135,6 +135,7 @@ bool OperatorConsole::Init1(OperatorConsoleDialog *dialog)
     {
         m_setup.width = 640;
         m_setup.height = 480;
+        cout << "OperatorConsole::Init1: " << endl;
         cout << "INI settings for Operator Console not found." << endl;
         cout << "Please click the 'Setup' button and fill in the" << endl;
         cout << "appropriate fields before proceeding." << endl;
