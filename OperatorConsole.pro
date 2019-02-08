@@ -9,6 +9,26 @@ QT       += core gui widgets multimedia multimediawidgets
 TARGET = OperatorConsole
 TEMPLATE = app
 
+# The following are some variable specific to the Operator Console's build
+
+IT_VERSION = 5.1
+MCR_VERSION = 93
+
+win32 {
+IT_INSTALL_ROOT = C:/Program Files/Imatest/v$$IT_VERSION/IT
+MCR_INSTALL_ROOT = C:/Program Files/MATLAB/MATLAB Runtime/v$$MCR_VERSION
+ARCH = win64
+ARCH_PATH = $$ARCH/microsoft
+}
+unix {
+IMATEST_INSTALL_ROOT = /usr/local/Imatest
+# This retrieves the most recent version
+FOLDERS = system(ls $$IMATEST_INSTALL_ROOT | grep v$$IT_VERSION | sort --version-sort)
+IT_INSTALL_ROOT = $$IMATEST_INSTALL_ROOT/$$last(FOLDERS)/IT
+MCR_INSTALL_ROOT = /usr/local/MATLAB/MATLAB_Runtime/v$$MCR_VERSION
+ARCH = glnxa64
+ARCH_PATH = $$ARCH
+}
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -125,8 +145,8 @@ FORMS += \
     passworddialog.ui \
     passfaildialog.ui
 
-INCLUDEPATH += 'C:/Program Files/Imatest/v5.1/IT/libs/library/cpp'
-INCLUDEPATH += 'C:/Program Files/MATLAB/MATLAB Runtime/v93/extern/include'
+INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/library/cpp'
+INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/include'
 
 DEFINES += __cplusplus
 
@@ -135,28 +155,57 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-INCLUDEPATH += 'C:/Program Files/Imatest/v5.1/IT/libs/acquisition/cpp'
-DEPENDPATH += 'C:/Program Files/Imatest/v5.1/IT/libs/acquisition/cpp'
+INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
+DEPENDPATH += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
 
 DEFINES += IMATEST_5_1
 
-INCLUDEPATH += 'C:/Program Files/MATLAB/MATLAB Runtime/v93/extern/lib/win64/microsoft'
-DEPENDPATH  += 'C:/Program Files/MATLAB/MATLAB Runtime/v93/extern/lib/win64/microsoft'
+INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH'
+DEPENDPATH  += '$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH'
 
 DISTFILES += \
     Data/imatest_logo.png
 
-win32: LIBS += -L'C:/Program Files/Imatest/v5.1/IT/libs/library/cpp/' -limatest_library
+win32:LIBS += -L'$$IT_INSTALL_ROOT/libs/library/cpp/' -limatest_library
+unix:LIBS += -L'$$IT_INSTALL_ROOT/libs/library/cpp/' -lImatest
 
-INCLUDEPATH += 'C:/Program Files/Imatest/v5.1/IT/libs/library/cpp'
-DEPENDPATH  += 'C:/Program Files/Imatest/v5.1/IT/libs/library/cpp'
+INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/library/cpp'
+DEPENDPATH  += '$$IT_INSTALL_ROOT/libs/library/cpp'
 
-win32: LIBS += -L'C:/Program Files/Imatest/v5.1/IT/libs/acquisition/cpp/' -limatest_acquisition
+win32:LIBS += -L'$$IT_INSTALL_ROOT/libs/acquisition/cpp/' -limatest_acquisition
+unix:LIBS += -L'$$IT_INSTALL_ROOT/libs/acquisition/cpp/' -lImatest_acquisition
 
-INCLUDEPATH += 'C:/Program Files/Imatest/v5.1/IT/libs/acquisition/cpp'
-DEPENDPATH  += 'C:/Program Files/Imatest/v5.1/IT/libs/acquisition/cpp'
+INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
+DEPENDPATH  += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
 
-win32: LIBS += -L'C:/Program Files/MATLAB/MATLAB Runtime/v93/extern/lib/win64/microsoft/' -lmclmcrrt
+LIBS += -L'$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH/' -lmclmcrrt
 
-INCLUDEPATH += 'C:/Program Files/MATLAB/MATLAB Runtime/v93/extern/lib/win64/microsoft'
-DEPENDPATH  += 'C:/Program Files/MATLAB/MATLAB Runtime/v93/extern/lib/win64/microsoft'
+INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH'
+DEPENDPATH  += '$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH'
+
+
+# Copy the dependent libraries into the output directory
+LIB_EXT =
+win32: LIB_EXT = '.DLL'
+unix: LIB_EXT = '.so'
+macx: LIB_EXT = '.dylib'
+
+CONFIG(debug, debug|release){
+OUT_FOLDER = 'debug'
+} else {
+OUT_FOLDER = 'release'
+}
+
+win32{
+DEPENDENT_LIBS = '$$IT_INSTALL_ROOT/bin/ShaferFilechck$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/library/cpp/imatest_library$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/acquisition/cpp/imatest_acquisition$$LIB_EXT'
+}
+unix{
+DEPENDENT_LIBS = '$$IT_INSTALL_ROOT/bin/ShaferFilechck$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/library/cpp/libImatest$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/acquisition/cpp/libImatest_acquisition$$LIB_EXT'
+}
+
+for (file, DEPENDENT_LIBS) {
+QMAKE_POST_LINK += $${QMAKE_COPY} $$system_quote($$system_path($${file})) $$system_quote($$system_path($$OUT_PWD/$$OUT_FOLDER)) $$escape_expand(\\n\\t)
+}
+
+# Copy the /Data folder into the output directory
+QMAKE_POST_LINK += $${QMAKE_COPY_DIR} $$system_quote($$system_path($$PWD/Data)) $$system_quote($$system_path($$OUT_PWD/$$OUT_FOLDER/Data)) $$escape_expand(\\n\\t)
