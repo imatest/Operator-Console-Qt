@@ -206,7 +206,7 @@ bool OperatorConsole::Init1(OperatorConsoleDialog *dialog)
         cerr << "Unable to initialize the Imatest library." << endl;
     }
 
-#if 0   // disable for now
+
 
 	if (!ReadINISettings()) // if we're unable to read the ini file, we must generate image dimensions from user input before continuing
 	{
@@ -219,9 +219,9 @@ bool OperatorConsole::Init1(OperatorConsoleDialog *dialog)
 	}
 	if (!ReadPassFail())
 	{
-
+        cout << "Unable to read the pass/fail file." << endl;
 	}
-#endif
+
 
     //
     // Initialize the Config object.  These values are used in the calls to blemish_shell() and sfrplus_shell().
