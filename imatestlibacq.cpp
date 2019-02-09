@@ -153,3 +153,20 @@ bool ImatestLibAcq::CaptureFrame()
 
    return true;
 }
+
+std::vector<AcquisitionDeviceInfo> ImatestLibAcq::GetAttachedDevices()
+{
+    std::vector<AcquisitionDeviceInfo> devices;
+    mwArray deviceArray;
+
+    // Get the details of the attached devices that can be dynamically detected
+    list_devices(1, deviceArray);
+    assert(deviceArray.ClassID() == mxCELL_CLASS);
+
+    size_t numDevices = deviceArray.NumberOfElements();
+    for (int idx = 1; idx <= numDevices; idx++) {
+        devices.push_back(AcquisitionDeviceInfo(deviceArray.Get(1, idx)));
+    }
+
+    return devices;
+}
