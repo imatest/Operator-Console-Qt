@@ -86,7 +86,7 @@
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
            <x>30</x>
@@ -446,6 +446,9 @@
           </item>
          </layout>
         </widget>
+        <zorder>image</zorder>
+        <zorder>labelFps</zorder>
+        <zorder>layoutWidget</zorder>
        </widget>
       </item>
       <item>
@@ -619,14 +622,6 @@
    </item>
   </layout>
   <zorder>moveableWidget</zorder>
-  <zorder>qsoUR</zorder>
-  <zorder>qsoUL</zorder>
-  <zorder>qsoLR</zorder>
-  <zorder>qsoCenter</zorder>
-  <zorder>qsoLL</zorder>
-  <zorder>verticalLayoutWidget</zorder>
-  <zorder>verticalLayoutWidget_2</zorder>
-  <zorder>verticalLayoutWidget_3</zorder>
   <zorder>verticalWidget</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
