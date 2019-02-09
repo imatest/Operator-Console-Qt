@@ -83,7 +83,8 @@ SOURCES += \
     operatorconsole.cpp \
     cameraacquisition.cpp \
     passworddialog.cpp \
-    passfaildialog.cpp
+    passfaildialog.cpp \
+    acquisitiondeviceinfo.cpp
 
 HEADERS += \
         operatorconsoledialog.h \
@@ -135,7 +136,8 @@ HEADERS += \
     waitdialog.h \
     cameraacquisition.h \
     passworddialog.h \
-    passfaildialog.h
+    passfaildialog.h \
+    acquisitiondeviceinfo.h
 
 FORMS += \
         operatorconsoledialog.ui \
