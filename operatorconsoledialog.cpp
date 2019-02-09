@@ -16,7 +16,7 @@ OperatorConsoleDialog::OperatorConsoleDialog(QWidget *parent) :
     console->Init1(this);    // init the operator console object
     setupSignals();
     qsoInit();
-    qsoShow(true);
+    qsoShow(false);
 }
 
 OperatorConsoleDialog::~OperatorConsoleDialog()
