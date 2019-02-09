@@ -154,9 +154,9 @@ bool ImatestLibAcq::CaptureFrame()
    return true;
 }
 
-std::vector<AcquisitionDeviceInfo> ImatestLibAcq::GetAttachedDevices()
+QVector<AcquisitionDeviceInfo> ImatestLibAcq::GetAttachedDevices()
 {
-    std::vector<AcquisitionDeviceInfo> devices;
+    QVector<AcquisitionDeviceInfo> devices;
     mwArray deviceArray;
 
     // Get the details of the attached devices that can be dynamically detected
@@ -164,8 +164,8 @@ std::vector<AcquisitionDeviceInfo> ImatestLibAcq::GetAttachedDevices()
     assert(deviceArray.ClassID() == mxCELL_CLASS);
 
     size_t numDevices = deviceArray.NumberOfElements();
-    for (int idx = 1; idx <= numDevices; idx++) {
-        devices.push_back(AcquisitionDeviceInfo(deviceArray.Get(1, idx)));
+    for (mwIndex idx = 1; idx <= numDevices; idx++) {
+        devices.append(AcquisitionDeviceInfo(deviceArray.Get(1, idx)));
     }
 
     return devices;
