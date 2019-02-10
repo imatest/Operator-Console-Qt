@@ -9,6 +9,7 @@ SetupDialog::SetupDialog(QWidget *parent) :
     ui(new Ui::SetupDialog)
 {
     ui->setupUi(this);
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
 }
 
 SetupDialog::SetupDialog(const setup_settings& input_settings, QWidget *parent) :
@@ -32,6 +33,15 @@ SetupDialog::~SetupDialog()
     delete ui;
 }
 
+void SetupDialog::addDynamicDevicesToList()
+{
+    for (auto iDevice = m_settings.device_infos.begin(); iDevice != m_settings.device_infos.end(); ++iDevice){
+        if (iDevice->isValid() && !iDevice->m_deviceName.isEmpty()){
+            ui->deviceList->addItem(iDevice->m_deviceName);
+        }
+    }
+}
+
 void SetupDialog::Init()
 {
     int index;
@@ -50,6 +60,9 @@ void SetupDialog::Init()
     {
         ui->deviceList->addItem(m_settings.device_list[i]);
     }
+
+    // Add the dynamically detected devices to the device list
+    addDynamicDevicesToList();
 
     // fill the list of Bayer patterns
     for (int i = 0; i < m_settings.bayer_list.size(); ++i)
@@ -127,8 +140,19 @@ void SetupDialog::Init()
             ShowNormalElements();
             break;
         default:
-            index = EDevIndex::eAptina; // Default: Aptina DevWare
-            ShowNormalElements();
+            if (m_settings.sourceID >= 128 && m_settings.device_infos.size() > 0) {
+                index = EDevIndex::eAptina;
+                int sourceID = m_settings.sourceID;
+                auto selection = std::find_if(m_settings.device_infos.begin(), m_settings.device_infos.end(), [sourceID](AcquisitionDeviceInfo& x) {return x.m_deviceID == sourceID; });
+                if (selection != m_settings.device_infos.end()) {
+
+                    ShowDynamicDeviceElements(*selection);
+
+                }
+            } else {
+                index = EDevIndex::eAptina; // Default: Aptina DevWare
+                ShowNormalElements();
+            }
         }
 
         ui->deviceList->setCurrentRow(index,QItemSelectionModel::Select);
@@ -211,6 +235,43 @@ void SetupDialog::ShowNormalElements(void)
     ui->height->show();
     ui->labelWidth->show();
     ui->labelHeight->show();
+
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
+}
+
+void SetupDialog::ShowDynamicDeviceElements(const AcquisitionDeviceInfo &device){
+
+    UpdateVideoFormatDropdown(device);
+
+    ui->stackedWidget->setCurrentWidget(ui->dynamicDevicePage);
+
+}
+
+void SetupDialog::UpdateVideoFormatDropdown(const AcquisitionDeviceInfo &device){
+
+   QComboBox* pCombobox = ui->videoFormatComboBox;
+
+   // Clear the combobox
+   pCombobox->clear();
+
+   // Populate with video formats for 'device'
+   for (auto iFormat = device.m_supportedFormats.begin(); iFormat != device.m_supportedFormats.end(); ++iFormat)
+       pCombobox->addItem(*iFormat);
+
+   // Determine the appropriate selection for initial display
+   QString formatString;
+   if (m_settings.video_format.isEmpty()) {
+       // Set the selection to the default video format
+       formatString = device.m_defaultFormat;
+   }
+   else {
+       formatString = m_settings.video_format;
+   }
+
+   int index = pCombobox->findText(formatString);
+   index = index >= 0? index : 0;
+   pCombobox->setCurrentIndex(index);
+
 }
 
 //
@@ -239,6 +300,8 @@ void SetupDialog::ShowEpiphanElements(void)
     ui->height->show();
     ui->labelWidth->show();
     ui->labelHeight->show();
+
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
 }
 
 //
@@ -267,6 +330,8 @@ void SetupDialog::ShowDirectShowElements(void)
     ui->height->hide();
     ui->labelWidth->hide();
     ui->labelHeight->hide();
+
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
 }
 
 //
@@ -295,6 +360,8 @@ void SetupDialog::ShowOmnivisionElements(void)
     ui->height->show();
     ui->labelWidth->show();
     ui->labelHeight->show();
+
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
 }
 
 //
@@ -323,6 +390,8 @@ void SetupDialog::ShowAllElements(void)
     ui->height->show();
     ui->labelWidth->show();
     ui->labelHeight->show();
+
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
 }
 
 void SetupDialog::on_okay()
