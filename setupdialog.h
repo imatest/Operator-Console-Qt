@@ -53,6 +53,8 @@ private slots:
 
     void on_browseProgram_clicked();
 
+    void on_videoFormatComboBox_currentIndexChanged(const QString &arg1);
+
 private:
     Ui::SetupDialog *ui;
     void addDynamicDevicesToList();

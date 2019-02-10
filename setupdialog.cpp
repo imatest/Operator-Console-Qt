@@ -146,7 +146,15 @@ void SetupDialog::Init()
                 auto selection = std::find_if(m_settings.device_infos.begin(), m_settings.device_infos.end(), [sourceID](AcquisitionDeviceInfo& x) {return x.m_deviceID == sourceID; });
                 if (selection != m_settings.device_infos.end()) {
 
+                    auto pList = ui->deviceList;
+                    auto results = pList->findItems(selection->m_deviceName, Qt::MatchFixedString);
+                    if (results.size() > 0) {
+                        // Select the first item with a matching name
+                        index = pList->row(*results.begin());
+                    }
+
                     ShowDynamicDeviceElements(*selection);
+
 
                 }
             } else {
@@ -462,9 +470,17 @@ void SetupDialog::on_deviceList_itemSelectionChanged()
     }
     else
     {
-        m_settings.sourceID = SOURCE_Aptina;
-        fprintf(stderr,"Error: Unknown device selection. The program will revert to Aptina DevWare");
-        ShowNormalElements();
+        auto selection = std::find_if(m_settings.device_infos.begin(), m_settings.device_infos.end(), [str](AcquisitionDeviceInfo x) { return str.compare(x.m_deviceName) == 0; });
+        if (selection != m_settings.device_infos.end()) {
+            m_settings.sourceID = selection->m_deviceID;
+            ShowDynamicDeviceElements(*selection);
+        }
+        else {
+            m_settings.sourceID = SOURCE_Aptina;
+            fprintf(stderr, "Error: Unknown device selection. The program will revert to Aptina DevWare");
+            ShowNormalElements();
+        }
+
     }
 }
 
@@ -595,4 +611,9 @@ void SetupDialog::getCamera()
 
     m_settings.qcam_deviceID = cameras[index].deviceName();
     m_settings.qcam_description = cameras[index].description();
+}
+
+void SetupDialog::on_videoFormatComboBox_currentIndexChanged(const QString &selectedFormat)
+{
+    m_settings.video_format = selectedFormat;
 }
