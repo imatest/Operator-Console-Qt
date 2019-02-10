@@ -18,7 +18,7 @@
 ****************************************************************************/
 
 #include "acquisitiondeviceinfo.h"
-
+#include <algorithm>
 
 
 AcquisitionDeviceInfo::AcquisitionDeviceInfo()

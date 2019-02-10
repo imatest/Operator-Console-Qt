@@ -20,8 +20,6 @@
 #pragma once
 
 #include "imatest_acquisition.h"
-
-#include <algorithm>
 #include <string>
 #include <vector>
 #include <QString>
