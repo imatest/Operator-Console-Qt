@@ -879,14 +879,8 @@ void OperatorConsole::OnSetup()
     int oldSourceID = m_setup.sourceID;
     QString oldQCamID = m_setup.qcam_deviceID;
 
-
-    //	m_setup.directshow_device_names.clear();
-
-
-    //	std::vector<std::string> directShowDeviceNames = m_directshow_cam.getCameraNames();
-    //	for (auto iName = directShowDeviceNames.begin(); iName != directShowDeviceNames.end(); ++iName)
-    //        m_setup.directshow_device_names.push_back(QString(iName->c_str()));
-
+    // Update the list of dynamically detected devices.
+    m_setup.device_infos = m_imatest_cam.GetAttachedDevices();
 
     SetupDialog dialog(m_setup, m_dlg);
 
@@ -926,7 +920,7 @@ void OperatorConsole::OnSetup()
         m_arbitraryChart.m_programPath = &m_config.m_programPath.toStdString();
         m_arbitraryChart.m_chartDefFilePathName = &m_config.m_chartDefFilePathName.toStdString();
 #endif
-//        WriteINISettings(); // store new settings
+        WriteINISettings(); // store new settings
         if (oldWidth != m_setup.width || oldHeight != m_setup.height
             || ((oldSourceID != SOURCE_OpConsoleDirectShow) && (m_setup.sourceID == SOURCE_OpConsoleDirectShow))
             || ((oldSourceID == SOURCE_OpConsoleDirectShow) && (m_setup.sourceID != SOURCE_OpConsoleDirectShow))
@@ -974,7 +968,8 @@ void OperatorConsole::OnSetup()
 
 bool OperatorConsole::ReadINISettings(void)
 {
-	bool result = false;
+    // TODO: create a IniSettings class heirarchy that abstracts away the mwArray generation
+    bool result = false;
 	mwArray vararginParam = mwArray(1,3,mxCELL_CLASS);
 	mwArray readKeys = mwArray(1,5,mxCELL_CLASS);
 	mwArray inifilename(INI_FILENAME);
@@ -982,7 +977,8 @@ bool OperatorConsole::ReadINISettings(void)
 	mwArray section_ovt("ovt"),section_imatest("imatest"),section_op("op_console"),section;
 	mwArray subsection_blank(""), subsection_current("current"),subsection;
 	mwArray key_acquire("acquire"),key_width("width"),key_height("height"),key_bitdepth("bitdepth"),key_bayer("bayer_pattern"),key_omniregister("register_files"),key_epiphan_deviceid("deviceID");
-	mwArray value_int("i"), value_string(""), value_double("d");
+    mwArray key_vid_format("vid_format");
+    mwArray value_int("i"), value_string(""), value_double("d");
 	mwArray default_0(0), default_emptystring("");
 	mwSize getIndex = 1;
 	// NOTE: the mwArray::Get function has input syntax Get(number of indexes, i1, i2,...in)
@@ -1027,7 +1023,7 @@ bool OperatorConsole::ReadINISettings(void)
 		subsection = subsection_blank;
 	}
 
-	readKeys = mwArray(6,5,mxCELL_CLASS);
+    readKeys = mwArray(7,5,mxCELL_CLASS);
 	// to read the Epiphan 'device_ID' key 
 	getIndex = 1;
 	readKeys.Get(2,1,getIndex++).Set(section);
@@ -1088,17 +1084,28 @@ bool OperatorConsole::ReadINISettings(void)
 	readKeys.Get(2,6,getIndex++).Set(value_string);
 	readKeys.Get(2,6,getIndex++).Set(default_emptystring);
 
+    // first read the 'acquire' key from [imatest]
+    getIndex = 1;
+    readKeys.Get(2, 7,getIndex++).Set(section_imatest);
+#ifdef INI_INCLUDE_SUBSECTION
+    readKeys.Get(2, 7,getIndex++).Set(subsection_blank);
+#endif
+    readKeys.Get(2, 7, getIndex++).Set(key_vid_format);
+    readKeys.Get(2, 7, getIndex++).Set(value_string);
+    readKeys.Get(2, 7, getIndex++).Set(default_emptystring);
+
 	vararginParam.Get(1,1).Set(inifilename);
 	vararginParam.Get(1,2).Set(mode);
 	vararginParam.Get(1,3).Set(readKeys);
 
-	readSett = mwArray(1,6,mxCELL_CLASS);
+    readSett = mwArray(1,7,mxCELL_CLASS);
 	int temp_epiphan_deviceid = m_setup.epiphan_deviceID;
 	int temp_width = m_setup.width;
 	int temp_height = m_setup.height;
 	int temp_bits_per_pixel = m_setup.bits_per_pixel;
 	int temp_bayer = m_setup.bayer;
     std::string temp_reg_file = m_setup.omnivision_reg_file.toStdString();
+    std::string temp_vid_format = m_setup.video_format.toStdString();
 	try
 	{
         inifile(1, readSett,vararginParam);
@@ -1109,6 +1116,7 @@ bool OperatorConsole::ReadINISettings(void)
         temp_bits_per_pixel =	static_cast<int>(settings.Get(1,4).Get(1,1));
         temp_bayer =			static_cast<int>(settings.Get(1,5).Get(1,1));
         temp_reg_file =			settings.Get(1,6).ToString();
+        temp_vid_format =       settings.Get(1,7).ToString();
 
 		// copy the values into the corresponding fields in m_setup
 		m_setup.epiphan_deviceID =		temp_epiphan_deviceid;
@@ -1117,6 +1125,7 @@ bool OperatorConsole::ReadINISettings(void)
 		m_setup.bits_per_pixel =		temp_bits_per_pixel;
 		m_setup.bayer =					temp_bayer;
         m_setup.omnivision_reg_file =	temp_reg_file.c_str();
+        m_setup.video_format = QString(temp_vid_format.c_str());
 
 		// change the image source if needed
 		if (m_setup.sourceID != SOURCE_OpConsoleDirectShow)
@@ -1159,15 +1168,17 @@ bool OperatorConsole::ReadINISettings(void)
 void OperatorConsole::WriteINISettings(void)
 {
 	mwArray vararginParam = mwArray(1,4,mxCELL_CLASS);
-	mwArray writeKeys = mwArray(7,4,mxCELL_CLASS);
+    mwArray writeKeys = mwArray(8,4,mxCELL_CLASS);
     mwArray inifilename(m_config.m_iniFilePathName.c_str());
 	mwArray mode("write"),style("plain");
 	mwArray section_ovt("ovt"),section_imatest("imatest"),section_op("op_console"),section("");
 	mwArray subsection_blank(""), subsection_current("current"),subsection("");
 	mwArray key_acquire("acquire"),key_width("width"),key_height("height"),key_bitdepth("bitdepth");
 	mwArray key_bayer("bayer_pattern"),key_omniregister("register_files"),key_epiphan_deviceid("deviceID");
+    mwArray key_vid_format("vid_format");
 	mwArray val_acquire(m_setup.sourceID), val_width(m_setup.width), val_height(m_setup.height), val_bitdepth(m_setup.bits_per_pixel);
     mwArray val_bayer(m_setup.bayer), val_omniregister(m_setup.omnivision_reg_file.toStdString().c_str()), val_epiphan_deviceid(m_setup.epiphan_deviceID);
+    mwArray val_vid_format(m_setup.video_format.toStdString().c_str());
 	mwSize getIndex = 1;
 	// NOTE: the mwArray::Get function has input syntax Get(number of indexes, i1, i2,...in)
 	// first read the 'acquire' key from [imatest]
@@ -1247,6 +1258,15 @@ void OperatorConsole::WriteINISettings(void)
 #endif
 	writeKeys.Get(2,7,getIndex++).Set(key_omniregister);
 	writeKeys.Get(2,7,getIndex++).Set(val_omniregister);
+
+    // to write the 'register_files'
+    getIndex = 1;
+    writeKeys.Get(2,8,getIndex++).Set(section_imatest);
+#ifdef INI_INCLUDE_SUBSECTION
+    writeKeys.Get(2,8,getIndex++).Set(subsection);
+#endif
+    writeKeys.Get(2,8,getIndex++).Set(key_vid_format);
+    writeKeys.Get(2,8,getIndex++).Set(val_vid_format);
 
     vararginParam.Get(2,1,1).Set(inifilename);
 	vararginParam.Get(2,1,2).Set(mode);

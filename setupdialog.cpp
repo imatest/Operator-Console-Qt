@@ -4,6 +4,7 @@
 #include "setupdialog.h"
 #include "ui_setupdialog.h"
 
+// TODO: move the individual device-specific controls into their own, individual page.
 SetupDialog::SetupDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SetupDialog)
@@ -259,6 +260,9 @@ void SetupDialog::UpdateVideoFormatDropdown(const AcquisitionDeviceInfo &device)
 
    QComboBox* pCombobox = ui->videoFormatComboBox;
 
+   // Cache the current value of m_settings.video_format repopulating the combobox will trigger the corresponding slot
+   QString oldVideoFormat = m_settings.video_format;
+
    // Clear the combobox
    pCombobox->clear();
 
@@ -266,6 +270,8 @@ void SetupDialog::UpdateVideoFormatDropdown(const AcquisitionDeviceInfo &device)
    for (auto iFormat = device.m_supportedFormats.begin(); iFormat != device.m_supportedFormats.end(); ++iFormat)
        pCombobox->addItem(*iFormat);
 
+   // Restore the previous value
+   m_settings.video_format = oldVideoFormat;
    // Determine the appropriate selection for initial display
    QString formatString;
    if (m_settings.video_format.isEmpty()) {
