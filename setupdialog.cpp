@@ -286,6 +286,7 @@ void SetupDialog::UpdateVideoFormatDropdown(const AcquisitionDeviceInfo &device)
    index = index >= 0? index : 0;
    pCombobox->setCurrentIndex(index);
 
+   m_settings.video_format = pCombobox->itemText(index);
 }
 
 //
