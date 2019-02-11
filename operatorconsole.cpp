@@ -892,6 +892,8 @@ void OperatorConsole::OnSetup()
         m_imatest_cam.m_device_ID = m_setup.epiphan_deviceID;
         m_imatest_cam.m_source_ID = m_setup.sourceID;
         m_imatest_cam.m_ini_file  = m_setup.ini_file.toStdString();
+        // TODO: Should we check that the video format is valid for the selected device?
+        m_imatest_cam.m_video_format = m_setup.video_format.toStdString();
 
         // transfer the configuration details to the other classes
         m_config.m_iniFilePathName = m_setup.ini_file.toStdString();
