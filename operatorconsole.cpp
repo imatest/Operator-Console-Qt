@@ -894,6 +894,7 @@ void OperatorConsole::OnSetup()
         m_imatest_cam.m_ini_file  = m_setup.ini_file.toStdString();
         // TODO: Should we check that the video format is valid for the selected device?
         m_imatest_cam.m_video_format = m_setup.video_format.toStdString();
+        m_imatest_cam.m_device_name = m_setup.device_name.toStdString();
 
         // transfer the configuration details to the other classes
         m_config.m_iniFilePathName = m_setup.ini_file.toStdString();

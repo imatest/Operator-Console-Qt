@@ -481,6 +481,7 @@ void SetupDialog::on_deviceList_itemSelectionChanged()
         if (selection != m_settings.device_infos.end()) {
             m_settings.sourceID = selection->m_deviceID;
             ShowDynamicDeviceElements(*selection);
+            m_settings.device_name = str;
         }
         else {
             m_settings.sourceID = SOURCE_Aptina;

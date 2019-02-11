@@ -64,7 +64,8 @@ struct setup_settings
     QString             qcam_description;       //!< Human-readable decription of the QCamera
 
     QVector<AcquisitionDeviceInfo> device_infos;//!< The list of info describing dynamically detected devices from the Aquisition library
-    QString              video_format;           //!< The video format for dynamically detected devices
+    QString              video_format;          //!< The video format for the selected dynamically detected device
+    QString              device_name;           //!< The name for the selected dynamically detected device
     ///
 	/// default constructor
 	///

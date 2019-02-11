@@ -19,10 +19,12 @@
 
 #ifndef IMATEST_LIB_ACQ_H
 #define IMATEST_LIB_ACQ_H
-
 #include <QVector>
 #pragma once
+#pragma warning(push)
+#pragma warning(disable: 4100)
 #include "imageacquisition.h"
+#pragma warning(pop)
 #include "acquisitiondeviceinfo.h"
 
 ///
@@ -43,6 +45,7 @@ public:
     int         m_device_ID;    //!< [Used Epiphan only]: indicates from which of the two sources to capture
     std::string m_ini_file;     //!< The fully-qualified name (including full path) of an Imatest INI file
     std::string m_video_format;
+    std::string m_device_name;
     QVector<AcquisitionDeviceInfo> GetAttachedDevices();
 
 protected:
