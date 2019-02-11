@@ -11,6 +11,8 @@ OperatorConsoleDialog::OperatorConsoleDialog(QWidget *parent, QFile *out, QFile 
     ui(new Ui::OperatorConsoleDialog)
 {
     ui->setupUi(this);
+    setupTextDisplays();
+
     console = new OperatorConsole;
     console->Init1(this);    // init the operator console object
     setupSignals();
@@ -45,6 +47,13 @@ void OperatorConsoleDialog::on_ready_read()
     QTextStream stream(m_out);
     QString str = stream.readAll();
     log_message(str, false);
+}
+
+void OperatorConsoleDialog::setupTextDisplays()
+{
+    ui->reasonText->setReadOnly(true);
+    ui->summaryText->setReadOnly(true);
+    ui->logText->setReadOnly(true);
 }
 
 void OperatorConsoleDialog::on_btnStart_clicked()

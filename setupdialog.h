@@ -34,6 +34,8 @@ private:
     void ShowEpiphanElements(void);		//!< This function shows dialog elements that are meant only for Epiphan and hides those meant for Omnivision
     void ShowAllElements(void);			//!< This function shows dialog elements that are meant only for Omnivision or Epiphan
     void ShowDirectShowElements(void);
+    void ShowDynamicDeviceElements(const AcquisitionDeviceInfo& device);
+    void UpdateVideoFormatDropdown(const AcquisitionDeviceInfo & device);
 
 protected:
     setup_settings m_settings;	//!< this contains settings for the setup dialog including the strings to fill the various CcomboBoxes and CListBoxes
@@ -51,8 +53,11 @@ private slots:
 
     void on_browseProgram_clicked();
 
+    void on_videoFormatComboBox_currentIndexChanged(const QString &arg1);
+
 private:
     Ui::SetupDialog *ui;
+    void addDynamicDevicesToList();
 };
 
 #endif // SETUPDIALOG_H
