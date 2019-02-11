@@ -18,6 +18,7 @@
 ****************************************************************************/
 
 #include "acquisitiondeviceinfo.h"
+#include "imatestsourceids.h"
 #include <algorithm>
 
 
@@ -65,7 +66,7 @@ int AcquisitionDeviceInfo::extractDeviceID(mwArray structObj)
 		assert(deviceIDField.ClassID() == mxINT16_CLASS);
         if (deviceIDField.NumberOfElements() > 0) {
 			deviceID = deviceIDField(1);
-			assert(deviceID >= 128);
+            assert(deviceID >= SOURCE_ImageAcq_first);
 		}
 	}
 

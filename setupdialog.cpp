@@ -23,6 +23,7 @@ SetupDialog::SetupDialog(const setup_settings& input_settings, QWidget *parent) 
     ui->setupUi(this);
     ui->width->setValidator(&m_positive);
     ui->height->setValidator(&m_positive);
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &SetupDialog::on_okay);
 
@@ -141,7 +142,7 @@ void SetupDialog::Init()
             ShowNormalElements();
             break;
         default:
-            if (m_settings.sourceID >= 128 && m_settings.device_infos.size() > 0) {
+            if (m_settings.sourceID >= SOURCE_ImageAcq_first && m_settings.device_infos.size() > 0) {
                 index = EDevIndex::eAptina;
                 int sourceID = m_settings.sourceID;
                 auto selection = std::find_if(m_settings.device_infos.begin(), m_settings.device_infos.end(), [sourceID](AcquisitionDeviceInfo& x) {return x.m_deviceID == sourceID; });
