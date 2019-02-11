@@ -4,11 +4,13 @@
 #include "setupdialog.h"
 #include "ui_setupdialog.h"
 
+// TODO: move the individual device-specific controls into their own, individual page.
 SetupDialog::SetupDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SetupDialog)
 {
     ui->setupUi(this);
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
 }
 
 SetupDialog::SetupDialog(const setup_settings& input_settings, QWidget *parent) :
@@ -21,6 +23,7 @@ SetupDialog::SetupDialog(const setup_settings& input_settings, QWidget *parent) 
     ui->setupUi(this);
     ui->width->setValidator(&m_positive);
     ui->height->setValidator(&m_positive);
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &SetupDialog::on_okay);
 
@@ -30,6 +33,15 @@ SetupDialog::SetupDialog(const setup_settings& input_settings, QWidget *parent) 
 SetupDialog::~SetupDialog()
 {
     delete ui;
+}
+
+void SetupDialog::addDynamicDevicesToList()
+{
+    for (auto iDevice = m_settings.device_infos.begin(); iDevice != m_settings.device_infos.end(); ++iDevice){
+        if (iDevice->isValid() && !iDevice->m_deviceName.isEmpty()){
+            ui->deviceList->addItem(iDevice->m_deviceName);
+        }
+    }
 }
 
 void SetupDialog::Init()
@@ -50,6 +62,9 @@ void SetupDialog::Init()
     {
         ui->deviceList->addItem(m_settings.device_list[i]);
     }
+
+    // Add the dynamically detected devices to the device list
+    addDynamicDevicesToList();
 
     // fill the list of Bayer patterns
     for (int i = 0; i < m_settings.bayer_list.size(); ++i)
@@ -114,8 +129,27 @@ void SetupDialog::Init()
             ShowNormalElements();
             break;
         default:
-            index = EDevIndex::eAptina; // Default: Aptina DevWare
-            ShowNormalElements();
+            if (m_settings.sourceID >= SOURCE_ImageAcq_first && m_settings.device_infos.size() > 0) {
+                index = EDevIndex::eAptina;
+                int sourceID = m_settings.sourceID;
+                auto selection = std::find_if(m_settings.device_infos.begin(), m_settings.device_infos.end(), [sourceID](AcquisitionDeviceInfo& x) {return x.m_deviceID == sourceID; });
+                if (selection != m_settings.device_infos.end()) {
+
+                    auto pList = ui->deviceList;
+                    auto results = pList->findItems(selection->m_deviceName, Qt::MatchFixedString);
+                    if (results.size() > 0) {
+                        // Select the first item with a matching name
+                        index = pList->row(*results.begin());
+                    }
+
+                    ShowDynamicDeviceElements(*selection);
+
+
+                }
+            } else {
+                index = EDevIndex::eAptina; // Default: Aptina DevWare
+                ShowNormalElements();
+            }
         }
 
         ui->deviceList->setCurrentRow(index,QItemSelectionModel::Select);
@@ -198,6 +232,49 @@ void SetupDialog::ShowNormalElements(void)
     ui->height->show();
     ui->labelWidth->show();
     ui->labelHeight->show();
+
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
+}
+
+void SetupDialog::ShowDynamicDeviceElements(const AcquisitionDeviceInfo &device){
+
+    UpdateVideoFormatDropdown(device);
+
+    ui->stackedWidget->setCurrentWidget(ui->dynamicDevicePage);
+
+}
+
+void SetupDialog::UpdateVideoFormatDropdown(const AcquisitionDeviceInfo &device){
+
+   QComboBox* pCombobox = ui->videoFormatComboBox;
+
+   // Cache the current value of m_settings.video_format repopulating the combobox will trigger the corresponding slot
+   QString oldVideoFormat = m_settings.video_format;
+
+   // Clear the combobox
+   pCombobox->clear();
+
+   // Populate with video formats for 'device'
+   for (auto iFormat = device.m_supportedFormats.begin(); iFormat != device.m_supportedFormats.end(); ++iFormat)
+       pCombobox->addItem(*iFormat);
+
+   // Restore the previous value
+   m_settings.video_format = oldVideoFormat;
+   // Determine the appropriate selection for initial display
+   QString formatString;
+   if (m_settings.video_format.isEmpty()) {
+       // Set the selection to the default video format
+       formatString = device.m_defaultFormat;
+   }
+   else {
+       formatString = m_settings.video_format;
+   }
+
+   int index = pCombobox->findText(formatString);
+   index = index >= 0? index : 0;
+   pCombobox->setCurrentIndex(index);
+
+   m_settings.video_format = pCombobox->itemText(index);
 }
 
 //
@@ -226,6 +303,8 @@ void SetupDialog::ShowEpiphanElements(void)
     ui->height->show();
     ui->labelWidth->show();
     ui->labelHeight->show();
+
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
 }
 
 //
@@ -254,6 +333,8 @@ void SetupDialog::ShowDirectShowElements(void)
     ui->height->hide();
     ui->labelWidth->hide();
     ui->labelHeight->hide();
+
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
 }
 
 //
@@ -282,6 +363,8 @@ void SetupDialog::ShowOmnivisionElements(void)
     ui->height->show();
     ui->labelWidth->show();
     ui->labelHeight->show();
+
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
 }
 
 //
@@ -310,6 +393,8 @@ void SetupDialog::ShowAllElements(void)
     ui->height->show();
     ui->labelWidth->show();
     ui->labelHeight->show();
+
+    ui->stackedWidget->setCurrentWidget(ui->defaultPage);
 }
 
 void SetupDialog::on_okay()
@@ -379,9 +464,18 @@ void SetupDialog::on_deviceList_itemSelectionChanged()
     }
     else
     {
-        m_settings.sourceID = SOURCE_Aptina;
-        fprintf(stderr,"Error: Unknown device selection. The program will revert to Aptina DevWare");
-        ShowNormalElements();
+        auto selection = std::find_if(m_settings.device_infos.begin(), m_settings.device_infos.end(), [str](AcquisitionDeviceInfo x) { return str.compare(x.m_deviceName) == 0; });
+        if (selection != m_settings.device_infos.end()) {
+            m_settings.sourceID = selection->m_deviceID;
+            ShowDynamicDeviceElements(*selection);
+            m_settings.device_name = str;
+        }
+        else {
+            m_settings.sourceID = SOURCE_Aptina;
+            fprintf(stderr, "Error: Unknown device selection. The program will revert to Aptina DevWare");
+            ShowNormalElements();
+        }
+
     }
 }
 
@@ -432,7 +526,15 @@ int SetupDialog::getDeviceID()
 
 void SetupDialog::on_browseRegister_clicked()
 {
+    //
+    // Get the Omnivision register file
+    //
+    QString filename = QFileDialog::getOpenFileName(this, "Select an Omnivision register file", m_settings.omnivision_reg_file);
 
+    if (!filename.isNull())
+    {
+        m_settings.omnivision_reg_file = filename;
+    }
 }
 
 void SetupDialog::on_browseIni_clicked()
@@ -500,4 +602,9 @@ void SetupDialog::getCamera()
     m_settings.qcam_deviceID = cameras[index].deviceName();
     m_settings.width  = m_settings.qcam_list[m_settings.qcam_deviceID].width();
     m_settings.height = m_settings.qcam_list[m_settings.qcam_deviceID].height();
+}
+
+void SetupDialog::on_videoFormatComboBox_currentIndexChanged(const QString &selectedFormat)
+{
+    m_settings.video_format = selectedFormat;
 }

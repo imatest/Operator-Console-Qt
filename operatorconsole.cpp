@@ -55,6 +55,9 @@
 #define LOG_FILENAME ".\\log.txt"	// contents of log window will be saved to this file when the program exits
 
 
+
+
+
 /// OperatorConsole construction
 
 OperatorConsole::OperatorConsole()
@@ -85,17 +88,13 @@ OperatorConsole::OperatorConsole()
 
 OperatorConsole::~OperatorConsole()
 {
-    LogMessage("Quitting");
     Quit();         // kill all the threads
-
     CloseLibs();    // close libs (do this after threads are killed, in case a thread is using a lib function)
 
     if (m_cameraImage != nullptr)
 	{
 		delete [] m_cameraImage;
 	}
-
-    SaveLog(LOG_FILENAME);
 }
 
 
@@ -105,10 +104,6 @@ bool OperatorConsole::Init1(OperatorConsoleDialog *dialog)
 {
     bool    success = true;
     m_dlg = dialog;
-
-    cout << "Hello from Init1!" << endl;
-    printf("Hello from printf\n");
-
 
 //	InitOutput();	// this sets up a pipe for handling stdout results from the DLLs
 
@@ -141,13 +136,14 @@ bool OperatorConsole::Init1(OperatorConsoleDialog *dialog)
         cout << "appropriate fields before proceeding." << endl;
     }
 
-    if (!PassFail::ReadFile(m_PFSettings))  // this currently always returns false (that's how it was in the original MFC version, too)
-    {
-
+    if (!PassFail::ReadFile(m_PFSettings))
+	{
+        cout << "Unable to read the pass/fail file." << endl;
 	}
 
+
     //
-    // Initialize the Config object.  These values are used in the calls to blemish_shell(), sfrplus_shell(), an arbitrary_charts_shell()
+    // Initialize the Config object.  These values are used in the calls to blemish_shell() and sfrplus_shell().
     // Right now they're all hard coded (they're defined in OperatorConsole.h)
     //
     m_config.Init(INI_FILENAME, "", PROGRAMPATH, RGB_EXTENSION, FILE_ROOT, SERIAL_NUMBER, PART_NUMBER, 3);
@@ -173,7 +169,7 @@ bool OperatorConsole::Init1(OperatorConsoleDialog *dialog)
         cout << "Application Initialization Failed" << endl;
     }
 
-    cout << "Init1 returning " << (success ? "true" : "false");
+
     return success;
 }
 
@@ -258,6 +254,8 @@ bool OperatorConsole::InitCamera()
 {
 	bool	success = false;
 
+
+//    m_image_source = file_source;    // for dev/debugging
 
 	if (m_image_source==imatest_source)
 	{
@@ -386,21 +384,18 @@ void OperatorConsole::CloseLibs()
 {
 	if (m_flags.imatestIT)
 	{
-        LogMessage("Closing Imatest library.");
-        imatest_libraryTerminate();
+		imatest_libraryTerminate();
 		m_flags.imatestIT = false;
 	}
 
 	if (m_flags.imatestAcq)
 	{
-        LogMessage("Closing Imatest Acquisition library.");
-        imatest_acquisitionTerminate();
+		imatest_acquisitionTerminate();
 		m_flags.imatestAcq = false;
 	}
 
 	if (m_flags.matlab)
 	{
-        LogMessage("Closing MATLAB libraries.");
 		mclTerminateApplication();	// terminate MATLAB runtime
 		m_flags.matlab = false;
 	}
@@ -434,6 +429,7 @@ bool OperatorConsole::AllocateImageBuf()
             delete [] m_cameraImage;
         }
 
+        // TODO: wrap in try block and catch exception if alloc fails
         m_cameraImage = new byte[m_camera->BytesPerFrame()];
         success = m_cameraImage != nullptr;
     }
@@ -497,17 +493,17 @@ void OperatorConsole::OnShowJSON()
 
 void OperatorConsole::Quit()
 {
-	///
-	/// This function gets called when the user wants to Quit the application (either by closing the window or
+    ///
+    /// This function gets called when the user wants to Quit the application (either by closing the window or
     /// pressing the Quit button).  Before we quit, we need to wait for the other threads to finish.
-	/// 
+    ///
     /// We tell the threads to finish by sending a Quit message to them.  However, if a test is in
     /// progress, that thread won't process the Quit message until the current test has finished.
     /// This can take a while, so we post a Log message and turn on the Wait cursor until the threads finish.
-	///
+    ///
     QCursor waitcursor(Qt::WaitCursor);
 
-	m_status = quitting;		// this tells us not to run another test
+    m_status = quitting;		// this tells us not to run another test
 
     if (m_flags.QCameraThread)
     {
@@ -531,18 +527,18 @@ void OperatorConsole::Quit()
     }
 
     if (m_flags.sfrplusThread)
-	{
+    {
         LogMessage("Waiting for SFRPlus thread to quit");
         m_sfrPlusControl.Quit();	// wait for the sfrplus thread to quit
-		m_flags.sfrplusThread = false;
-	}
+        m_flags.sfrplusThread = false;
+    }
 
-	if (m_flags.blemishThread)
-	{
+    if (m_flags.blemishThread)
+    {
         LogMessage("Waiting for Blemish thread to quit");
         m_blemishControl.Quit();	// wait for the blemish thread to quit
-		m_flags.blemishThread = false;
-	}
+        m_flags.blemishThread = false;
+    }
 
     if (m_flags.arbitraryChartThread)
     {
@@ -571,7 +567,7 @@ void OperatorConsole::OnRunTest()
     QString str;
     QTextStream text(&str);
 
-    text << GetTestName() << " started";
+    text << GetTestName() << " started\n";
     LogMessage(text);
 #endif
 
@@ -673,7 +669,7 @@ void OperatorConsole::UpdateResults(ImageTest *test)
 
 
 #if !defined NO_LOG
-    text << test->m_name << " took " << test->m_elapsedStr << " sec";
+    text << test->m_name << " took " << test->m_elapsedStr << " sec\n";
     LogMessage(text);
 #endif
 
@@ -739,7 +735,7 @@ bool OperatorConsole::CheckFiles(QString &msg)
         if (!QFile::exists(filename))
 		{
             msg.append(filename);
-            msg.append(" not found");
+            msg.append(" not found\r\n");
 			success = false;
 		}
 	}
@@ -761,6 +757,7 @@ void OperatorConsole::SaveLog(const QString& filePathName)
     }
 }
 
+
 void OperatorConsole::OnSetup()
 {
     int oldWidth = m_setup.width;
@@ -768,6 +765,8 @@ void OperatorConsole::OnSetup()
     int oldSourceID = m_setup.sourceID;
     QString oldQCamID = m_setup.qcam_deviceID;
 
+    // Update the list of dynamically detected devices.
+    m_setup.device_infos = m_imatest_cam.GetAttachedDevices();
 
     SetupDialog dialog(m_setup, m_dlg);
 
@@ -776,10 +775,12 @@ void OperatorConsole::OnSetup()
     if (result == QDialog::Accepted)
     {
         m_setup = dialog.GetSettings();
-
         m_imatest_cam.m_device_ID = m_setup.epiphan_deviceID;
         m_imatest_cam.m_source_ID = m_setup.sourceID;
         m_imatest_cam.m_ini_file  = m_setup.ini_file.toStdString();
+        // TODO: Should we check that the video format is valid for the selected device?
+        m_imatest_cam.m_video_format = m_setup.video_format.toStdString();
+        m_imatest_cam.m_device_name = m_setup.device_name.toStdString();
 
         // transfer the configuration details to the other classes
         m_config.m_iniFilePathName = m_setup.ini_file.toStdString();
@@ -830,6 +831,7 @@ void OperatorConsole::OnSetup()
         }
     }
 }
+
 
 //
 // This function allows for reallocation of the various image buffers when we change the image size
@@ -958,26 +960,26 @@ void OperatorConsole::SetQCamera()
 
 bool OperatorConsole::ReadyForTesting()
 {
-	bool	ready = true;
+    bool	ready = true;
 
-	//
-	// If we're doing an Arbitrary Chart test, make sure that a chart definition file has been selected
-	//
+    //
+    // If we're doing an Arbitrary Chart test, make sure that a chart definition file has been selected
+    //
     if (m_image_source == no_source)
     {
         QMessageBox::warning(m_dlg, "No Device selected", "You must select a camera before you can run a test (to select a camera, click on Setup).");
         ready = false;
     }
     else if (m_test == &m_arbitraryChartControl)
-	{
+    {
         if (!m_arbitraryChart.HaveChartDef())
-		{
+        {
             QMessageBox::information(m_dlg, "Error", "You must select a Chart Definition file from the Setup Dialog before running the test.");
-			ready = false;
-		}
-	}
+            ready = false;
+        }
+    }
 
-	return ready;
+    return ready;
 }
 
 void OperatorConsole::LogMessage(QString &str, bool timestamp)
@@ -1013,6 +1015,7 @@ void OperatorConsole::UpdateFPS(QString &fps)
 {
     m_dlg->update_fps(fps);
 }
+
 
 void OperatorConsole::SetupSlots()
 {

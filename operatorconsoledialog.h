@@ -45,6 +45,7 @@ class OperatorConsoleDialog : public QDialog
     void qsoInit();             // qso is "Quadrant status overlay, the "tic-tac-toe" display overlaid on SFR plus images
     void qsoMove();
     void setupSignals();
+    void setupTextDisplays();
 
     static void moveCenter(QWidget *widget, int centerX, int centerY);  // move a widget so that it's centered at (centerX, centerY)
 

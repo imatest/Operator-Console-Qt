@@ -23,6 +23,8 @@
 #include <QVector>
 #include <QCameraInfo>
 #include "cameraacquisition.h"
+#include "acquisitiondeviceinfo.h"
+
 
 typedef enum EDevIndex
 {
@@ -63,7 +65,9 @@ struct setup_settings
     QVector<int>        allowed_bits_per_pixel; //!< The list of allowed bits-per-pixels used to fill the c_combo_bits_per_pixel CComboBox in Setup.h/cpp
     QMap<QString,QSize> qcam_list;              //!< list of camera names and (width, height)
 
-
+    QVector<AcquisitionDeviceInfo> device_infos;//!< The list of info describing dynamically detected devices from the Aquisition library
+    QString              video_format;          //!< The video format for the selected dynamically detected device
+    QString              device_name;           //!< The name for the selected dynamically detected device
     ///
 	/// default constructor
 	///

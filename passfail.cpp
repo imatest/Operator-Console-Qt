@@ -1,80 +1,3 @@
-#if 0
-This is the order of the sfrplus keys as assigned in this module:
- 1  All_Edge_IDs_detected
- 2  Bayer_decode
- 3  Chart_mean_pixel_level_bounds
- 4  Chart_radial_pixel_shift_max
- 5  Color_expected_detected
- 6  Convergence_angle_max
- 6  DeltaE_00_mean_max
- 7  FOV_degrees_diagonal_min
- 8  High_pixel_saturation_fraction_max
- 9  Horizontal_bars_OK_min
-10  Low_pixel_saturation_fraction_max
-11  Mirrored_chart
-12  MTF50P_CP_weighted_mean_min
-13  MTF50P_ratio_min
-14  passfail_ini_file_date
-15  Rotation_degrees_max
-16  Secondary_readout_1_center_mean_min
-17  Secondary_readout_1_outer_mean_min
-18  Secondary_readout_1_outer_min_min
-19  Secondary_readout_1_outer_quadrant_delta_max
-20  Secondary_readout_1_outer_quadrant_mean_min_min
-21  Secondary_readout_2_center_mean_min
-22  Secondary_readout_2_outer_mean_min
-23  Secondary_readout_2_outer_min_min
-24  Secondary_readout_2_outer_quadrant_delta_max
-25  Secondary_readout_2_outer_quadrant_mean_min_min
-26  Stepchart_expected_detected
-27  upside_down
-
-This is the order of the srfplus keys in Sepc-v2.ini:
- 1    All_Edge_IDs_detected = 1
- 2    Bayer_decode = 1
- 3    Chart_mean_pixel_level_bounds = 0.3 0.8
- 4    Chart_radial_pixel_shift_max = 18
- 5    FOV_degrees_diagonal_min = 3
- 6    High_pixel_saturation_fraction_max = 3
- 7    Horizontal_bars_OK_min = 3
- 8    Low_pixel_saturation_fraction_max = 60
- 9    Mirrored_chart = 0
-10    MTF50P_CP_weighted_mean_min = 1
-11    passfail_ini_file_date = 1
-12    Rotation_degrees_max = 45
-13    Secondary_readout_1_center_mean_min = 45
-14    Secondary_readout_1_outer_mean_min = 45
-15    Secondary_readout_1_outer_min_min = 3
-16    Secondary_readout_1_outer_quadrant_mean_min_min = 0.45
-17    Secondary_readout_2_center_mean_min = 0.16
-18    Secondary_readout_2_outer_mean_min = 0.16
-19    Secondary_readout_2_outer_min_min = 0.5
-20    Secondary_readout_2_outer_quadrant_mean_min_min = 0.18
-21    Stepchart_expected_detected = 0
-22    MTF50P_ratio_min = 0
-23    Secondary_readout_1_outer_quadrant_delta_max = 0.75
-24    Secondary_readout_2_outer_quadrant_delta_max = 0.3
-25    upside_down = 0
-
-
-
-This is the order of Blemish keys in Spec-v2.ini:
- 1    Blemish_maximum_count = 3 51
- 2    Blemish_size_pixels = 20 6
- 3    Dead_pixels_max = 50
- 4    Hot_pixels_max = 50
- 5    Optical_center_offset_max = 37.14
- 6    Optical_center_offset_X_max = 40
- 7    Optical_center_offset_Y_max = 30
- 8    Relative_illumination_corner_diff_pct_max = 21
- 9    Relative_illumination_worst_corner_pct_min = 29
-10    Uniformity_BoverG_corners_pct_max = 14
-11    Uniformity_RoverG_corners_pct_max = 13
-
-
-#endif
-
-
 #include <QFileInfo>
 #include "imatestdefines.h"
 #include "imatest_library.h"
@@ -119,7 +42,7 @@ bool PassFail::ReadFile(PassFailSettings &settings)
     mwArray readSett = mwArray(1,1,mxCELL_CLASS);
     try
     {
-        Inifile::inifile(1,readSett,vararginParam);
+        Inifile::Inifile::inifile(1,readSett,vararginParam);
     }
     catch (mwException& e)
     {
@@ -489,7 +412,9 @@ bool PassFail::Read(PassFailSettings &settings)
 
     if (readSettContainer.NumberOfElements() > 0)
     {
-        remove_crlf(readSett.Get(1, 1).Get(1, 1).ToString(), settings.m_pass_fail_file);
+        settings.m_pass_fail_file = readSett.Get(1, 1).Get(1, 1).ToString();
+//        settings.m_pass_fail_file.remove('\n');
+//        settings.m_pass_fail_file.remove('\r');
     }
     else
     {
@@ -498,15 +423,15 @@ bool PassFail::Read(PassFailSettings &settings)
     }
     //Now we find the Pass/Fail file and check if it is read-only
 
-
-    QFileInfo info(settings.m_pass_fail_file.c_str());
+    QString ini_name = settings.m_pass_fail_file.c_str();
+    QFileInfo info(ini_name);
     if (!info.isWritable())
     {
         settings.b_isReadOnly = TRUE;
     }
 
     // Next we need to figure out which pass/fail modules are in the ini. We will just 'readAll', which returns the full list of sections.
-    //[keys,sections,subsections] = INIFILE(fName,'readall')
+    //[keys,sections,subsections] = Inifile::inifile(fName,'readall')
 
     mwArray keys;
     mwArray sections;
@@ -531,46 +456,40 @@ bool PassFail::Read(PassFailSettings &settings)
     varargin.Get(1,2).Set(mode_readall);
     try
     {
-        Inifile::inifile(numArgOut, varargout, varargin);
+
+        Inifile::Inifile::Inifile::inifile(numArgOut, varargout, varargin);
     }
     catch (mwException& e)
     {
-#if 1
         cout << "Run Error! Unable to read Pass/Fail file" << endl;
         cerr << e.what() << endl;
         e.print_stack_trace();
-#else
-        const char *what = e.what();
-        qDebug() << "Run Error! Unable to read Pass/Fail file" << endl << what << endl;
-#endif
-
     }
 
     std::size_t numSections = varargout.Get(1,2).NumberOfElements();
     for (std::size_t idx = 1; idx <= numSections; ++idx)
     {
-        QString name = (const char *)varargout.Get(1,2).Get(1,idx).ToString();
+        QString section = (const char *)varargout.Get(1,2).Get(1,idx).ToString();
 
-        name.remove('\n');
-        name.remove('\r');
+        section.remove('\n');
+        section.remove('\r');
 
-        if (name.compare("SFRplus", Qt::CaseInsensitive) ==0)
+        if (section.compare("SFRplus", Qt::CaseInsensitive) ==0)
         {
             settings.sfrplus.b_enable = true;
         }
-        else if(name.compare("Blemish", Qt::CaseInsensitive)==0)
+        else if(section.compare("Blemish", Qt::CaseInsensitive)==0)
         {
             settings.blemish.b_enable = true;
         }
-        else if(name.compare("OIS", Qt::CaseInsensitive)==0)
+        else if(section.compare("OIS", Qt::CaseInsensitive)==0)
         {
             settings.ois.b_enable = true;
         }
         else
-
         {
             settings.other.b_enable = true;
-            settings.other.name = name.toStdString();
+            settings.other.name = section.toStdString();
         }
     }
 
@@ -639,12 +558,11 @@ bool PassFail::Read(PassFailSettings &settings)
 
         std::vector<std::string> data_types;
         std::vector<std::string> blem_keys;
-#if 0
         // the entry<T> corresponding to a given index in blem_keys will correspond to the same index + 1 in readKeys
         addDataTypeAndKey(settings.blemish.Blemish_maximum_count.data_type, settings.blemish.Blemish_maximum_count.group_name,data_types,blem_keys);										// 1
         addDataTypeAndKey(settings.blemish.Blemish_size_pixels.data_type, settings.blemish.Blemish_size_pixels.group_name,data_types,blem_keys);											// 2
         addDataTypeAndKey(settings.blemish.Dead_pixels_max.data_type, settings.blemish.Dead_pixels_max.name,data_types,blem_keys);															// 3
-        addDataTypeAndKey(settings.blemish.Dead_pixel_clusters_max.data_type, settings.blemish.Dead_pixel_clusters_max.name,data_types,blem_keys);                                          // 4
+        addDataTypeAndKey(settings.blemish.Dead_pixel_clusters_max.data_type, settings.blemish.Dead_pixel_clusters_max.name,data_types,blem_keys);											// 4
         addDataTypeAndKey(settings.blemish.Defective_pixels_max_count.data_type, settings.blemish.Defective_pixels_max_count.name,data_types,blem_keys);									// 5
         addDataTypeAndKey(settings.blemish.Hot_pixel_clusters_max.data_type, settings.blemish.Hot_pixel_clusters_max.name,data_types,blem_keys);											// 6
         addDataTypeAndKey(settings.blemish.Hot_pixels_max.data_type, settings.blemish.Hot_pixels_max.name,data_types,blem_keys);															// 7
@@ -655,23 +573,6 @@ bool PassFail::Read(PassFailSettings &settings)
         addDataTypeAndKey(settings.blemish.Relative_illumination_worst_corner_pct_min.data_type, settings.blemish.Relative_illumination_worst_corner_pct_min.name,data_types,blem_keys);	//12
         addDataTypeAndKey(settings.blemish.Uniformity_BoverG_corners_pct_max.data_type, settings.blemish.Uniformity_BoverG_corners_pct_max.name,data_types,blem_keys);						//13
         addDataTypeAndKey(settings.blemish.Uniformity_RoverG_corners_pct_max.data_type, settings.blemish.Uniformity_RoverG_corners_pct_max.name,data_types,blem_keys);						//14
-#else
-        // the entry<T> corresponding to a given index in blem_keys will correspond to the same index + 1 in readKeys
-        addDataTypeAndKey(settings.blemish.Blemish_maximum_count.data_type, settings.blemish.Blemish_maximum_count.group_name,data_types,blem_keys);										// 1
-        addDataTypeAndKey(settings.blemish.Blemish_size_pixels.data_type, settings.blemish.Blemish_size_pixels.group_name,data_types,blem_keys);											// 2
-        addDataTypeAndKey(settings.blemish.Dead_pixels_max.data_type, settings.blemish.Dead_pixels_max.name,data_types,blem_keys);															// 3
-//        addDataTypeAndKey(settings.blemish.Dead_pixel_clusters_max.data_type, settings.blemish.Dead_pixel_clusters_max.name,data_types,blem_keys);										//
-//        addDataTypeAndKey(settings.blemish.Defective_pixels_max_count.data_type, settings.blemish.Defective_pixels_max_count.name,data_types,blem_keys);									//
-//        addDataTypeAndKey(settings.blemish.Hot_pixel_clusters_max.data_type, settings.blemish.Hot_pixel_clusters_max.name,data_types,blem_keys);											//
-        addDataTypeAndKey(settings.blemish.Hot_pixels_max.data_type, settings.blemish.Hot_pixels_max.name,data_types,blem_keys);															// 4
-        addDataTypeAndKey(settings.blemish.Optical_center_offset_max.data_type, settings.blemish.Optical_center_offset_max.name,data_types,blem_keys);										// 5
-        addDataTypeAndKey(settings.blemish.Optical_center_offset_X_max.data_type, settings.blemish.Optical_center_offset_X_max.name,data_types,blem_keys);									// 6
-        addDataTypeAndKey(settings.blemish.Optical_center_offset_Y_max.data_type, settings.blemish.Optical_center_offset_Y_max.name,data_types,blem_keys);									// 7
-        addDataTypeAndKey(settings.blemish.Relative_illumination_corner_diff_pct_max.data_type, settings.blemish.Relative_illumination_corner_diff_pct_max.name,data_types,blem_keys);		// 8
-        addDataTypeAndKey(settings.blemish.Relative_illumination_worst_corner_pct_min.data_type, settings.blemish.Relative_illumination_worst_corner_pct_min.name,data_types,blem_keys);	// 9
-        addDataTypeAndKey(settings.blemish.Uniformity_BoverG_corners_pct_max.data_type, settings.blemish.Uniformity_BoverG_corners_pct_max.name,data_types,blem_keys);						//10
-        addDataTypeAndKey(settings.blemish.Uniformity_RoverG_corners_pct_max.data_type, settings.blemish.Uniformity_RoverG_corners_pct_max.name,data_types,blem_keys);						//11
-#endif
         // add the contents of blem_keys and data_types to readKeys
         for (std::size_t idx = 0; idx < settings.blemish.numEntries; ++idx)
         {
@@ -717,7 +618,7 @@ bool PassFail::Read(PassFailSettings &settings)
 
         try
         {
-            Inifile::inifile(1,readSett,varargin);
+            Inifile::Inifile::inifile(1,readSett,varargin);
         }
         catch (mwException& e)
         {
@@ -730,9 +631,12 @@ bool PassFail::Read(PassFailSettings &settings)
 
         std::vector<int> intVecBuf;
         std::size_t vecSize;
+         mwArray temp;
+
         vecSize = readSett.Get(1,1).Get(1,1).NumberOfElements();
         intVecBuf.resize(vecSize);
-        readSett.Get(1,1).Get(1,1).GetData(&intVecBuf[0], vecSize);
+        temp = readSett.Get(1,1).Get(1,1);
+        temp.GetData(&intVecBuf[0], vecSize);
         settings.blemish.Blemish_maximum_count.value.resize(vecSize);
         if (intVecBuf[0] != badval)
         {
@@ -742,12 +646,13 @@ bool PassFail::Read(PassFailSettings &settings)
             }
             settings.blemish.Blemish_maximum_count.b_isUsed = true;
         }
-//#error this fails-- it should read 20 and 6, but it reads 6 and 0
+
         vecSize = readSett.Get(1,1).Get(1,2).NumberOfElements();
         intVecBuf.clear();
         intVecBuf.resize(vecSize);
         settings.blemish.Blemish_size_pixels.value.resize(vecSize);
-        readSett.Get(1,1).Get(1,2).GetData(&intVecBuf[0], vecSize);
+        temp = readSett.Get(1,1).Get(1,2);
+        temp.GetData(&intVecBuf[0], vecSize);
         if (intVecBuf[0] != badval)
         {
             for ( std::size_t idx=0; idx < vecSize; ++idx)
@@ -760,73 +665,56 @@ bool PassFail::Read(PassFailSettings &settings)
         int intBuf = 0;
         double dblBuf = 0.0;
 
-  #if 0
-        readSett.Get(1,1).Get(1,3).GetData(&intBuf, 1);
+
+        temp = readSett.Get(1,1).Get(1,3);
+        temp.GetData(&intBuf, 1);
         settings.blemish.Dead_pixels_max.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,4).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,4);
+        temp.GetData(&intBuf, 1);
         settings.blemish.Dead_pixel_clusters_max.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,5).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,5);
+        temp.GetData(&intBuf, 1);
         settings.blemish.Defective_pixels_max_count.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,6).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,6);
+        temp.GetData(&intBuf, 1);
         settings.blemish.Hot_pixel_clusters_max.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,7).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,7);
+        temp.GetData(&intBuf, 1);
         settings.blemish.Hot_pixels_max.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,8).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,8);
+        temp.GetData(&dblBuf, 1);
         settings.blemish.Optical_center_offset_max.assign_value(dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,9).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,9);
+        temp.GetData(&dblBuf, 1);
         settings.blemish.Optical_center_offset_X_max.assign_value(dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,10).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,10);
+        temp.GetData(&dblBuf, 1);
         settings.blemish.Optical_center_offset_Y_max.assign_value(dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,11).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,11);
+        temp.GetData(&dblBuf, 1);
         settings.blemish.Relative_illumination_corner_diff_pct_max.assign_value(dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,12).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,12);
+        temp.GetData(&dblBuf, 1);
         settings.blemish.Relative_illumination_worst_corner_pct_min.assign_value(dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,13).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,13);
+        temp.GetData(&dblBuf, 1);
         settings.blemish.Uniformity_BoverG_corners_pct_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,14).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,14);
+        temp.GetData(&dblBuf, 1);
         settings.blemish.Uniformity_RoverG_corners_pct_max.assign_value(dblBuf,static_cast<double>(badval));
-#else
-        readSett.Get(1,1).Get(1,3).GetData(&intBuf, 1);
-        settings.blemish.Dead_pixels_max.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,4).GetData(&intBuf, 1);
-        settings.blemish.Dead_pixel_clusters_max.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,4).GetData(&intBuf, 1);
-        settings.blemish.Hot_pixels_max.assign_value(intBuf,badval);
-
-        readSett.Get(1,1).Get(1,5).GetData(&dblBuf, 1);
-        settings.blemish.Optical_center_offset_max.assign_value(dblBuf,badval);
-
-        readSett.Get(1,1).Get(1,6).GetData(&dblBuf, 1);
-        settings.blemish.Optical_center_offset_X_max.assign_value(dblBuf,badval);
-
-        readSett.Get(1,1).Get(1,7).GetData(&dblBuf, 1);
-        settings.blemish.Optical_center_offset_Y_max.assign_value(dblBuf,badval);
-
-        readSett.Get(1,1).Get(1,8).GetData(&dblBuf, 1);
-        settings.blemish.Relative_illumination_corner_diff_pct_max.assign_value(dblBuf,badval);
-
-        readSett.Get(1,1).Get(1,9).GetData(&dblBuf, 1);
-        settings.blemish.Relative_illumination_worst_corner_pct_min.assign_value(dblBuf,badval);
-
-        readSett.Get(1,1).Get(1,10).GetData(&dblBuf, 1);
-        settings.blemish.Uniformity_BoverG_corners_pct_max.assign_value(dblBuf,static_cast<double>(badval));
-
-        readSett.Get(1,1).Get(1,11).GetData(&dblBuf, 1);
-        settings.blemish.Uniformity_RoverG_corners_pct_max.assign_value(dblBuf,static_cast<double>(badval));
-#endif
     }
 
     if ( settings.sfrplus.b_enable)
@@ -845,47 +733,6 @@ bool PassFail::Read(PassFailSettings &settings)
 
         std::vector<std::string> data_types;
         std::vector<std::string> sfr_keys;
-#if 1
-        //
-        // The order of the entries doesn't match the order in the pass/fail file (Spec-v2.ini)
-        // If we need to support multiple versions of the file, we may need to read the ini_version
-        // entry from the file and branch accordingly.  ini_version = Imatest IT 4.3 Sample Pass/Fail
-        //
-        // After looking at the file, there was only one entry out of order, so maybe it was just a coding
-        // error in the original version of the application.  Either way, for now we'l just support the order
-        // in the existing file.
-        //
-
-        // the entry<T> corresponding to a given index in sfr_keys will correspond to the same index + 1 in readKeys
-        addDataTypeAndKey(settings.sfrplus.All_Edge_IDs_detected.data_type,settings.sfrplus.All_Edge_IDs_detected.name,data_types,sfr_keys);														// 1
-        addDataTypeAndKey(settings.sfrplus.Bayer_decode.data_type,settings.sfrplus.Bayer_decode.name,data_types,sfr_keys);																			// 2
-        addDataTypeAndKey(settings.sfrplus.Chart_mean_pixel_level_bounds.data_type,settings.sfrplus.Chart_mean_pixel_level_bounds.group_name,data_types,sfr_keys);									// 3
-        addDataTypeAndKey(settings.sfrplus.Chart_radial_pixel_shift_max.data_type,settings.sfrplus.Chart_radial_pixel_shift_max.name,data_types,sfr_keys);											// 4
-//      addDataTypeAndKey(settings.sfrplus.Color_expected_detected.data_type,settings.sfrplus.Color_expected_detected.name,data_types,sfr_keys);													//
-//      addDataTypeAndKey(settings.sfrplus.Convergence_angle_max.data_type,settings.sfrplus.Convergence_angle_max.name,data_types,sfr_keys);														//
-//      addDataTypeAndKey(settings.sfrplus.DeltaE_00_mean_max.data_type,settings.sfrplus.DeltaE_00_mean_max.name,data_types,sfr_keys);                                                              //
-        addDataTypeAndKey(settings.sfrplus.FOV_degrees_diagonal_min.data_type,settings.sfrplus.FOV_degrees_diagonal_min.name,data_types,sfr_keys);													// 5
-        addDataTypeAndKey(settings.sfrplus.High_pixel_saturation_fraction_max.data_type,settings.sfrplus.High_pixel_saturation_fraction_max.name,data_types,sfr_keys);								// 6
-        addDataTypeAndKey(settings.sfrplus.Horizontal_bars_OK_min.data_type,settings.sfrplus.Horizontal_bars_OK_min.name,data_types,sfr_keys);														// 7
-        addDataTypeAndKey(settings.sfrplus.Low_pixel_saturation_fraction_max.data_type,settings.sfrplus.Low_pixel_saturation_fraction_max.name,data_types,sfr_keys);								// 8
-        addDataTypeAndKey(settings.sfrplus.Mirrored_chart.data_type,settings.sfrplus.Mirrored_chart.name,data_types,sfr_keys);																		// 9
-        addDataTypeAndKey(settings.sfrplus.MTF50P_CP_weighted_mean_min.data_type,settings.sfrplus.MTF50P_CP_weighted_mean_min.name,data_types,sfr_keys);											//10
-        addDataTypeAndKey(settings.sfrplus.passfail_ini_file_date.data_type,settings.sfrplus.passfail_ini_file_date.name,data_types,sfr_keys);														//11
-        addDataTypeAndKey(settings.sfrplus.Rotation_degrees_max.data_type,settings.sfrplus.Rotation_degrees_max.name,data_types,sfr_keys);															//12
-        addDataTypeAndKey(settings.sfrplus.Secondary_readout_1_center_mean_min.data_type,settings.sfrplus.Secondary_readout_1_center_mean_min.name,data_types,sfr_keys);							//13
-        addDataTypeAndKey(settings.sfrplus.Secondary_readout_1_outer_mean_min.data_type,settings.sfrplus.Secondary_readout_1_outer_mean_min.name,data_types,sfr_keys);								//14
-        addDataTypeAndKey(settings.sfrplus.Secondary_readout_1_outer_min_min.data_type,settings.sfrplus.Secondary_readout_1_outer_min_min.name,data_types,sfr_keys);								//15
-        addDataTypeAndKey(settings.sfrplus.Secondary_readout_1_outer_quadrant_mean_min_min.data_type,settings.sfrplus.Secondary_readout_1_outer_quadrant_mean_min_min.name,data_types,sfr_keys);	//16
-        addDataTypeAndKey(settings.sfrplus.Secondary_readout_2_center_mean_min.data_type,settings.sfrplus.Secondary_readout_2_center_mean_min.name,data_types,sfr_keys);							//17
-        addDataTypeAndKey(settings.sfrplus.Secondary_readout_2_outer_mean_min.data_type,settings.sfrplus.Secondary_readout_2_outer_mean_min.name,data_types,sfr_keys);								//18
-        addDataTypeAndKey(settings.sfrplus.Secondary_readout_2_outer_min_min.data_type,settings.sfrplus.Secondary_readout_2_outer_min_min.name,data_types,sfr_keys);								//19
-        addDataTypeAndKey(settings.sfrplus.Secondary_readout_2_outer_quadrant_mean_min_min.data_type,settings.sfrplus.Secondary_readout_2_outer_quadrant_mean_min_min.name,data_types,sfr_keys);	//20
-        addDataTypeAndKey(settings.sfrplus.Stepchart_expected_detected.data_type,settings.sfrplus.Stepchart_expected_detected.name,data_types,sfr_keys);											//21
-        addDataTypeAndKey(settings.sfrplus.MTF50P_ratio_min.data_type,settings.sfrplus.MTF50P_ratio_min.name,data_types,sfr_keys);																	//22
-        addDataTypeAndKey(settings.sfrplus.Secondary_readout_1_outer_quadrant_delta_max.data_type,settings.sfrplus.Secondary_readout_1_outer_quadrant_delta_max.name,data_types,sfr_keys);			//23
-        addDataTypeAndKey(settings.sfrplus.Secondary_readout_2_outer_quadrant_delta_max.data_type,settings.sfrplus.Secondary_readout_2_outer_quadrant_delta_max.name,data_types,sfr_keys);			//24
-        addDataTypeAndKey(settings.sfrplus.upside_down.data_type,settings.sfrplus.upside_down.name,data_types,sfr_keys);																			//25
-#else
         // the entry<T> corresponding to a given index in sfr_keys will correspond to the same index + 1 in readKeys
         addDataTypeAndKey(settings.sfrplus.All_Edge_IDs_detected.data_type,settings.sfrplus.All_Edge_IDs_detected.name,data_types,sfr_keys);														// 1
         addDataTypeAndKey(settings.sfrplus.Bayer_decode.data_type,settings.sfrplus.Bayer_decode.name,data_types,sfr_keys);																			// 2
@@ -915,7 +762,7 @@ bool PassFail::Read(PassFailSettings &settings)
         addDataTypeAndKey(settings.sfrplus.Secondary_readout_2_outer_quadrant_mean_min_min.data_type,settings.sfrplus.Secondary_readout_2_outer_quadrant_mean_min_min.name,data_types,sfr_keys);	//25
         addDataTypeAndKey(settings.sfrplus.Stepchart_expected_detected.data_type,settings.sfrplus.Stepchart_expected_detected.name,data_types,sfr_keys);											//26
         addDataTypeAndKey(settings.sfrplus.upside_down.data_type,settings.sfrplus.upside_down.name,data_types,sfr_keys);																			//27
-#endif
+
         // add the contents of sfr_keys and data_types to readKeys
         for (std::size_t idx = 0; idx < settings.sfrplus.numEntries; ++idx)
         {
@@ -957,7 +804,7 @@ bool PassFail::Read(PassFailSettings &settings)
 
         try
         {
-            Inifile::inifile(1,readSett,varargin);
+            Inifile::Inifile::inifile(1,readSett,varargin);
         }
         catch (mwException& e)
         {
@@ -965,164 +812,70 @@ bool PassFail::Read(PassFailSettings &settings)
             cerr << e.what() << endl;
             e.print_stack_trace();
         }
-#if 1
-        try
-        {
-            // copy the values read from file to the appropriate entries in settings.sfrplus
-            readSett.Get(1,1).Get(1,1).GetData(&intBuf, 1);
-            settings.sfrplus.All_Edge_IDs_detected.assign_value( intBuf,badval);
-
-            readSett.Get(1,1).Get(1,2).GetData(&intBuf, 1);
-            settings.sfrplus.Bayer_decode.assign_value( intBuf,badval);
-
-            std::size_t vecSize = readSett.Get(1,1).Get(1,3).NumberOfElements();
-            dblVecBuf.resize(vecSize);
-            readSett.Get(1,1).Get(1,3).GetData(&dblVecBuf[0], vecSize);
-            settings.sfrplus.Chart_mean_pixel_level_bounds.assign_value(dblVecBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,4).GetData(&dblBuf, 1);
-            settings.sfrplus.Chart_radial_pixel_shift_max.assign_value( dblBuf,badval);
-
-    //        readSett.Get(1,1).Get(1,5).GetData(&intBuf, 1);
-    //        settings.sfrplus.Color_expected_detected.assign_value(intBuf,badval);
-
-    //        readSett.Get(1,1).Get(1,6).GetData(&dblBuf, 1);
-    //        settings.sfrplus.Convergence_angle_max.assign_value(dblBuf,static_cast<double>(badval));
-
-    //        readSett.Get(1,1).Get(1,6).GetData(&dblBuf, 1);
-    //        settings.sfrplus.DeltaE_00_mean_max.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,5).GetData(&dblBuf, 1);
-            settings.sfrplus.FOV_degrees_diagonal_min.assign_value(dblBuf,badval);
-
-            readSett.Get(1,1).Get(1,6).GetData(&dblBuf, 1);
-            settings.sfrplus.High_pixel_saturation_fraction_max.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,7).GetData(&intBuf, 1);
-            settings.sfrplus.Horizontal_bars_OK_min.assign_value(intBuf,badval);
-
-            readSett.Get(1,1).Get(1,8).GetData(&dblBuf, 1);
-            settings.sfrplus.Low_pixel_saturation_fraction_max.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,9).GetData(&intBuf, 1);
-            settings.sfrplus.Mirrored_chart.assign_value(intBuf,badval);
-
-            readSett.Get(1,1).Get(1,10).GetData(&dblBuf, 1);
-            settings.sfrplus.MTF50P_CP_weighted_mean_min.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,22).GetData(&dblBuf, 1);
-            settings.sfrplus.MTF50P_ratio_min.assign_value(dblBuf,static_cast<double>(badval));
-
-#if 1
-            remove_crlf(readSett.Get(1,1).Get(1,11).ToString(), settings.sfrplus.passfail_ini_file_date.value);
-
-            if (settings.sfrplus.passfail_ini_file_date.value.compare(badstring.c_str()) != 0)
-            {
-                settings.sfrplus.passfail_ini_file_date.b_isUsed = true;
-                if (settings.sfrplus.passfail_ini_file_date.value.compare("[]") == 0)
-                {
-                    settings.sfrplus.passfail_ini_file_date.value = "";
-                }
-            }
-            else
-            {
-                settings.sfrplus.passfail_ini_file_date.b_isUsed = false;
-            }
-#endif
-            readSett.Get(1,1).Get(1,12).GetData(&dblBuf, 1);
-            settings.sfrplus.Rotation_degrees_max.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,13).GetData(&dblBuf, 1);
-            settings.sfrplus.Secondary_readout_1_center_mean_min.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,14).GetData(&dblBuf, 1);
-            settings.sfrplus.Secondary_readout_1_outer_mean_min.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,15).GetData(&dblBuf, 1);
-            settings.sfrplus.Secondary_readout_1_outer_min_min.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,23).GetData(&dblBuf, 1);
-            settings.sfrplus.Secondary_readout_1_outer_quadrant_delta_max.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,16).GetData(&dblBuf, 1);
-            settings.sfrplus.Secondary_readout_1_outer_quadrant_mean_min_min.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,17).GetData(&dblBuf, 1);
-            settings.sfrplus.Secondary_readout_2_center_mean_min.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,18).GetData(&dblBuf, 1);
-            settings.sfrplus.Secondary_readout_2_outer_mean_min.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,19).GetData(&dblBuf, 1);
-            settings.sfrplus.Secondary_readout_2_outer_min_min.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,24).GetData(&dblBuf, 1);
-            settings.sfrplus.Secondary_readout_2_outer_quadrant_delta_max.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,20).GetData(&dblBuf, 1);
-            settings.sfrplus.Secondary_readout_2_outer_quadrant_mean_min_min.assign_value(dblBuf,static_cast<double>(badval));
-
-            readSett.Get(1,1).Get(1,21).GetData(&intBuf, 1);
-            settings.sfrplus.Stepchart_expected_detected.assign_value(intBuf,badval);
-
-            readSett.Get(1,1).Get(1,25).GetData(&intBuf, 1);
-            settings.sfrplus.upside_down.assign_value(intBuf,badval);
-        }
-
-        catch (mwException& e)
-        {
-            qDebug() << "Run Error! Unable to read SFRplus keys from Pass/Fail file" << endl;
-            qDebug() << e.what() << endl;
-//            e.print_stack_trace();
-        }
-#else
         // copy the values read from file to the appropriate entries in settings.sfrplus
-        readSett.Get(1,1).Get(1,1).GetData(&intBuf, 1);
+        mwArray temp;
+
+        temp = readSett.Get(1,1).Get(1,1);
+        temp.GetData(&intBuf, 1);
         settings.sfrplus.All_Edge_IDs_detected.assign_value( intBuf,badval);
 
-        readSett.Get(1,1).Get(1,2).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,2);
+        temp.GetData(&intBuf, 1);
         settings.sfrplus.Bayer_decode.assign_value( intBuf,badval);
 
         std::size_t vecSize = readSett.Get(1,1).Get(1,3).NumberOfElements();
         dblVecBuf.resize(vecSize);
-        readSett.Get(1,1).Get(1,3).GetData(&dblVecBuf[0], vecSize);
+        temp = readSett.Get(1,1).Get(1,3);
+        temp.GetData(&dblVecBuf[0], vecSize);
         settings.sfrplus.Chart_mean_pixel_level_bounds.assign_value(dblVecBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,4).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,4);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Chart_radial_pixel_shift_max.assign_value( dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,5).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,5);
+        temp.GetData(&intBuf, 1);
         settings.sfrplus.Color_expected_detected.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,6).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,6);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Convergence_angle_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,6).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,6);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.DeltaE_00_mean_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,7).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,7);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.FOV_degrees_diagonal_min.assign_value(dblBuf,badval);
 
-        readSett.Get(1,1).Get(1,8).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,8);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.High_pixel_saturation_fraction_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,9).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,9);
+        temp.GetData(&intBuf, 1);
         settings.sfrplus.Horizontal_bars_OK_min.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,10).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,10);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Low_pixel_saturation_fraction_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,11).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,11);
+        temp.GetData(&intBuf, 1);
         settings.sfrplus.Mirrored_chart.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,12).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,12);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.MTF50P_CP_weighted_mean_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,13).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,13);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.MTF50P_ratio_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        remove_crlf(readSett.Get(1,1).Get(1,14).ToString(), settings.sfrplus.passfail_ini_file_date.value);
-
+        settings.sfrplus.passfail_ini_file_date.value = readSett.Get(1,1).Get(1,14).ToString();
+//        settings.sfrplus.passfail_ini_file_date.value.remove('\n');
+//        settings.sfrplus.passfail_ini_file_date.value.remove('\r');
         if (settings.sfrplus.passfail_ini_file_date.value.compare(badstring.c_str()) != 0)
         {
             settings.sfrplus.passfail_ini_file_date.b_isUsed = true;
@@ -1136,45 +889,58 @@ bool PassFail::Read(PassFailSettings &settings)
             settings.sfrplus.passfail_ini_file_date.b_isUsed = false;
         }
 
-        readSett.Get(1,1).Get(1,15).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,15);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Rotation_degrees_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,16).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,16);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Secondary_readout_1_center_mean_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,17).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,17);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Secondary_readout_1_outer_mean_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,18).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,18);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Secondary_readout_1_outer_min_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,19).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,19);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Secondary_readout_1_outer_quadrant_delta_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,20).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,20);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Secondary_readout_1_outer_quadrant_mean_min_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,21).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,21);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Secondary_readout_2_center_mean_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,22).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,22);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Secondary_readout_2_outer_mean_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,23).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,23);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Secondary_readout_2_outer_min_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,24).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,24);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Secondary_readout_2_outer_quadrant_delta_max.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,25).GetData(&dblBuf, 1);
+        temp = readSett.Get(1,1).Get(1,25);
+        temp.GetData(&dblBuf, 1);
         settings.sfrplus.Secondary_readout_2_outer_quadrant_mean_min_min.assign_value(dblBuf,static_cast<double>(badval));
 
-        readSett.Get(1,1).Get(1,26).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,26);
+        temp.GetData(&intBuf, 1);
         settings.sfrplus.Stepchart_expected_detected.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,27).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,27);
+        temp.GetData(&intBuf, 1);
         settings.sfrplus.upside_down.assign_value(intBuf,badval);
-#endif
+
     }
 
     if (settings.ois.b_enable)
@@ -1230,7 +996,7 @@ bool PassFail::Read(PassFailSettings &settings)
 
         try
         {
-            Inifile::inifile(1,readSett,varargin);
+            Inifile::Inifile::inifile(1,readSett,varargin);
         }
         catch (mwException& e)
         {
@@ -1239,16 +1005,21 @@ bool PassFail::Read(PassFailSettings &settings)
             e.print_stack_trace();
         }
         // copy the values read from file to the appropriate entries in settings.ois
-        readSett.Get(1,1).Get(1,1).GetData(&intBuf, 1);
+        mwArray temp;
+        temp = readSett.Get(1,1).Get(1,1);
+        temp.GetData(&intBuf, 1);
         settings.ois.L_MTF50_delta2_gain_summary_all_dB_min.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,2).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,2);
+        temp.GetData(&intBuf, 1);
         settings.ois.R_improve_ALL_dB_min.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,3).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,3);
+        temp.GetData(&intBuf, 1);
         settings.ois.R_improve_H_dB_min.assign_value(intBuf,badval);
 
-        readSett.Get(1,1).Get(1,4).GetData(&intBuf, 1);
+        temp = readSett.Get(1,1).Get(1,4);
+        temp.GetData(&intBuf, 1);
         settings.ois.R_improve_V_dB_min.assign_value(intBuf,badval);
     }
 
