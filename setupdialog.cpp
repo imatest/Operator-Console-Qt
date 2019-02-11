@@ -551,7 +551,15 @@ int SetupDialog::getDeviceID()
 
 void SetupDialog::on_browseRegister_clicked()
 {
+    //
+    // Get the Omnivision register file
+    //
+    QString filename = QFileDialog::getOpenFileName(this, "Select an Omnivision register file", m_settings.omnivision_reg_file);
 
+    if (!filename.isNull())
+    {
+        m_settings.omnivision_reg_file = filename;
+    }
 }
 
 void SetupDialog::on_browseIni_clicked()
