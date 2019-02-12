@@ -23,7 +23,7 @@ ARCH_PATH = $$ARCH/microsoft
 unix {
 IMATEST_INSTALL_ROOT = /usr/local/Imatest
 # This retrieves the most recent version
-FOLDERS = system(ls $$IMATEST_INSTALL_ROOT | grep v$$IT_VERSION | sort --version-sort)
+FOLDERS = $$system(ls $$IMATEST_INSTALL_ROOT | grep v$$IT_VERSION | sort --version-sort)
 IT_INSTALL_ROOT = $$IMATEST_INSTALL_ROOT/$$last(FOLDERS)/IT
 MCR_INSTALL_ROOT = /usr/local/MATLAB/MATLAB_Runtime/v$$MCR_VERSION
 ARCH = glnxa64
