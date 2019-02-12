@@ -27,7 +27,11 @@
 #include <string.h>
 #include "config.h"
 #include "criticalstring.h"
+#ifdef _WIN32
 #include "imatest_library.h"
+#else
+#include "libImatest.h"
+#endif
 #include "timer.h"
 #include "timestamp.h"
 
@@ -56,8 +60,11 @@ typedef struct TestID
 //
 // This typedef defines ImatestShellFunc, which is a pointer to an Imatest Library shell function (sfrplus_shell, blemish_shell, etc.)
 //
+#ifdef _WIN32
 typedef LIB_imatest_library_CPP_API void (MW_CALL_CONV *ImatestShellFunc)(int nargout, mwArray& nret, const mwArray& inputFile, const mwArray& rootDir, const mwArray& inputKeys, const mwArray& opMode, const mwArray& varargin);
-
+#else
+typedef LIB_libImatest_CPP_API void (MW_CALL_CONV *ImatestShellFunc)(int nargout, mwArray& nret, const mwArray& inputFile, const mwArray& rootDir, const mwArray& inputKeys, const mwArray& opMode, const mwArray& varargin);
+#endif
 
 
 ///////////////////////////////////////////////////////////////////////

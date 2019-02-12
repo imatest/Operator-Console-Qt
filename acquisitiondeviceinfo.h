@@ -18,11 +18,16 @@
 ****************************************************************************/
 
 #pragma once
-
+#pragma warning(disable:4100)
+#ifdef _WIN32
 #include "imatest_acquisition.h"
+#else
+#include "libImatest_acquisition.h
+#endif
 #include <string>
 #include <vector>
 #include <QString>
+
 ///
 /// This class houses the information describing a acquisition device as returned by a call to list_devices()
 ///

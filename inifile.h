@@ -1,7 +1,11 @@
 #ifndef INIFILE_H
 #define INIFILE_H
 #include "imatestdefines.h"
+#ifdef _WIN32
 #include "imatest_library.h"
+#else
+#include "libImatest.h"
+#endif
 #include "setup_settings.h"
 using namespace std;
 

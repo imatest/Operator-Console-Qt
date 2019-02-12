@@ -17,10 +17,16 @@
 *	along with this program.  If not, see <http://www.gnu.org/licenses/>. 	*
 ****************************************************************************/
 
+#ifdef _WIN32
 #include "imatest_library.h"
+#include "imatest_acquisition.h"
+#else
+#include "libImatest.h"
+#include "libImatest_acquisition.h"
+#endif
 #include "imatestlibacq.h"
 #include "threadcontrol.h"
-#include "imatest_acquisition.h"
+
 #include "imatestsourceids.h"
 #include <iostream>
 #include <QTextStream>

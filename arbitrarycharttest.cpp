@@ -24,7 +24,11 @@
 #include <QTextStream>
 
 #include "arbitrarycharttest.h"
+#ifdef _WIN32
 #include "imatest_library.h"
+#else
+#include "libImatest.h"
+#endif
 #include "mclcppclass.h"
 
 using namespace std;

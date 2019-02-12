@@ -1,6 +1,10 @@
 #include <QFileInfo>
 #include "imatestdefines.h"
+#ifdef _WIN32
 #include "imatest_library.h"
+#else
+#include "libImatest.h"
+#endif
 #include "inifile.h"
 #include "passfail.h"
 #include "passfailsettings.h"
