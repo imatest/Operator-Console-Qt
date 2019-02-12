@@ -21,7 +21,7 @@
 #define SFRPLUSTEST_H
 
 #include <string>
-#include "ImageTest.h"
+#include "imagetest.h"
 #include "qso.h"
 
 ///

@@ -22,7 +22,7 @@
 #ifdef _WIN32
 #include "imatest_acquisition.h"
 #else
-#include "libImatest_acquisition.h
+#include "libImatest_acquisition.h"
 #endif
 #include <string>
 #include <vector>
