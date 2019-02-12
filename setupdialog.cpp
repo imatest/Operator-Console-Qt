@@ -625,3 +625,23 @@ void SetupDialog::on_height_editingFinished()
         m_settings.height = value.toInt();
     }
 }
+
+void SetupDialog::on_width_textEdited(const QString &userInput)
+{
+    if (userInput.isEmpty()){
+        QString newValue = QString::number(m_settings.width);
+        if (!newValue.isEmpty()) {
+            ui->width->setText(newValue);
+        }
+    }
+}
+
+void SetupDialog::on_height_textEdited(const QString &userInput)
+{
+    if (userInput.isEmpty()){
+        QString newValue = QString::number(m_settings.height);
+        if (!newValue.isEmpty()) {
+            ui->height->setText(newValue);
+        }
+    }
+}
