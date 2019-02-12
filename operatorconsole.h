@@ -217,7 +217,7 @@ protected:
 protected:
     AppStatus				m_status;
     Config					m_config;   		//!< for using rgb data:   will eventually come from a dialog (uses hard coded values for now)
-    byte					*m_cameraImage;		//!< buffer to hold a single image frame from the camera (will eventually be combined with m_fileImage)
+    uint8_t					*m_cameraImage;		//!< buffer to hold a single image frame from the camera (will eventually be combined with m_fileImage)
     ImatestLibAcq			m_imatest_cam;		//!< live acquisition using Imatest acquire_image()
     CameraAcquisition       m_qcam;             //!< live acquisition using a camera controlled by QCamera interface
     FileAcq					m_file_cam;			//!< acquisition comes from a file, with data in ARGB format (0xffrrggbb)
