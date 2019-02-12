@@ -55,6 +55,10 @@ private slots:
 
     void on_videoFormatComboBox_currentIndexChanged(const QString &arg1);
 
+    void on_width_editingFinished();
+
+    void on_height_editingFinished();
+
 private:
     Ui::SetupDialog *ui;
     void addDynamicDevicesToList();

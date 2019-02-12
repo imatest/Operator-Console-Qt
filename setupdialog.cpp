@@ -609,3 +609,19 @@ void SetupDialog::on_videoFormatComboBox_currentIndexChanged(const QString &sele
 {
     m_settings.video_format = selectedFormat;
 }
+
+void SetupDialog::on_width_editingFinished()
+{
+    QString value = ui->width->text();
+    if (!value.isEmpty()){
+        m_settings.width = value.toInt();
+    }
+}
+
+void SetupDialog::on_height_editingFinished()
+{
+    QString value = ui->height->text();
+    if (!value.isEmpty()){
+        m_settings.height = value.toInt();
+    }
+}
