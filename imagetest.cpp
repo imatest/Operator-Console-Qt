@@ -139,7 +139,7 @@ void ImageTest::PlanesFromRGB()
 }
 
 /// converts from m_rgb to rgb
-void ImageTest::RGBFromPlanes(UINT *rgb)
+void ImageTest::RGBFromPlanes(uint32_t *rgb)
 {
 	int				i, numPixels;
 	unsigned char	*r, *g, *b;		// pointers into m_rgb (MATLAB format)

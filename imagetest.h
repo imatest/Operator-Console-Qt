@@ -130,7 +130,7 @@ public:
     virtual void	InitResults();
     void			ParseFailures(const JSONNode *data);
     void			PlanesFromRGB();
-    void			RGBFromPlanes(unsigned int *rgb);
+    void			RGBFromPlanes(uint32_t *rgb);
 
 protected:
 	bool			AllocateRGB();
