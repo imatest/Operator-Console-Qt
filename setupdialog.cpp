@@ -598,10 +598,11 @@ void SetupDialog::getCamera()
 {
     int index = ui->qcamera->currentIndex();
     QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
-
-    m_settings.qcam_deviceID = cameras[index].deviceName();
-    m_settings.width  = m_settings.qcam_list[m_settings.qcam_deviceID].width();
-    m_settings.height = m_settings.qcam_list[m_settings.qcam_deviceID].height();
+    if (m_settings.sourceID == SOURCE_OpConsoleDirectShow) {
+        m_settings.qcam_deviceID = cameras[index].deviceName();
+        m_settings.width  = m_settings.qcam_list[m_settings.qcam_deviceID].width();
+        m_settings.height = m_settings.qcam_list[m_settings.qcam_deviceID].height();
+    }
 }
 
 void SetupDialog::on_videoFormatComboBox_currentIndexChanged(const QString &selectedFormat)
