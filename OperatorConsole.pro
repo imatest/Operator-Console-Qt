@@ -206,14 +206,19 @@ OUT_FOLDER = 'release'
 
 win32{
 DEPENDENT_LIBS = '$$IT_INSTALL_ROOT/bin/ShaferFilechck$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/library/cpp/imatest_library$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/acquisition/cpp/imatest_acquisition$$LIB_EXT'
+BUILD_PATH = $$system_quote($$system_path($$OUT_PWD/$$OUT_FOLDER))
+DATA_FOLDER_DEST = $$system_quote($$system_path($$BUILD_PATH/Data))
 }
 unix{
 DEPENDENT_LIBS = '$$IT_INSTALL_ROOT/bin/ShaferFilechck$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/library/cpp/libImatest$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/acquisition/cpp/libImatest_acquisition$$LIB_EXT'
+BUILD_PATH = $$system_quote($$system_path($$OUT_PWD))
+DATA_FOLDER_DEST = $$system_quote($$system_path($$BUILD_PATH))
 }
 
+
 for (file, DEPENDENT_LIBS) {
-QMAKE_POST_LINK += $${QMAKE_COPY} $$system_quote($$system_path($${file})) $$system_quote($$system_path($$OUT_PWD/$$OUT_FOLDER)) $$escape_expand(\\n\\t)
+QMAKE_POST_LINK += $${QMAKE_COPY} $$system_quote($$system_path($${file})) $$BUILD_PATH $$escape_expand(\\n\\t)
 }
 
 # Copy the /Data folder into the output directory
-QMAKE_POST_LINK += $${QMAKE_COPY_DIR} $$system_quote($$system_path($$PWD/Data)) $$system_quote($$system_path($$OUT_PWD/$$OUT_FOLDER/Data)) $$escape_expand(\\n\\t)
+QMAKE_POST_LINK += $${QMAKE_COPY_DIR} $$system_quote($$system_path($$PWD/Data)) $$DATA_FOLDER_DEST $$escape_expand(\\n\\t)
