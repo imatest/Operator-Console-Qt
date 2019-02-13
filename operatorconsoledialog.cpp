@@ -39,15 +39,15 @@ void OperatorConsoleDialog::setupSignals()
     connect(this, &OperatorConsoleDialog::startTest, console, &OperatorConsole::OnStart);
     connect(this, &OperatorConsoleDialog::stopTest,  console, &OperatorConsole::OnStop);
 
-    connect(m_out, &QFile::readyRead, this, &OperatorConsoleDialog::on_ready_read);
+//    connect(m_out, &QFile::readyRead, this, &OperatorConsoleDialog::on_ready_read);
 }
 
-void OperatorConsoleDialog::on_ready_read()
-{
-    QTextStream stream(m_out);
-    QString str = stream.readAll();
-    log_message(str, false);
-}
+//void OperatorConsoleDialog::on_ready_read()
+//{
+//    QTextStream stream(m_out);
+//    QString str = stream.readAll();
+//    log_message(str, false);
+//}
 
 void OperatorConsoleDialog::setupTextDisplays()
 {
