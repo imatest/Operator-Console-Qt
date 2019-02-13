@@ -66,6 +66,14 @@
 #define INI_FILENAME		"Data\\imatest.ini"
 #endif
 
+#ifndef IMA_CALL_CONV
+#ifdef _WIN32
+#define IMA_CALL_CONV __cdecl
+#else
+#define IMA_CALL_CONV
+#endif
+#endif
+
 #if defined IMATEST_4_2
     #ifdef _M_X64
     #define PROGRAMPATH			"C:\\Program Files\\Imatest\\v4.2\\IT\\bin"
