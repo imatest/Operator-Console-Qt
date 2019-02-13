@@ -54,7 +54,7 @@ class OperatorConsoleDialog : public QDialog
     void on_btnStart_clicked();
     void on_btnStop_clicked();
     void on_OperatorConsoleDialog_accepted();
-    void on_ready_read();
+//    void on_ready_read();
 
     // add slots here for signals that will be sent by OperatorConsole object
 
