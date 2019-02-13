@@ -153,7 +153,7 @@ bool ImatestLibAcq::CaptureFrame()
 
         delete[] m_buf;
 
-        m_buf = new byte[m_numBytes];
+        m_buf = new uint8_t[m_numBytes];
         if (nullptr == m_buf)
         {
             log << __FUNCTION__ << ": Unable to allocate image buffer (" << m_numPixels << " bytes";

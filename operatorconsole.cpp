@@ -435,7 +435,6 @@ bool OperatorConsole::AllocateImageBuf()
         }
 
         // TODO: wrap in try block and catch exception if alloc fails
-        m_cameraImage = new byte[m_camera->BytesPerFrame()];
         success = m_cameraImage != nullptr;
     }
     return success;
