@@ -153,8 +153,6 @@ FORMS += \
 INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/library/cpp'
 INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/include'
 
-DEFINES += __cplusplus
-
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
