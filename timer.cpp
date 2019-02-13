@@ -36,7 +36,7 @@ void Timer::Start()
 #if defined(Q_OS_LINUX)
     ftime(&m_start);
 #else
-    ftime_s(&m_start);
+    _ftime_s(&m_start);
 #endif
 }
 
@@ -45,7 +45,7 @@ void Timer::Stop()
 #if defined(Q_OS_LINUX)
     ftime(&m_stop);
 #else
-    ftime_s(&m_stop);
+    _ftime_s(&m_stop);
 #endif
     Elapsed();
 }
