@@ -19,7 +19,7 @@
 
 #include <string>
 #include "criticalbuf.h"
-
+#include <cstring>
 
 CriticalBuf::CriticalBuf(void)
 {

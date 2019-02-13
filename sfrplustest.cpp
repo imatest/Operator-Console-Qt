@@ -33,7 +33,7 @@
 #include "mclcppclass.h"
 #include "libjson.h"
 #include "jsonhelpers.h"
-#include "JSON\JSONDefs.h"
+#include "JSON/JSONDefs.h"
 
 
 using namespace std;

@@ -1,6 +1,6 @@
 #ifndef JSON_HELPERS_H
 #define JSON_HELPERS_H
-#include "JSON\JSONDefs.h"
+#include "JSON/JSONDefs.h"
 #include "JSON/JSONNode.h"
 
 // JSON helper functions

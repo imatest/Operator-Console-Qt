@@ -1,7 +1,7 @@
 #ifndef LIBJSON_H
 #define LIBJSON_H
 
-#include "JSON\JSONDefs.h"  //for typedefs of functions, strings, and nodes
+#include "JSON/JSONDefs.h"  //for typedefs of functions, strings, and nodes
 
 /*
     This is the C interface to libjson.
@@ -174,13 +174,13 @@
     #ifndef __cplusplus
 	   #error Turning off JSON_LIBRARY requires C++
     #endif
-    #include "JSON\JSONNode.h"  //not used in this file, but libjson.h should be the only file required to use it embedded
-    #include "JSON\JSONWorker.h"
-    #include "JSON\JSONValidator.h"
-    #include "JSON\JSONStream.h"
-    #include "JSON\JSONPreparse.h"
+    #include "JSON/JSONNode.h"  //not used in this file, but libjson.h should be the only file required to use it embedded
+    #include "JSON/JSONWorker.h"
+    #include "JSON/JSONValidator.h"
+    #include "JSON/JSONStream.h"
+    #include "JSON/JSONPreparse.h"
     #ifdef JSON_EXPOSE_BASE64
-	   #include "JSON\JSON_Base64.h"
+       #include "JSON/JSON_Base64.h"
     #endif
     #ifndef JSON_NO_EXCEPTIONS
 	   #include <stdexcept>  //some methods throw exceptions

@@ -27,7 +27,7 @@ FOLDERS = $$system(ls $$IMATEST_INSTALL_ROOT | grep v$$IT_VERSION | sort --versi
 IT_INSTALL_ROOT = $$IMATEST_INSTALL_ROOT/$$last(FOLDERS)/IT
 MCR_INSTALL_ROOT = /usr/local/MATLAB/MATLAB_Runtime/v$$MCR_VERSION
 ARCH = glnxa64
-ARCH_PATH = $$ARCH
+ARCH_PATH = runtime/$$ARCH
 }
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -153,8 +153,6 @@ FORMS += \
 INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/library/cpp'
 INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/include'
 
-DEFINES += __cplusplus
-
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
@@ -173,21 +171,26 @@ DISTFILES += \
 
 win32:LIBS += -L'$$IT_INSTALL_ROOT/libs/library/cpp/' -limatest_library
 unix:LIBS += -L'$$IT_INSTALL_ROOT/libs/library/cpp/' -lImatest
+unix:QMAKE_RPATHDIR += $$IT_INSTALL_ROOT/libs/library/cpp
 
 INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/library/cpp'
 DEPENDPATH  += '$$IT_INSTALL_ROOT/libs/library/cpp'
 
 win32:LIBS += -L'$$IT_INSTALL_ROOT/libs/acquisition/cpp/' -limatest_acquisition
 unix:LIBS += -L'$$IT_INSTALL_ROOT/libs/acquisition/cpp/' -lImatest_acquisition
+unix:QMAKE_RPATHDIR += $$IT_INSTALL_ROOT/libs/acquisition/cpp
 
 INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
 DEPENDPATH  += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
 
-LIBS += -L'$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH/' -lmclmcrrt
+win32:LIBS += -L'$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH/' -lmclmcrrt
+unix:LIBS += -L'$$MCR_INSTALL_ROOT/$$ARCH_PATH/' -lmwmclmcrrt
+unix:QMAKE_RPATHDIR += $$MCR_INSTALL_ROOT/$$ARCH_PATH/
+unix:QMAKE_RPATHDIR += $$MCR_INSTALL_ROOT/bin/$$ARCH
 
 INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH'
-DEPENDPATH  += '$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH'
-
+win32:DEPENDPATH  += '$$MCR_INSTALL_ROOT/lib/glnxa64/lib/$$ARCH_PATH'
+unix:DEPENDPATH  += '$$MCR_INSTALL_ROOT/sys/opengl/lib/$$ARCH'
 
 # Copy the dependent libraries into the output directory
 LIB_EXT =

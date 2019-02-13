@@ -35,8 +35,9 @@
 #include <QMutex>
 #include <QThread>
 #include <QWaitCondition>
+#include "imatestdefines.h"
 
-typedef void (__cdecl *ThreadFunc)(void *);
+typedef void (IMA_CALL_CONV *ThreadFunc)(void *);
 
 
 class ThreadControl : public QThread

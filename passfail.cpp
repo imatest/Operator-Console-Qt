@@ -72,7 +72,7 @@ bool PassFail::ReadFile(PassFailSettings &settings)
     QFileInfo info(settings.m_pass_fail_file.c_str());
     if (!info.isWritable())
     {
-        settings.b_isReadOnly = TRUE;
+        settings.b_isReadOnly = true;
     }
 
     //
@@ -431,7 +431,7 @@ bool PassFail::Read(PassFailSettings &settings)
     QFileInfo info(ini_name);
     if (!info.isWritable())
     {
-        settings.b_isReadOnly = TRUE;
+        settings.b_isReadOnly = true;
     }
 
     // Next we need to figure out which pass/fail modules are in the ini. We will just 'readAll', which returns the full list of sections.

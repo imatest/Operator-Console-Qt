@@ -42,10 +42,16 @@ public:
 protected:
 	void Elapsed();
 
+
 protected:
-	struct _timeb	m_start;
-	struct _timeb	m_stop;
-	long long		m_elapsed;		//!< elapsed time in ms
+#if defined(Q_OS_LINUX)
+    struct timeb	m_start;
+    struct timeb	m_stop;
+#else
+    struct _timeb	m_start;
+    struct _timeb	m_stop;
+#endif
+    long long		m_elapsed;		//!< elapsed time in ms
 };
 
 #endif
