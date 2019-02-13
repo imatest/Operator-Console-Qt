@@ -102,7 +102,7 @@ void ArbitraryChartTest::Run()	// we need to override the parent method because 
 	//	"height": m_height
 	//}
 	//
-    sprintf_s(buf, sizeof(buf), "{\"fileroot\": \"%s\", \"extension\": \"rgb\", \"encoding\": \"sRGB\", \"width\": %d, \"height\": %d }", m_config->m_fileRoot.c_str(), m_width, m_height);
+    snprintf(buf, sizeof(buf), "{\"fileroot\": \"%s\", \"extension\": \"rgb\", \"encoding\": \"sRGB\", \"width\": %d, \"height\": %d }", m_config->m_fileRoot.c_str(), m_width, m_height);
 	
 
 	//
