@@ -33,13 +33,21 @@ Timer::~Timer(void)
 
 void Timer::Start()
 {
-	_ftime_s(&m_start);
+#if defined(Q_OS_LINUX)
+    ftime(&m_start);
+#else
+    ftime_s(&m_start);
+#endif
 }
 
 void Timer::Stop()
 {
-	_ftime_s(&m_stop);
-	Elapsed();
+#if defined(Q_OS_LINUX)
+    ftime(&m_stop);
+#else
+    ftime_s(&m_stop);
+#endif
+    Elapsed();
 }
 
 ///

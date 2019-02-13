@@ -362,15 +362,21 @@ bool OperatorConsole::InitLibs()
 		//
 		// Try to initialize Blemish and SFRplus libraries
 		//
-		m_flags.imatestIT = imatest_libraryInitialize();
-
+#if defined(Q_OS_WIN)
+        m_flags.imatestIT = imatest_libraryInitialize();
+#else
+        m_flags.imatestIT = libImatestInitialize();
+#endif
 		if (!m_flags.imatestIT)
 		{
 			str = "Unable to initialize imatest library.";
 		}
 
-		m_flags.imatestAcq = imatest_acquisitionInitialize();
-
+#if defined(Q_OS_WIN)
+        m_flags.imatestAcq = imatest_acquisitionInitialize();
+#else
+        m_flags.imatestAcq = libImatest_acquisitionInitialize();
+#endif
 		if (!m_flags.imatestAcq)
 		{
 			str = "Unable to initialize imatest acquisition library.";
@@ -389,15 +395,23 @@ void OperatorConsole::CloseLibs()
 {
 	if (m_flags.imatestIT)
 	{
-		imatest_libraryTerminate();
-		m_flags.imatestIT = false;
+#if defined(Q_OS_WIN)
+        imatest_libraryTerminate();
+#else
+        libImatestTerminate();
+#endif
+        m_flags.imatestIT = false;
 	}
 
 	if (m_flags.imatestAcq)
 	{
-		imatest_acquisitionTerminate();
-		m_flags.imatestAcq = false;
-	}
+#if defined(Q_OS_WIN)
+        imatest_acquisitionTerminate();
+#else
+        libImatest_acquisitionTerminate();
+#endif
+        m_flags.imatestAcq = false;
+    }
 
 	if (m_flags.matlab)
 	{
