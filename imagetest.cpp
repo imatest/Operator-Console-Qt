@@ -386,7 +386,7 @@ void ImageTest::ParseFailures(const JSONNode *passfail)
 	m_failInfo.Set(fail);
 }
 
-void __cdecl ImageTest::ThreadProc(void *param)
+void IMA_CALL_CONV ImageTest::ThreadProc(void *param)
 {
     ImageTest   *test = static_cast<ImageTest *>(param);
 

@@ -114,5 +114,12 @@
 #define PROGRAMPATH			"C:\\Program Files (x86)\\Imatest\\v4.1\\IT\\bin"
 #endif
 
+#ifndef IMA_CALL_CONV
+#ifdef _WIN32
+#define IMA_CALL_CONV __cdecl
+#else
+#define IMA_CALL_CONV
+#endif
+#endif
 
 #endif // IMATESTDEFINES_H

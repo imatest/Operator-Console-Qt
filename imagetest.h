@@ -32,6 +32,7 @@
 #else
 #include "libImatest.h"
 #endif
+#include "imatestdefines.h"
 #include "timer.h"
 #include "timestamp.h"
 
@@ -119,7 +120,7 @@ public:
 	void			SetBuffer(void *buf) {m_rawPixels = buf;}
     void			SetJSON(string &src) {m_jsonResults.Set(src);}
 
-    static void __cdecl ThreadProc(void *param);	//!< param must be a pointer to an ImageTest object
+    static void IMA_CALL_CONV ThreadProc(void *param);	//!< param must be a pointer to an ImageTest object
 
     void			AppendLog(QString &log) {m_log.Append(log);}
     void			AppendLog(QTextStream &log) {m_log.Append(log);}

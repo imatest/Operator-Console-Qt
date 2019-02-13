@@ -68,7 +68,7 @@ bool ImageAcquisition::Init(int width, int height, int bytesPerPixel)
 }
 
 
-void __cdecl ImageAcquisition::ThreadProc(void *param)
+void IMA_CALL_CONV ImageAcquisition::ThreadProc(void *param)
 {
     ImageAcquisition	*acq = static_cast<ImageAcquisition *>(param);
 

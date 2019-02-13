@@ -21,6 +21,7 @@
 #define IMAGE_ACQUISITION_H
 
 #include "criticalbuf.h"
+#include "imatestdefines.h"
 #include <string>
 #include <QObject>
 #include <QString>
@@ -51,7 +52,7 @@ public:
 	void				SetHeight(int height) {m_height = height;}
 	void				SetWidth(int width)   {m_width = width;}
 
-    static void __cdecl ThreadProc(void *param);
+    static void IMA_CALL_CONV ThreadProc(void *param);
 
 //
 // these member variables are only used by ImatestLibAcq (which inherits from this class),
