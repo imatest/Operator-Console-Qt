@@ -118,6 +118,10 @@ void OperatorConsoleDialog::set_image_size(const QSize &newSize)
     QRect   geometry = ui->image->geometry();
     geometry.adjust(0, 0, delta.width(), delta.height());
     ui->image->setGeometry(geometry);
+    ui->image->updateGeometry();
+    QImage newImage(newSize, QImage::Format_RGB32);
+    newImage.fill(Qt::darkGray);
+    update_image(newImage);
 
     //
     // move the qso widgets to that they're centered in the image qwuadrants
@@ -276,6 +280,11 @@ void OperatorConsoleDialog::qsoInit()
     qso[eLowerRight] = ui->qsoLR;
     qso[eUpperLeft]  = ui->qsoUL;
     qso[eLowerLeft]  = ui->qsoLL;
+    ui->qsoCenter->setParent(ui->image);
+    ui->qsoLL->setParent(ui->image);
+    ui->qsoLR->setParent(ui->image);
+    ui->qsoUR->setParent(ui->image);
+    ui->qsoUL->setParent(ui->image);
 
 }
 
