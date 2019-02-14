@@ -329,8 +329,8 @@ void SetupDialog::ShowDirectShowElements(void)
     ui->qcamera->show();
     ui->labelQcamera->show();
 
-    ui->width->hide();
-    ui->height->hide();
+//    ui->width->hide();
+//    ui->height->hide();
     ui->labelWidth->hide();
     ui->labelHeight->hide();
 
