@@ -3,6 +3,7 @@
 
 #include <QString>
 #include "mclcppclass.h"
+#include "mclmcrrt.h"
 
 class IniSetting
 {
@@ -12,11 +13,11 @@ protected:
     QString key;
     QString storageType;
     mxClassID dataType;
-    static size_t numWriteFields;
-    static size_t numReadFields;
+    static const size_t numWriteFields;
+    static const size_t numReadFields;
 public:
     IniSetting(QString inSection, QString inKey, QString inSubsection);
-    virtual ~IniSetting();
+    virtual ~IniSetting() {}
 
     virtual mwArray getReadCommand() = 0;
     virtual mwArray getWriteCommand() = 0;
