@@ -77,6 +77,7 @@ public:
 
 private:
     Ui::OperatorConsoleDialog *ui;
+    void setupComboBox();
 };
 
 #endif // OPERATORCONSOLEDIALOG_H
