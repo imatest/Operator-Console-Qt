@@ -58,7 +58,7 @@ class OperatorConsoleDialog : public QDialog
 
     // add slots here for signals that will be sent by OperatorConsole object
 
-    void on_comboBox_currentIndexChanged(const QString &arg1);
+    void on_analysisComboBox_currentIndexChanged(const QString &arg1);
 
 private:
     void quit();

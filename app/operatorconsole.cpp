@@ -247,7 +247,6 @@ bool OperatorConsole::Init2()
 	else
 	{
         OnSetSFRplus();	// the default test is set to SFRplus
-        // TODO set the combobox to SFRplus
 		m_status = idle;
 		success = true;
 	}

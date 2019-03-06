@@ -5,6 +5,12 @@
 #include <QTextStream>
 #include <QRgb>
 
+void OperatorConsoleDialog::setupComboBox()
+{
+   // The initial analysis routine is SFRplus
+    ui->analysisComboBox->setCurrentText("SFRplus");
+}
+
 OperatorConsoleDialog::OperatorConsoleDialog(QWidget *parent, QFile *out, QFile *err) :
     QDialog(parent),
     m_out(out),
@@ -17,6 +23,7 @@ OperatorConsoleDialog::OperatorConsoleDialog(QWidget *parent, QFile *out, QFile 
     console = new OperatorConsole;
     console->Init1(this);    // init the operator console object
     setupSignals();
+    setupComboBox();
     qsoInit();
     qsoShow(false);
 
@@ -312,7 +319,8 @@ void OperatorConsoleDialog::on_OperatorConsoleDialog_accepted()
     quit();
 }
 
-void OperatorConsoleDialog::on_comboBox_currentIndexChanged(const QString &selection)
+
+void OperatorConsoleDialog::on_analysisComboBox_currentIndexChanged(const QString &selection)
 {
     if (selection.compare("sfrplus", Qt::CaseInsensitive) == 0) {
         console->OnSetSFRplus();
@@ -327,6 +335,6 @@ void OperatorConsoleDialog::on_comboBox_currentIndexChanged(const QString &selec
         console->OnSetArbitraryChart();
 
     } else {
-
+        console->OnSetSFRplus(); // Default to SFRplus
     }
 }
