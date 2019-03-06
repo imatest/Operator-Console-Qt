@@ -31,9 +31,6 @@ OperatorConsoleDialog::~OperatorConsoleDialog()
 void OperatorConsoleDialog::setupSignals()
 {
 //    connect(ui->btnQuit,      &QPushButton::clicked,  qApp,    &QApplication::quit);
-    connect(ui->radioBlemish, &QRadioButton::clicked, console, &OperatorConsole::OnSetBlemish);
-    connect(ui->radioSfr,     &QRadioButton::clicked, console, &OperatorConsole::OnSetSFRplus);
-    connect(ui->radioCharts,  &QRadioButton::clicked, console, &OperatorConsole::OnSetArbitraryChart);
     connect(ui->btnJSON,      &QPushButton::clicked,  console, &OperatorConsole::OnShowJSON);
     connect(ui->btnSetup,     &QPushButton::clicked,  console, &OperatorConsole::OnSetup);
     connect(ui->btnPassFail,  &QPushButton::clicked,  console, &OperatorConsole::OnPassFail);
@@ -313,4 +310,23 @@ void OperatorConsoleDialog::on_btnQuit_clicked()
 void OperatorConsoleDialog::on_OperatorConsoleDialog_accepted()
 {
     quit();
+}
+
+void OperatorConsoleDialog::on_comboBox_currentIndexChanged(const QString &selection)
+{
+    if (selection.compare("sfrplus", Qt::CaseInsensitive) == 0) {
+        console->OnSetSFRplus();
+
+    } else if (selection.compare("blemish", Qt::CaseInsensitive) == 0 ){
+        console->OnSetBlemish();
+
+    }  else if (selection.compare("sfrreg", Qt::CaseInsensitive) == 0 ){
+        console->OnSetSFRreg();
+
+    }  else if (selection.compare("arbitrary charts", Qt::CaseInsensitive) == 0 ){
+        console->OnSetArbitraryChart();
+
+    } else {
+
+    }
 }

@@ -446,6 +446,7 @@
           <set>Qt::AlignCenter</set>
          </property>
         </widget>
+        <zorder>labelFps</zorder>
         <zorder>image</zorder>
         <zorder>layoutWidget</zorder>
        </widget>
@@ -522,27 +523,41 @@
         <item>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QRadioButton" name="radioBlemish">
+           <widget class="QLabel" name="label">
+            <property name="font">
+             <font>
+              <pointsize>8</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
             <property name="text">
-             <string>Blemish</string>
+             <string>Analysis Routine</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="radioSfr">
-            <property name="text">
-             <string>SFRplus</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="radioCharts">
-            <property name="text">
-             <string>Arbitrary Charts</string>
-            </property>
+           <widget class="QComboBox" name="comboBox">
+            <item>
+             <property name="text">
+              <string>Arbitrary Charts</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Blemish</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>SFRplus</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>SFRreg</string>
+             </property>
+            </item>
            </widget>
           </item>
          </layout>

@@ -90,7 +90,8 @@ SOURCES += \
     inifile.cpp \
     acquisitiondeviceinfo.cpp \
     inisetting.cpp \
-    inistringsetting.cpp
+#    inistringsetting.cpp \
+    sfrregtest.cpp
 
 
 HEADERS += \
@@ -147,7 +148,8 @@ HEADERS += \
     inifile.h \
     acquisitiondeviceinfo.h \
     inisetting.h \
-    inistringsetting.h
+#    inistringsetting.h \
+    sfrregtest.h
 
 FORMS += \
         operatorconsoledialog.ui \

@@ -28,7 +28,7 @@ static const TestID gTestID[] =
 
 constexpr size_t NUM_TESTS = (sizeof(gTestID) / sizeof(gTestID[0]));
 
-SFRregTest::SFRregTest()
+SFRregTest::SFRregTest(void)
 {
     m_name        = TEST_NAME;
     m_tests       = gTestID;
@@ -36,7 +36,7 @@ SFRregTest::SFRregTest()
     m_imatestFunc = sfrreg_shell;
 }
 
-SFRregTest::~SFRregTest()
+SFRregTest::~SFRregTest(void)
 {
 
 }

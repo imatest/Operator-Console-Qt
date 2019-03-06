@@ -234,8 +234,12 @@ bool OperatorConsole::Init2()
 	}
 	else if (!InitArbitraryChartThread())
 	{
-		errMsg = "Unable to create SFRplus thread.";
+        errMsg = "Unable to create Arbitrary Charts thread.";
 	}
+    else if (!InitSFRregThread())
+    {
+        errMsg = "Unable to create SFRreg thread.";
+    }
 	else if (!InitCameraThread())
 	{
 		errMsg = "Unable to create Capture thread.";
@@ -243,6 +247,7 @@ bool OperatorConsole::Init2()
 	else
 	{
         OnSetSFRplus();	// the default test is set to SFRplus
+        // TODO set the combobox to SFRplus
 		m_status = idle;
 		success = true;
 	}
@@ -312,7 +317,16 @@ bool OperatorConsole::InitSFRplusThread()
     m_sfrPlus.Init(m_cameraImage, m_width, m_height, &m_config);
     m_flags.sfrplusThread = m_sfrPlusControl.Init(m_sfrPlus.ThreadProc, &m_sfrPlus);
 
-	return m_flags.sfrplusThread;
+    return m_flags.sfrplusThread;
+}
+
+
+bool OperatorConsole::InitSFRregThread()
+{
+    m_sfrreg.Init(m_cameraImage, m_width, m_height, &m_config);
+    m_flags.sfrregThread = m_sfrregControl.Init(m_sfrreg.ThreadProc, &m_sfrreg);
+
+    return m_flags.sfrregThread;
 }
 
 
@@ -473,6 +487,12 @@ void OperatorConsole::OnSetArbitraryChart()
     m_dlg->qsoShow(false);
 }
 
+void OperatorConsole::OnSetSFRreg()
+{
+    m_test = &m_sfrregControl;
+    m_dlg->qsoShow(false);
+}
+
 
 void OperatorConsole::OnStart()	// the Start button was pressed in the dialog
 {
@@ -566,6 +586,13 @@ void OperatorConsole::Quit()
         m_flags.arbitraryChartThread = false;
     }
 
+    if (m_flags.sfrregThread){
+        LogMessage("Waiting for SFRreg thread to quit");
+        m_sfrregControl.Quit();
+        m_flags.sfrregThread = false;
+    }
+
+
 #if defined(REDIRECT_STDIO)
 	if (m_flags.stdOut)
 	{
@@ -632,6 +659,15 @@ void OperatorConsole::OnSFRplusDone()
 	if (m_status != quitting)
 	{
 		UpdateResultsSFRplus(&m_sfrPlus);
+        TestDone();
+    }
+}
+
+void OperatorConsole::OnSFRregDone()
+{
+    if (m_status != quitting)
+    {
+        UpdateResults(&m_sfrreg);	// right now SFRreg doesn't have any special results, so we can just call UpdateResults() directly
         TestDone();
     }
 }
@@ -861,9 +897,10 @@ bool OperatorConsole::ReInit(void)
     QString	errMsg;
 	bool	success = false;
 
-	m_sfrPlusControl.Quit();
-	m_blemishControl.Quit();
     m_arbitraryChartControl.Quit();
+	m_blemishControl.Quit();
+    m_sfrPlusControl.Quit();
+    m_sfrregControl.Quit();
 
 	if (!CheckFiles(errMsg))	// make sure that all of the hard coded files exist
 	{
@@ -887,7 +924,11 @@ bool OperatorConsole::ReInit(void)
 	}
     else if (!InitArbitraryChartThread())
     {
-        errMsg = "Unable to create SFRplus thread.";
+        errMsg = "Unable to create Arbitrary Charts thread.";
+    }
+    else if (!InitSFRregThread())
+    {
+        errMsg = "Unable to create SFRreg thread.";
     }
     else if (!InitCameraThread())
     {
@@ -1044,6 +1085,7 @@ void OperatorConsole::SetupSlots()
     connect(&m_blemishControl,        &ThreadControl::data_ready, this, &OperatorConsole::OnBlemishDone);
     connect(&m_sfrPlusControl,        &ThreadControl::data_ready, this, &OperatorConsole::OnSFRplusDone);
     connect(&m_arbitraryChartControl, &ThreadControl::data_ready, this, &OperatorConsole::OnAribtraryChartDone);
+    connect(&m_sfrregControl,         &ThreadControl::data_ready, this, &OperatorConsole::OnSFRregDone);
     connect(&m_ImatestCameraControl,  &ThreadControl::data_ready, this, &OperatorConsole::OnFrameReady);
     connect(&m_QCameraControl,        &ThreadControl::data_ready, this, &OperatorConsole::OnFrameReady);
     connect(&m_FileCameraControl,     &ThreadControl::data_ready, this, &OperatorConsole::OnFrameReady);
