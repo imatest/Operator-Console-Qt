@@ -89,8 +89,8 @@ SOURCES += \
     passfaildialog.cpp \
     inifile.cpp \
     acquisitiondeviceinfo.cpp \
-    inisetting.cpp \
-    inistringsetting.cpp
+    inisetting.cpp
+#    inistringsetting.cpp
 
 
 HEADERS += \
@@ -146,8 +146,8 @@ HEADERS += \
     passfaildialog.h \
     inifile.h \
     acquisitiondeviceinfo.h \
-    inisetting.h \
-    inistringsetting.h
+    inisetting.h
+#    inistringsetting.h
 
 FORMS += \
         operatorconsoledialog.ui \
@@ -165,6 +165,15 @@ INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/include'
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+## QT static lib includes
+#unix{
+#CONFIG -= import_plugins
+#CONFIG += STATIC
+#QMAKE_RPATHDIR+=/home/ty/Qt/5.12.1/qt_static/lib
+#LIBS += -L/home/ty/qt5/build/lib -l:libQt5Core.a -l:libQt5Widgets.a -l:libQt5Gui.a -l:libQt5OpenGL.a -l:libqtpcre2.a -lqtharfbuzz -l:libxcb-static.a -l:libQt5XcbQpa.a -l:libQt5X11Extras.a -l:libQt5DBus.a
+#}
+
 
 INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
 DEPENDPATH += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
@@ -195,6 +204,7 @@ win32:LIBS += -L'$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH/' -lmclmcrrt
 unix:LIBS += -L'$$MCR_INSTALL_ROOT/$$ARCH_PATH/' -lmwmclmcrrt
 unix:QMAKE_RPATHDIR += $$MCR_INSTALL_ROOT/$$ARCH_PATH/
 unix:QMAKE_RPATHDIR += $$MCR_INSTALL_ROOT/bin/$$ARCH
+
 
 INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH'
 win32:DEPENDPATH  += '$$MCR_INSTALL_ROOT/lib/glnxa64/lib/$$ARCH_PATH'
