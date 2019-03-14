@@ -17,6 +17,7 @@
 #include "passfailsettings.h"
 #include "setup_settings.h"
 #include "sfrplustest.h"
+#include "sfrregtest.h"
 //#include "stderrredirect.h"
 //#include "stderrthread.h"
 //#include "stdoutredirect.h"
@@ -101,6 +102,7 @@ typedef struct AppFlags
     unsigned int	blemishThread:1;
     unsigned int	sfrplusThread : 1;
     unsigned int	arbitraryChartThread : 1;
+    unsigned int    sfrregThread : 1;
     unsigned int	matlab:1;			//!< MATLAB lib has been initialized
     unsigned int	imatestIT:1;		//!< imatestIT lib has been initialized
     unsigned int    imatestAcq:1;		//!< Imatest IT acquisition lib has been initialized
@@ -149,6 +151,7 @@ public slots:
     void				OnBlemishDone();        //!< Called when data_ready signal is received from m_blemishControl
     void				OnFrameReady();         //!< Called when data-ready signal is received from m_cameraControl
     void				OnSFRplusDone();        //!< Called when data_ready signal is received from m_sfrPlusControl
+    void                OnSFRregDone();         //!< Called when data_ready signal is received from m_sfrregControl
 
     void				OnUpdateStderr();		//!< Called after MSG_STDERR is received
     void				OnUpdateStdout();		//!< Called after MSG_STDOUT is received
@@ -161,6 +164,7 @@ public slots:
     void				OnSetBlemish();         //!< Called when "Blemish" radio button is clicked in Operator Console Dialog
     void				OnSetSFRplus();         //!< Called when "SFRplus" radio button is clicked in Operator Console Dialog
     void				OnSetArbitraryChart();	//!< Called when  "Arbitrary Charts" radio button is clicked in Operator Console Dialog
+    void                OnSetSFRreg();          //!< Called when "SFRreg" radio button is clicked in Operator Console Dialog
     void				OnShowJSON();       	//!< Called after MSG_JSON is received
     void				OnStop();               //!< Called after MSG_STOP is received
     void				OnStart();              //!< Called after MSG_START is received
@@ -183,6 +187,7 @@ protected:
     bool				InitLibs();									//!< Function that initializes the Imatest library. Must be called before any Imatest library functions are used.
     bool				InitOutput();
     bool				InitSFRplusThread();
+    bool                InitSFRregThread();
     bool				LoadConfig();
     void				MakeHandles();
 
@@ -231,10 +236,12 @@ protected:
     BlemishTest				m_blemish;			//!< this will run the blemish tests
     SFRplusTest				m_sfrPlus;			//!< this will run the SFRplus tests
     ArbitraryChartTest		m_arbitraryChart;		//!< this will run the arbitrary chart tests
+    SFRregTest              m_sfrreg;          //!< this will run SFRreg tests
 
     ThreadControl			m_blemishControl;	//!< this is the thread control for running Blemish tests
     ThreadControl			m_sfrPlusControl;	//!< this is the thread control for running SFRplus tests
     ThreadControl			m_arbitraryChartControl;	//!< this is the thread control for running Arbitrary Chart tests
+    ThreadControl           m_sfrregControl;   //!< this is the thread controlf or running SFRreg tests
 
     ThreadControl			m_ImatestCameraControl;
     ThreadControl			m_QCameraControl;

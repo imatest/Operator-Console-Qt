@@ -89,8 +89,9 @@ SOURCES += \
     passfaildialog.cpp \
     inifile.cpp \
     acquisitiondeviceinfo.cpp \
-    inisetting.cpp
-#    inistringsetting.cpp
+    inisetting.cpp \
+#    inistringsetting.cpp \
+    sfrregtest.cpp
 
 
 HEADERS += \
@@ -146,8 +147,9 @@ HEADERS += \
     passfaildialog.h \
     inifile.h \
     acquisitiondeviceinfo.h \
-    inisetting.h
-#    inistringsetting.h
+    inisetting.h \
+#    inistringsetting.h \
+    sfrregtest.h
 
 FORMS += \
         operatorconsoledialog.ui \
