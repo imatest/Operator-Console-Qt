@@ -18,12 +18,7 @@
 ****************************************************************************/
 
 #pragma once
-#pragma warning(disable:4100)
-#ifdef _WIN32
-#include "imatest_acquisition.h"
-#else
-#include "libImatest_acquisition.h"
-#endif
+#include "imatestacquisitionlibrary.h"
 #include <string>
 #include <vector>
 #include <QString>

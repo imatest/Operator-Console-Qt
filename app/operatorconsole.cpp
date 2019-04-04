@@ -22,13 +22,9 @@
 ///
 
 #include "config.h"
-#ifdef _WIN32
-#include "imatest_library.h"
-#include "imatest_acquisition.h"
-#else
-#include "libImatest.h"
-#include "libImatest_acquisition.h"
-#endif
+#include "imatestmainlibrary.h"
+#include "imatestacquisitionlibrary.h"
+
 #include "imatestdefines.h"
 #include "inifile.h"
 #include "operatorconsole.h"

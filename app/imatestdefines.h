@@ -122,4 +122,28 @@
 #endif
 #endif
 
+// Define macros for suppressing warnings
+#ifndef IMA_WARNING_PUSH
+#ifdef _WIN32
+#define IMA_WARNING_PUSH __pragma(warning( push ))
+#else
+#define IMA_WARNING_PUSH _Pragma("GCC diagnostic push")
+#endif
+#endif
+
+#ifndef IMA_WARNING_POP
+#ifdef _WIN32
+#define IMA_WARNING_POP __pragma(warning( pop ))
+#else
+#define IMA_WARNING_POP _Pragma("GCC diagnostic pop")
+#endif
+#endif
+
+#ifndef IMA_DISABLE_UNUSED_PARAM_WARNING
+#ifdef _WIN32
+#define IMA_DISABLE_UNUSED_PARAM_WARNING __pragma(warning( disable:4100 ))
+#else
+#define IMA_DISABLE_UNUSED_PARAM_WARNING _Pragma("GCC diagnostic ignored "-Wno-unused-parameter"")
+#endif
+#endif
 #endif // IMATESTDEFINES_H

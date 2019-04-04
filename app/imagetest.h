@@ -27,11 +27,7 @@
 #include <string.h>
 #include "config.h"
 #include "criticalstring.h"
-#ifdef _WIN32
-#include "imatest_library.h"
-#else
-#include "libImatest.h"
-#endif
+#include "imatestmainlibrary.h"
 #include "imatestdefines.h"
 #include "timer.h"
 #include "timestamp.h"

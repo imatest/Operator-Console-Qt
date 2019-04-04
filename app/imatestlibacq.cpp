@@ -16,14 +16,8 @@
 *	You should have received a copy of the GNU General Public License		*
 *	along with this program.  If not, see <http://www.gnu.org/licenses/>. 	*
 ****************************************************************************/
-
-#ifdef _WIN32
-#include "imatest_library.h"
-#include "imatest_acquisition.h"
-#else
-#include "libImatest.h"
-#include "libImatest_acquisition.h"
-#endif
+#include "imatestmainlibrary.h"
+#include "imatestacquisitionlibrary.h"
 #include "imatestlibacq.h"
 #include "threadcontrol.h"
 

@@ -150,6 +150,9 @@ HEADERS += \
     inisetting.h \
 #    inistringsetting.h \
     sfrregtest.h
+    sfrregtest.h \
+    imatestmainlibrary.h \
+    imatestacquisitionlibrary.h
 
 FORMS += \
         operatorconsoledialog.ui \

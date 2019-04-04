@@ -25,11 +25,7 @@
 
 #include "sfrplustest.h"
 #include "config.h"
-#ifdef _WIN32
-#include "imatest_library.h"
-#else
-#include "libImatest.h"
-#endif
+#include "imatestmainlibrary.h"
 #include "mclcppclass.h"
 #include "libjson.h"
 #include "jsonhelpers.h"
