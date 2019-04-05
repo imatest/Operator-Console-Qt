@@ -20,11 +20,8 @@
 #ifndef IMATEST_LIB_ACQ_H
 #define IMATEST_LIB_ACQ_H
 #include <QVector>
-#pragma once
-#pragma warning(push)
-#pragma warning(disable: 4100)
 #include "imageacquisition.h"
-#pragma warning(pop)
+
 #include "acquisitiondeviceinfo.h"
 
 ///
