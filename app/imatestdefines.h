@@ -143,7 +143,7 @@
 #ifdef _WIN32
 #define IMA_DISABLE_UNUSED_PARAM_WARNING __pragma(warning( disable:4100 ))
 #else
-#define IMA_DISABLE_UNUSED_PARAM_WARNING _Pragma("GCC diagnostic ignored "-Wno-unused-parameter"")
+#define IMA_DISABLE_UNUSED_PARAM_WARNING _Pragma("GCC diagnostic ignored \"-Wno-unused-parameter\"")
 #endif
 #endif
 #endif // IMATESTDEFINES_H
