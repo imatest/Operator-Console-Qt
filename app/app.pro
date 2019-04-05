@@ -171,13 +171,17 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-## QT static lib includes
-#unix{
-#CONFIG -= import_plugins
-#CONFIG += STATIC
-#QMAKE_RPATHDIR+=/home/ty/Qt/5.12.1/qt_static/lib
-#LIBS += -L/home/ty/qt5/build/lib -l:libQt5Core.a -l:libQt5Widgets.a -l:libQt5Gui.a -l:libQt5OpenGL.a -l:libqtpcre2.a -lqtharfbuzz -l:libxcb-static.a -l:libQt5XcbQpa.a -l:libQt5X11Extras.a -l:libQt5DBus.a
-#}
+# QT static lib includes
+unix{
+CONFIG += STATIC
+
+QTPLUGIN += qico
+
+LOCAL_BUILD_FOLDER = /home/ty/qt5/build
+LIBS += -L$$LOCAL_BUILD_FOLDER/plugins/platforms -lqxcb
+LIBS += -L$$LOCAL_BUILD_FOLDER/plugins/xcblintegrations -lqxcb-glx-integration
+LIBS += -L$$LOCAL_BUILD_FOLDER/lib -lQt5Core -lQt5Widgets -lQt5Gui -lQt5OpenGL -lQt5OpenGLExtensions -lqtpcre -lqtharfbuzz -lQt5XcbQpa -lQt5X11Extras -lQt5DBus -lqtfreetype
+}
 
 
 INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
