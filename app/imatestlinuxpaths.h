@@ -2,6 +2,13 @@
 #define IMATESTLINUXPATHS_H
 #ifndef _WIN32
 #include "imatestdefines.h"
+
+//
+// IMAGE_NAME is the name of the static file to be displayed in the application window (until live acquisition is implemented)
+//
+#define LOGO_NAME			"Data/imatest_logo.png"	// imatest logo to be displayed in dialog
+#define IMAGE_NAME			"Data/sfrplus.raw.jpg"			// image file to be used for acquisition from a file (mainly used during development)
+
 //
 // These values are put into m_config, and get passed to the sfrplus and blemish functions
 //

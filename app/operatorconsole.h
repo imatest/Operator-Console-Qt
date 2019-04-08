@@ -29,11 +29,8 @@
 
 //
 // Hard coded values go here.  Most or all will eventually come from a Config or Setup dialog.
-//
-// IMAGE_NAME is the name of the static file to be displayed in the application window (until live acquisition is implemented)
-//
-#define LOGO_NAME			"Data\\imatest_logo.png"	// imatest logo to be displayed in dialog
-#define IMAGE_NAME			"Data\\sfrplus.raw.jpg"			// image file to be used for acquisition from a file (mainly used during development)
+
+
 // #define ADMIN_PASSWORD		"Imatest%840cX"						// password for Administrator access to the pass/fail settings
 #define ADMIN_PASSWORD		"a"						// password for Administrator access to the pass/fail settings
 
