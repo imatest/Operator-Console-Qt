@@ -5,6 +5,7 @@
 #include "passfail.h"
 #include "passfailsettings.h"
 #include <sstream>
+#include <QDebug>
 
 using namespace std;
 
