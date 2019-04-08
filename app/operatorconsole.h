@@ -13,6 +13,7 @@
 #include "imageacquisition.h"
 #include "imagetest.h"
 #include "imatestdefines.h"
+#include "imatestpaths.h"
 #include "imatestlibacq.h"
 #include "passfailsettings.h"
 #include "setup_settings.h"

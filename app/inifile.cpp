@@ -2,7 +2,7 @@
 #include "inifile.h"
 #include "imatestsourceids.h"
 #include "setup_settings.h"
-
+#include "imatestpaths.h"
 using namespace std;
 
 

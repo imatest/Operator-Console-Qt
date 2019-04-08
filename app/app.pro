@@ -151,7 +151,10 @@ HEADERS += \
 #    inistringsetting.h \
     sfrregtest.h \
     imatestmainlibrary.h \
-    imatestacquisitionlibrary.h
+    imatestacquisitionlibrary.h \
+    imatestpaths.h \
+    imatestwindowspaths.h \
+    imatestlinuxpaths.h
 
 FORMS += \
         operatorconsoledialog.ui \
