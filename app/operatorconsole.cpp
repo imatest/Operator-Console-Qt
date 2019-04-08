@@ -351,7 +351,7 @@ bool OperatorConsole::InitCameraThread()
     {
         SetFileCamera();
     }
-    return (m_flags.ImatestCameraThread && m_flags.QCameraThread);
+    return (m_flags.ImatestCameraThread);
 }
 
 
