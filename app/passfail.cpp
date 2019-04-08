@@ -44,12 +44,14 @@ bool PassFail::ReadFile(PassFailSettings &settings)
     try
     {
         Inifile::Inifile::inifile(1,readSett,vararginParam);
+        result = true;
     }
     catch (mwException& e)
     {
         cout << "Run Error! Unable to read Pass/Fail file" << endl;
         cerr << e.what() << endl;
         e.print_stack_trace();
+        result = false;
     }
 
     mwArray readSettContainer = readSett.Get(1, 1);
