@@ -22,10 +22,14 @@
 #include <string.h>
 
 #include <QTextStream>
-
+#include "imatestdefines.h"
 #include "arbitrarycharttest.h"
 #include "imatestmainlibrary.h"
+
+IMA_WARNING_PUSH
+IMA_DISABLE_UNUSED_PARAM_WARNING
 #include "mclcppclass.h"
+IMA_WARNING_POP
 
 using namespace std;
 
