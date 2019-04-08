@@ -67,12 +67,12 @@ make install
 If you need to rebuild, run 
 ````
 make distclean -j<number of cores>
-```
+````
 before re-running `configure` or `make`.
 
 ## Building the Operator Console
 
-Open a terminal and cd to the top-level folder for the Operator Console source.
+Open a terminal and cd to the top-level folder for the Operator Console source. 
 
 Run qmake to generate makefiles for the project with the following:
 ````
