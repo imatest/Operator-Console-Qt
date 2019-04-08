@@ -273,11 +273,11 @@ bool OperatorConsole::InitCamera()
 		}
         m_camera = &m_imatest_cam;
 	}
-    else if (m_image_source==qcam_source)
-    {
-        success = m_qcam.Open(m_setup.qcam_deviceID);   // this calls Init for us
-        m_camera = &m_qcam;
-    }
+//    else if (m_image_source==qcam_source)
+//    {
+//        success = m_qcam.Open(m_setup.qcam_deviceID);   // this calls Init for us
+//        m_camera = &m_qcam;
+//    }
 	else if (m_image_source==file_source)
 	{
         success = m_file_cam.Open(IMAGE_NAME);  // Open calls Init, so we don't need to do that separately
@@ -337,16 +337,16 @@ bool OperatorConsole::InitCameraThread()
 {
     m_flags.ImatestCameraThread = m_ImatestCameraControl.Init(m_imatest_cam.ThreadProc, &m_imatest_cam);
     m_flags.FileCameraThread    = m_FileCameraControl.Init(m_file_cam.ThreadProc, &m_file_cam);
-    m_flags.QCameraThread       = m_QCameraControl.Init(m_qcam.ThreadProc, &m_qcam);
+//    m_flags.QCameraThread       = m_QCameraControl.Init(m_qcam.ThreadProc, &m_qcam);
 
     if (m_image_source == imatest_source)
 	{
         SetImatestCamera();
 	}
-    else if (m_image_source == file_source)
-	{
-        SetQCamera();
-	}
+//    else if (m_image_source == file_source)
+//	{
+//        SetQCamera();
+//	}
     else if (m_image_source == file_source)
     {
         SetFileCamera();
@@ -539,12 +539,12 @@ void OperatorConsole::Quit()
 
     m_status = quitting;		// this tells us not to run another test
 
-    if (m_flags.QCameraThread)
-    {
-        LogMessage("Waiting for QCamera thread to quit");
-        m_QCameraControl.Quit(); // wait for the QCamera thread to quit
-        m_flags.QCameraThread = false;
-    }
+//    if (m_flags.QCameraThread)
+//    {
+//        LogMessage("Waiting for QCamera thread to quit");
+//        m_QCameraControl.Quit(); // wait for the QCamera thread to quit
+//        m_flags.QCameraThread = false;
+//    }
 
     if (m_flags.ImatestCameraThread)
     {
@@ -813,7 +813,7 @@ void OperatorConsole::OnSetup()
     int oldWidth = m_setup.width;
     int oldHeight = m_setup.height;
     int oldSourceID = m_setup.sourceID;
-    QString oldQCamID = m_setup.qcam_deviceID;
+//    QString oldQCamID = m_setup.qcam_deviceID;
 
     // Update the list of dynamically detected devices.
     m_setup.device_infos = m_imatest_cam.GetAttachedDevices();
@@ -844,27 +844,27 @@ void OperatorConsole::OnSetup()
         if (oldWidth != m_setup.width || oldHeight != m_setup.height
             || ((oldSourceID != SOURCE_OpConsoleDirectShow) && (m_setup.sourceID == SOURCE_OpConsoleDirectShow))
             || ((oldSourceID == SOURCE_OpConsoleDirectShow) && (m_setup.sourceID != SOURCE_OpConsoleDirectShow))
-            || ((oldSourceID == SOURCE_OpConsoleDirectShow) && (oldQCamID != m_setup.qcam_deviceID)))
+            || (oldSourceID == SOURCE_OpConsoleDirectShow))
         {
 
-            if (m_setup.sourceID != SOURCE_OpConsoleDirectShow)
-            {
+//            if (m_setup.sourceID != SOURCE_OpConsoleDirectShow)
+//            {
                 m_image_source = imatest_source;
 
                 if (oldSourceID == SOURCE_OpConsoleDirectShow)
                 {
                     SetImatestCamera();
                 }
-            }
-            else
-            {
-                m_image_source = qcam_source;
+//            }
+//            else
+//            {
+//                m_image_source = qcam_source;
 
-                if (oldSourceID != SOURCE_OpConsoleDirectShow || (oldQCamID != m_setup.qcam_deviceID))
-                {
-                    SetQCamera();
-                }
-            }
+//                if (oldSourceID != SOURCE_OpConsoleDirectShow || (oldQCamID != m_setup.qcam_deviceID))
+//                {
+//                    SetQCamera();
+//                }
+//            }
             // image dimensions have changed, so we must reallocate
             try
             {
@@ -1005,12 +1005,12 @@ void OperatorConsole::SetFileCamera()
 
 void OperatorConsole::SetQCamera()
 {
-    QGuiApplication::setOverrideCursor(Qt::WaitCursor);
-    m_qcam.Close();
-    m_qcam.Open(m_setup.qcam_deviceID);
-    m_camera        = &m_qcam;
-    m_cameraControl = &m_QCameraControl;
-    QGuiApplication::restoreOverrideCursor();
+//    QGuiApplication::setOverrideCursor(Qt::WaitCursor);
+//    m_qcam.Close();
+//    m_qcam.Open(m_setup.qcam_deviceID);
+//    m_camera        = &m_qcam;
+//    m_cameraControl = &m_QCameraControl;
+//    QGuiApplication::restoreOverrideCursor();
 }
 
 bool OperatorConsole::ReadyForTesting()
@@ -1082,7 +1082,7 @@ void OperatorConsole::SetupSlots()
     connect(&m_arbitraryChartControl, &ThreadControl::data_ready, this, &OperatorConsole::OnAribtraryChartDone);
     connect(&m_sfrregControl,         &ThreadControl::data_ready, this, &OperatorConsole::OnSFRregDone);
     connect(&m_ImatestCameraControl,  &ThreadControl::data_ready, this, &OperatorConsole::OnFrameReady);
-    connect(&m_QCameraControl,        &ThreadControl::data_ready, this, &OperatorConsole::OnFrameReady);
+//    connect(&m_QCameraControl,        &ThreadControl::data_ready, this, &OperatorConsole::OnFrameReady);
     connect(&m_FileCameraControl,     &ThreadControl::data_ready, this, &OperatorConsole::OnFrameReady);
 }
 

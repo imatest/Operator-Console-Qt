@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets multimedia multimediawidgets
+QT       += core gui widgets #multimedia multimediawidgets
 
 TARGET = OperatorConsole
 TEMPLATE = app
@@ -84,7 +84,7 @@ SOURCES += \
     setupdialog.cpp \
     waitdialog.cpp \
     operatorconsole.cpp \
-    cameraacquisition.cpp \
+  #  cameraacquisition.cpp \
     passworddialog.cpp \
     passfaildialog.cpp \
     inifile.cpp \
@@ -142,7 +142,7 @@ HEADERS += \
     textdialog.h \
     setupdialog.h \
     waitdialog.h \
-    cameraacquisition.h \
+  #  cameraacquisition.h \
     passworddialog.h \
     passfaildialog.h \
     inifile.h \

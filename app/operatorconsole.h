@@ -7,7 +7,7 @@
 #include <QWaitCondition>
 #include "arbitrarycharttest.h"
 #include "blemishtest.h"
-#include "cameraacquisition.h"
+//#include "cameraacquisition.h"
 #include "config.h"
 #include "fileacq.h"
 #include "imageacquisition.h"
@@ -120,7 +120,7 @@ typedef enum image_source_t
 {
     no_source = -1,     //!< no image acquisition source has been selected yet
     imatest_source, 	//!< image acquisition using the Imatest library
-    qcam_source,        //!< imaging from a QCamera
+//    qcam_source,        //!< imaging from a QCamera
     file_source         //!< loading a file for the image source
 } image_source_t;
 
@@ -224,7 +224,7 @@ protected:
     Config					m_config;   		//!< for using rgb data:   will eventually come from a dialog (uses hard coded values for now)
     uint8_t					*m_cameraImage;		//!< buffer to hold a single image frame from the camera (will eventually be combined with m_fileImage)
     ImatestLibAcq			m_imatest_cam;		//!< live acquisition using Imatest acquire_image()
-    CameraAcquisition       m_qcam;             //!< live acquisition using a camera controlled by QCamera interface
+//    CameraAcquisition       m_qcam;             //!< live acquisition using a camera controlled by QCamera interface
     FileAcq					m_file_cam;			//!< acquisition comes from a file, with data in ARGB format (0xffrrggbb)
     ImageAcquisition		*m_camera;
 
@@ -244,7 +244,7 @@ protected:
     ThreadControl           m_sfrregControl;   //!< this is the thread controlf or running SFRreg tests
 
     ThreadControl			m_ImatestCameraControl;
-    ThreadControl			m_QCameraControl;
+//    ThreadControl			m_QCameraControl;
     ThreadControl			m_FileCameraControl;
 
     ThreadControl			*m_cameraControl;	//!< points to the current image source's control thread

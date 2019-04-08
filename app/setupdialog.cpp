@@ -87,7 +87,7 @@ void SetupDialog::Init()
     }
 
     // fill the combo box with QCamera device descriptions (i.e. names)
-    setCameraList();
+//    setCameraList();
 
     //
     // Select the stored value for the device and hide/show objects accordingly
@@ -414,7 +414,7 @@ void SetupDialog::on_okay()
     m_settings.chart_def_file      = ui->pathChartDef->text();
     m_settings.program_path        = ui->pathProgram->text();
 
-    getCamera();
+//    getCamera();
 }
 
 
@@ -579,31 +579,31 @@ void SetupDialog::on_browseProgram_clicked()
 #endif
 }
 
-void SetupDialog::setCameraList()
-{
-    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
+//void SetupDialog::setCameraList()
+//{
+//    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
 
-    for (int i = 0; i < cameras.count(); i++)
-    {
-         ui->qcamera->addItem(cameras[i].description());
+//    for (int i = 0; i < cameras.count(); i++)
+//    {
+//         ui->qcamera->addItem(cameras[i].description());
 
-         if (!m_settings.qcam_deviceID.isEmpty() && cameras[i].deviceName() == m_settings.qcam_deviceID)
-         {
-            ui->qcamera->setCurrentIndex(i);
-         }
-     }
-}
+//         if (!m_settings.qcam_deviceID.isEmpty() && cameras[i].deviceName() == m_settings.qcam_deviceID)
+//         {
+//            ui->qcamera->setCurrentIndex(i);
+//         }
+//     }
+//}
 
-void SetupDialog::getCamera()
-{
-    int index = ui->qcamera->currentIndex();
-    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
-    if (m_settings.sourceID == SOURCE_OpConsoleDirectShow) {
-        m_settings.qcam_deviceID = cameras[index].deviceName();
-        m_settings.width  = m_settings.qcam_list[m_settings.qcam_deviceID].width();
-        m_settings.height = m_settings.qcam_list[m_settings.qcam_deviceID].height();
-    }
-}
+//void SetupDialog::getCamera()
+//{
+//    int index = ui->qcamera->currentIndex();
+//    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
+//    if (m_settings.sourceID == SOURCE_OpConsoleDirectShow) {
+//        m_settings.qcam_deviceID = cameras[index].deviceName();
+//        m_settings.width  = m_settings.qcam_list[m_settings.qcam_deviceID].width();
+//        m_settings.height = m_settings.qcam_list[m_settings.qcam_deviceID].height();
+//    }
+//}
 
 void SetupDialog::on_videoFormatComboBox_currentIndexChanged(const QString &selectedFormat)
 {

@@ -21,8 +21,8 @@
 #define GUARD_SETUP_SETTINGS_H
 
 #include <QVector>
-#include <QCameraInfo>
-#include "cameraacquisition.h"
+//#include <QCameraInfo>
+//#include "cameraacquisition.h"
 #include "acquisitiondeviceinfo.h"
 
 
@@ -52,7 +52,7 @@ struct setup_settings
                                                 /**< Only takes values 1 through 6. 1 => Aptina DevWare, 2 => Omnivision, 3 => Toshiba, 4 => STM Conduit, 5 => Graphin EasyLab, 6 => Epiphan*/
     int                 bayer;					//!< Used for Omnivision only: Bayer pattern index
                                                 /**< Only takes values 1 through 4.  1 => Red in R1C1, 2=> Red in R1C2, 3=> Red in R2C1, 4=> Red in R2C2 */
-    QString             qcam_deviceID;          //!< Used for QCamera only: this is a unique ID to identify the camera (may not be human-readable)
+//    QString             qcam_deviceID;          //!< Used for QCamera only: this is a unique ID to identify the camera (may not be human-readable)
     QString             omnivision_reg_file;	//!< [OPTIONAL INPUT] Used for Omnivision only: a fully-qualified filename (including full path) for a file containing camera register settings
     QString             part_number;			//!< [OPTIONAL INPUT] The user supplied camera part number to be used in the JSON output
     QString             serial_number;			//!< [OPTIONAL INPUT] The user supplied camera part serial to be used in the JSON output
@@ -63,7 +63,7 @@ struct setup_settings
     QVector<QString>	device_list;			//!< The list of allowed device names used to fill the c_device_list CListBox in Setup.h/cpp
     QVector<QString>	bayer_list;				//!< The list of allowed Bayer patterns used to fill the c_combo_bayer CComboBox in Setup.h/cpp
     QVector<int>        allowed_bits_per_pixel; //!< The list of allowed bits-per-pixels used to fill the c_combo_bits_per_pixel CComboBox in Setup.h/cpp
-    QMap<QString,QSize> qcam_list;              //!< list of camera names and (width, height)
+//    QMap<QString,QSize> qcam_list;              //!< list of camera names and (width, height)
 
     QVector<AcquisitionDeviceInfo> device_infos;//!< The list of info describing dynamically detected devices from the Aquisition library
     QString              video_format;          //!< The video format for the selected dynamically detected device

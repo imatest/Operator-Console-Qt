@@ -25,8 +25,8 @@ protected:
     int getBitsPerPixel();
     int getBayer();
     int getDeviceID();  // epiphan device id
-    void getCamera();
-    void setCameraList();
+//    void getCamera();
+//    void setCameraList();
 
 private:
     void ShowOmnivisionElements(void);  //!< This function shows dialog elements that are meant only for Omnivision and hides those meant for Epiphan
