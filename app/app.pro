@@ -175,8 +175,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 unix{
 CONFIG += STATIC
 
-QTPLUGIN += qico
-
 LOCAL_BUILD_FOLDER = /home/ty/qt5/build
 LIBS += -L$$LOCAL_BUILD_FOLDER/plugins/platforms -lqxcb
 LIBS += -L$$LOCAL_BUILD_FOLDER/plugins/xcblintegrations -lqxcb-glx-integration
