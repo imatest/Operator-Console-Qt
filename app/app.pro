@@ -149,7 +149,6 @@ HEADERS += \
     acquisitiondeviceinfo.h \
     inisetting.h \
 #    inistringsetting.h \
-    sfrregtest.h
     sfrregtest.h \
     imatestmainlibrary.h \
     imatestacquisitionlibrary.h
