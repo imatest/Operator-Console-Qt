@@ -7,7 +7,16 @@ Image Acqusition was tested using Qt's camera intefrace, using a built-in webcam
 Currently the Operator Console on Ubuntu 14.04 must be compiled with a static build of QT 5.8.
 
 ## Dependencies
-To begin, install all the packages listed on https://wiki.qt.io/Building_Qt_5_from_Git Note that the `sudo apt-get build-dep qt5-default` command currently fails on Ubuntu 14.04.5, but it can be ignored.
+To begin, install all the packages listed below (cf. https://wiki.qt.io/Building_Qt_5_from_Git)
+````
+sudo apt-get install libxcb-xinerama0-dev 
+sudo apt-get install build-essential perl python git
+sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev
+sudo apt-get install flex bison gperf libicu-dev libxslt-dev ruby
+sudo apt-get install libssl-dev libxcursor-dev libxcomposite-dev libxdamage-dev libxrandr-dev libdbus-1-dev libfontconfig1-dev libcap-dev libxtst-dev libpulse-dev libudev-dev libpci-dev libnss3-dev libasound2-dev libxss-dev libegl1-mesa-dev gperf bison
+sudo apt-get install libasound2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
+````
+
 
 Next, gcc 4.9 needs to be installed for the MATLAB Runtime
 
@@ -17,7 +26,7 @@ sudo apt-get update
 sudo apt-get install gcc-4.9 g++-4.9
 ````
 
-## Getting the source
+## Getting the QT source
 Following the instructions in https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code, the 5.8.0 source code can be checked out with the following git commands.
 
 ````
@@ -70,9 +79,31 @@ make distclean -j<number of cores>
 ````
 before re-running `configure` or `make`.
 
+## Copy fonts
+Currently fonts are not embedded in the OperatorConsole, so they need to be copied to the expected directory (`~/qt5/build/lib/fonts`).
+
+````
+mkdir ~/qt5/build/lib/fonts
+cp /usr/share/fonts/truetype/dejavu/*.* ~/qt5/build/lib/fonts/
+
+````
+
+## Install Imatest IT
+[Install Imatest IT](http://www.imatest.com/docs/installation/) and [activate your license](http://www.imatest.com/activation/).
+
+## Get the Operator Console source
+The source code can either be downloaded as a *.zip file or cloned from this repo. For this repo, the clone operation would be as follows:
+
+````
+cd ~
+git clone https://github.com/imatest/Operator-Console-Qt.git
+````
+
+This will download the source to `~/Operator-Console-Qt`.
+
 ## Building the Operator Console
 
-Open a terminal and cd to the top-level folder for the Operator Console source. 
+Open a terminal and cd to the top-level folder for the Operator Console source (i.e. `~/Operator-Console-Qt` in the above example). 
 
 Run qmake to generate makefiles for the project with the following:
 ````
@@ -86,4 +117,14 @@ Next build the Operator Console with
 make
 ````
 
+## Running the Operator Console
+
+To run the OperatorConsole `cd` into the `app` sub-folder and run the executable
+
+````
+cd ~/Operator-Console-Qt/app
+./OperatorConsole
+````
+
+Note that it may take about 30 seconds to start.
 
