@@ -117,6 +117,8 @@ Next build the Operator Console with
 make
 ````
 
+If there is a build error where libImatest.h cannot be found it might be due to a sporadic bug with qmake. Open `/Operator-Console-Qt/app/app.pro` and add `message($$FOLDERS)` after the definition of `FOLDERS` on line 26. Then repeat the call to `qmake`, `make clean` and `make` a few times.
+
 ## Running the Operator Console
 
 To run the OperatorConsole `cd` into the `app` sub-folder and run the executable
@@ -126,5 +128,6 @@ cd ~/Operator-Console-Qt/app
 ./OperatorConsole
 ````
 
-Note that it may take about 30 seconds to start.
+Note that it may take about 30 seconds to start. To improve the startup time consider setting the `MCR_CACHE_ROOT` and `MCR_CACHE_SIZE` environment variables, as described in [Best Practices for Calling Imatest IT Libraries](http://www.imatest.com/2015/10/best-practices-for-calling-imatest-it-libraries/).
+
 
