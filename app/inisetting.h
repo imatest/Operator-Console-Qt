@@ -2,8 +2,12 @@
 #define INISETTING_H
 
 #include <QString>
+#include "imatestdefines.h"
+IMA_WARNING_PUSH
+IMA_DISABLE_UNUSED_PARAM_WARNING
 #include "mclcppclass.h"
 #include "mclmcrrt.h"
+IMA_WARNING_POP
 
 class IniSetting
 {
