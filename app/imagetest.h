@@ -32,11 +32,14 @@
 #include "timer.h"
 #include "timestamp.h"
 
+IMA_WARNING_PUSH
+IMA_DISABLE_REORDER_PARAM_WARNING
 #include "libjson.h"
 #include "jsonhelpers.h"
 #include "libjson.h"
 #include "jsonhelpers.h"
 #include "JSON/JSONDefs.h"
+IMA_WARNING_POP
 
 using namespace std;
 
