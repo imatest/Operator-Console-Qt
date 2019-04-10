@@ -91,4 +91,12 @@
 #define IMA_DISABLE_UNUSED_PARAM_WARNING _Pragma("GCC diagnostic ignored \"-Wunused-parameter\"")
 #endif
 #endif
+
+#ifndef IMA_DISABLE_REORDER_PARAM_WARNING
+#ifdef _WIN32
+#define IMA_DISABLE_REORDER_PARAM_WARNING __pragma(warning( disable:5038 ))
+#else
+#define IMA_DISABLE_REORDER_PARAM_WARNING _Pragma("GCC diagnostic ignored \"-Wreorder\"")
+#endif
+#endif
 #endif // IMATESTDEFINES_H
