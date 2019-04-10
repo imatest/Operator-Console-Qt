@@ -119,6 +119,7 @@ If there is a build error where libImatest.h cannot be found it might be due to 
 To run the OperatorConsole `cd` into the `app` sub-folder and run the executable
 
 ````
+export QT_QPA_FONTDIR=$HOME/Operator-Console-Qt/app   # Suppress warnings about the font directory not being found
 cd ~/Operator-Console-Qt/app
 ./OperatorConsole
 ````
