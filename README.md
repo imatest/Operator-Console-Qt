@@ -74,15 +74,6 @@ make distclean -j<number of cores>
 ````
 before re-running `configure` or `make`.
 
-## Copy fonts
-Currently fonts are not embedded in the OperatorConsole, so they need to be copied to the expected directory (`~/qt5/build/lib/fonts`).
-
-````
-mkdir ~/qt5/build/lib/fonts
-cp /usr/share/fonts/truetype/dejavu/*.* ~/qt5/build/lib/fonts/
-
-````
-
 ## Install Imatest IT
 [Install Imatest IT](http://www.imatest.com/docs/installation/) and [activate your license](http://www.imatest.com/activation/).
 
