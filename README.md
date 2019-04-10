@@ -9,12 +9,7 @@ Currently the Operator Console on Ubuntu 14.04 must be compiled with a static bu
 ## Dependencies
 To begin, install all the packages listed below (cf. https://wiki.qt.io/Building_Qt_5_from_Git)
 ````
-sudo apt-get install libxcb-xinerama0-dev 
-sudo apt-get install build-essential perl python git
-sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev
-sudo apt-get install flex bison gperf libicu-dev libxslt-dev ruby
-sudo apt-get install libssl-dev libxcursor-dev libxcomposite-dev libxdamage-dev libxrandr-dev libdbus-1-dev libfontconfig1-dev libcap-dev libxtst-dev libpulse-dev libudev-dev libpci-dev libnss3-dev libasound2-dev libxss-dev libegl1-mesa-dev gperf bison
-sudo apt-get install libasound2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
+sudo apt-get install libxcb-xinerama0-dev build-essential perl python git '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev  flex bison gperf libicu-dev libxslt-dev ruby libssl-dev libxcursor-dev libxcomposite-dev libxdamage-dev libxrandr-dev libdbus-1-dev libfontconfig1-dev libcap-dev libxtst-dev libpulse-dev libudev-dev libpci-dev libnss3-dev libasound2-dev libxss-dev libegl1-mesa-dev gperf bison libasound2-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
 ````
 
 
