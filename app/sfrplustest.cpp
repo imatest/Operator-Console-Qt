@@ -22,15 +22,19 @@
 #include <string.h>
 
 #include <QTextStream>
-
+#include "imatestdefines.h"
 #include "sfrplustest.h"
 #include "config.h"
 #include "imatestmainlibrary.h"
+
+IMA_WARNING_PUSH
+IMA_DISABLE_UNUSED_PARAM_WARNING
 #include "mclcppclass.h"
+IMA_DISABLE_REORDER_PARAM_WARNING
 #include "libjson.h"
 #include "jsonhelpers.h"
 #include "JSON/JSONDefs.h"
-
+IMA_WARNING_POP
 
 using namespace std;
 
