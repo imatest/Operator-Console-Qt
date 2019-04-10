@@ -164,6 +164,11 @@ FORMS += \
     passworddialog.ui \
     passfaildialog.ui
 
+unix {
+RESOURCES += \
+    resources.qrc
+}
+
 INCLUDEPATH += $$PWD
 INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/library/cpp'
 INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/include'
@@ -249,3 +254,5 @@ QMAKE_POST_LINK += $${QMAKE_COPY} $$system_quote($$system_path($${file})) $$BUIL
 
 # Copy the /Data folder into the output directory
 QMAKE_POST_LINK += $${QMAKE_COPY_DIR} $$system_quote($$system_path($$PWD/Data)) $$DATA_FOLDER_DEST $$escape_expand(\\n\\t)
+
+
