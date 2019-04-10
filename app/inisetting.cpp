@@ -8,7 +8,7 @@ const size_t IniSetting::numReadFields = 4;
 const size_t IniSetting::numWriteFields = 3;
 #endif
 
-IniSetting::IniSetting(QString section, QString key, QString subsection): section(section), key(key), subsection(subsection)
+IniSetting::IniSetting(QString section, QString key, QString subsection): section(section), subsection(subsection), key(key)
 {
 
 }
