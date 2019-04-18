@@ -18,7 +18,7 @@
 ****************************************************************************/
 
 #include "threadcontrol.h"
-
+#include <QMutexLocker>
 
 ThreadControl::ThreadControl(QObject *parent) : QThread(parent)
 {
@@ -62,11 +62,12 @@ void ThreadControl::run()
         //
         // Wait until we get a signal to run
         //
-        mutex.lock();
-        waiting = true;
-        waitCondition.wait(&mutex);
-        mutex.unlock();
-        waiting = false;
+        {
+            QMutexLocker locker(&mutex);
+            waiting = true;
+            waitCondition.wait(&mutex);
+            waiting = false;
+        }
 
         //
         // See if we should quit
