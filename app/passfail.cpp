@@ -499,11 +499,11 @@ bool PassFail::Read(PassFailSettings &settings)
     // Next we can read in the keys for the 'other' section from what we already have for which all values are strings
 
     // Section index is different for 4.2
-#ifdef INI_INCLUDE_SUBSECTION
-    mwSize sectionIndex = 1;
-#else
-    mwSize sectionIndex = 2;
-#endif
+//#ifdef INI_INCLUDE_SUBSECTION
+//    mwSize sectionIndex = 1;
+//#else
+//    mwSize sectionIndex = 2;
+//#endif
 
     /*
     if (settings.other.b_enable)
