@@ -20,6 +20,7 @@
 
 #include "criticalstring.h"
 #include <QChar>
+#include <QMutexLocker>
 
 CriticalString::CriticalString(void)
 {
@@ -32,81 +33,74 @@ CriticalString::~CriticalString(void)
 
 void CriticalString::Clear()
 {
-    m_mutex.lock();
+    QMutexLocker locker(&m_mutex);
     m_string.clear();
-    m_mutex.unlock();
+
 }
 
 
 void CriticalString::Get(QString &dest, bool clear)
 {
-    m_mutex.lock();
-	dest = m_string;					// copy m_string into dest str
+    QMutexLocker locker(&m_mutex);
+    dest = m_string;					// copy m_string into dest str
 
-	if (clear)
-	{
+    if (clear)
+    {
         m_string.clear();
-	}
-    m_mutex.unlock();
+    }
+
 }
 
 void CriticalString::Set(QString &src)
 {
-    m_mutex.lock();
+    QMutexLocker locker(&m_mutex);
     m_string = src;						// copy src into m_string
-    m_mutex.unlock();
 }
 void CriticalString::Set(QTextStream &src)
 {
     QString str = src.readAll();
-    m_mutex.lock();
+    QMutexLocker locker(&m_mutex);
     m_string = str;						// copy src into m_string
-    m_mutex.unlock();
 }
 
 void CriticalString::Set(std::string &src)
 {
-    m_mutex.lock();
+    QMutexLocker locker(&m_mutex);
     m_string = QString::fromStdString(src);	// copy src into m_string
-    m_mutex.unlock();
 }
 
 void CriticalString::Set(const char *src)
 {
     if (src != nullptr)
-	{
-        m_mutex.lock();
+    {
+        QMutexLocker locker(&m_mutex);
         m_string = QString::fromLatin1(src);	// copy src into m_string
-        m_mutex.unlock();
-	}
+    }
 }
 
 void CriticalString::Set(const char *str, int len)
 {
     if (str != nullptr)
-	{
-        m_mutex.lock();
+    {
+        QMutexLocker locker(&m_mutex);
         m_string = QString::fromLatin1(str, len);		// copy len characters of str into m_string
-//        m_string.append('\0');
-        m_mutex.unlock();
-	}
+        //        m_string.append('\0');
+    }
 }
 
 bool CriticalString::Append(QString &str)
 {
-	bool wasEmpty;
+    bool wasEmpty;
 
-    m_mutex.lock();
+    QMutexLocker locker(&m_mutex);
     wasEmpty = m_string.isEmpty();
 
     if (!str.isEmpty())
-	{
+    {
         m_string.append(str);			// concatenate str onto the end of m_string
-	}
+    }
 
-    m_mutex.unlock();
-
-	return wasEmpty;
+    return wasEmpty;
 }
 
 bool CriticalString::Append(QTextStream &text)
@@ -124,15 +118,13 @@ bool CriticalString::Append(const char *str)
     bool wasEmpty;
     int len = static_cast<int>(strlen(str));
 
-    m_mutex.lock();
+    QMutexLocker locker(&m_mutex);
     wasEmpty = m_string.isEmpty();
 
     if (str != nullptr)
     {
         m_string = QString::fromLatin1(str, len);
     }
-
-    m_mutex.unlock();
 
     return wasEmpty;
 }
@@ -141,15 +133,13 @@ bool CriticalString::Append(const char *str, int len)
 {
     bool wasEmpty;
 
-    m_mutex.lock();
+    QMutexLocker locker(&m_mutex);
     wasEmpty = m_string.isEmpty();
 
     if (str != nullptr)
     {
         m_string = QString::fromLatin1(str, len);
     }
-
-    m_mutex.unlock();
 
     return wasEmpty;
 }
