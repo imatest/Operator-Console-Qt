@@ -52,7 +52,7 @@ public:
 	void	Quit();
 
 signals:
-    virtual void data_ready();
+    void data_ready();
 
 protected:
     void    run() override;
