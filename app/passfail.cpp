@@ -472,7 +472,7 @@ bool PassFail::Read(PassFailSettings &settings)
     std::size_t numSections = varargout.Get(1,2).NumberOfElements();
     for (std::size_t idx = 1; idx <= numSections; ++idx)
     {
-        QString section = (const char *)varargout.Get(1,2).Get(1,idx).ToString();
+        QString section = static_cast<const char *>(varargout.Get(1,2).Get(1,idx).ToString());
 
         section.remove('\n');
         section.remove('\r');
@@ -1317,7 +1317,7 @@ void PassFail::addDataTypeAndKey(const std::string& candidateDT, const std::stri
 
 void PassFail::remove_crlf(const mwString &src, std::string &str)
 {
-    QString qstr = (const char *)src;
+    QString qstr = static_cast<const char *>(src);
 
     qstr.remove('\r');
     qstr.remove('\n');
