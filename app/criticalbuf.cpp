@@ -20,6 +20,7 @@
 #include <string>
 #include "criticalbuf.h"
 #include <cstring>
+#include <QMutexLocker>
 
 CriticalBuf::CriticalBuf(void)
 {
@@ -40,7 +41,7 @@ bool CriticalBuf::Init(unsigned int bufLen)
 {
 	bool	success;
 
-    m_mutex.lock();
+    QMutexLocker locker(&m_mutex);
 	
     if (m_buf != nullptr)
 	{
@@ -52,8 +53,6 @@ bool CriticalBuf::Init(unsigned int bufLen)
     m_buf    = new unsigned char[m_bufLen];
     success  = m_buf != nullptr;
 
-    m_mutex.unlock();
-
 	return success;
 }
 
@@ -61,14 +60,13 @@ void CriticalBuf::Get(void *buf)
 {
     if (buf != nullptr)
 	{
-        m_mutex.lock();
+        QMutexLocker locker(&m_mutex);
 
         if (m_buf != nullptr)
 		{
 			memcpy(buf, m_buf, m_bufLen);	// copy m_buf into buf (buf must be at least m_bufLen bytes)
 		}
 
-        m_mutex.unlock();
 	}
 }
 
@@ -76,13 +74,12 @@ void CriticalBuf::Set(void *buf)
 {
     if (buf != nullptr)
 	{
-        m_mutex.lock();
+        QMutexLocker locker(&m_mutex);
 
         if (m_buf != nullptr)
 		{
 			memcpy(m_buf, buf, m_bufLen);	// copy buf into m_buf
 		}
 
-        m_mutex.unlock();
 	}
 }
