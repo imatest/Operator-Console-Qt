@@ -75,7 +75,7 @@ bool FileAcq::Open()
 
 		if (success)
 		{
-            QRgb color = image.pixel(0, 0);
+//            QRgb color = image.pixel(0, 0);
             //
             // Copy the pixels into m_buf.
 			//
