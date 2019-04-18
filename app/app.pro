@@ -80,18 +80,18 @@ SOURCES += \
     passfailsettings.cpp \
     imatestlibacq.cpp \
     passfail.cpp \
-    textdialog.cpp \
-    setupdialog.cpp \
-    waitdialog.cpp \
     operatorconsole.cpp \
   #  cameraacquisition.cpp \
-    passworddialog.cpp \
-    passfaildialog.cpp \
     inifile.cpp \
     acquisitiondeviceinfo.cpp \
     inisetting.cpp \
 #    inistringsetting.cpp \
-    sfrregtest.cpp
+    sfrregtest.cpp \
+    setupdialog.cpp \
+    textdialog.cpp \
+    passfaildialog.cpp \
+    passworddialog.cpp \
+    waitdialog.cpp
 
 
 HEADERS += \
