@@ -95,7 +95,7 @@ Run qmake to generate makefiles for the project with the following:
 ````
 export PATH=$HOME/qt5/build/bin:$PATH
 
-qmake qmake OperatorConsole.pro -spec linux-g++ CONFIG+=qtquickcompiler
+qmake OperatorConsole.pro -spec linux-g++ CONFIG+=qtquickcompiler
 ````
 
 Next build the Operator Console with 
