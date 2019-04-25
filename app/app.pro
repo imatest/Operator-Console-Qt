@@ -91,8 +91,8 @@ SOURCES += \
     textdialog.cpp \
     passfaildialog.cpp \
     passworddialog.cpp \
-    waitdialog.cpp \
-    criticalmwarray.cpp
+    waitdialog.cpp
+  #  criticalmwarray.cpp
 
 
 HEADERS += \
@@ -155,8 +155,8 @@ HEADERS += \
     imatestacquisitionlibrary.h \
     imatestpaths.h \
     imatestwindowspaths.h \
-    imatestlinuxpaths.h \
-    criticalmwarray.h
+    imatestlinuxpaths.h
+  #  criticalmwarray.h
 
 FORMS += \
         operatorconsoledialog.ui \
