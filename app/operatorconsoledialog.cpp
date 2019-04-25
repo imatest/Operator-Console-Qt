@@ -4,6 +4,7 @@
 #include "timestamp.h"
 #include <QTextStream>
 #include <QRgb>
+#include <QColor>
 
 void OperatorConsoleDialog::setupComboBox()
 {
@@ -126,7 +127,7 @@ void OperatorConsoleDialog::set_image_size(const QSize &newSize)
     ui->image->setGeometry(geometry);
     ui->image->updateGeometry();
     QImage newImage(newSize, QImage::Format_RGB32);
-    newImage.fill(Qt::darkGray);
+    newImage.fill(QColor(6, 133, 191));
     update_image(newImage);
 
     //
