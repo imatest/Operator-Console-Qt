@@ -51,13 +51,6 @@ void OperatorConsoleDialog::setupSignals()
 //    connect(m_out, &QFile::readyRead, this, &OperatorConsoleDialog::on_ready_read);
 }
 
-//void OperatorConsoleDialog::on_ready_read()
-//{
-//    QTextStream stream(m_out);
-//    QString str = stream.readAll();
-//    log_message(str, false);
-//}
-
 void OperatorConsoleDialog::setupTextDisplays()
 {
     ui->reasonText->setReadOnly(true);
