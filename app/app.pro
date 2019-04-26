@@ -91,8 +91,8 @@ SOURCES += \
     textdialog.cpp \
     passfaildialog.cpp \
     passworddialog.cpp \
-    waitdialog.cpp
-  #  criticalmwarray.cpp
+    waitdialog.cpp \
+    criticalmwarray.cpp
 
 
 HEADERS += \
@@ -155,8 +155,8 @@ HEADERS += \
     imatestacquisitionlibrary.h \
     imatestpaths.h \
     imatestwindowspaths.h \
-    imatestlinuxpaths.h
-  #  criticalmwarray.h
+    imatestlinuxpaths.h \
+    criticalmwarray.h
 
 FORMS += \
         operatorconsoledialog.ui \
@@ -256,5 +256,3 @@ QMAKE_POST_LINK += $${QMAKE_COPY} $$system_quote($$system_path($${file})) $$BUIL
 
 # Copy the /Data folder into the output directory
 QMAKE_POST_LINK += $${QMAKE_COPY_DIR} $$system_quote($$system_path($$PWD/Data)) $$DATA_FOLDER_DEST $$escape_expand(\\n\\t)
-
-
