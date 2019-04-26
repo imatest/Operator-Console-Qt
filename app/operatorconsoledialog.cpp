@@ -6,6 +6,8 @@
 #include <QRgb>
 #include <QColor>
 
+const QColor OperatorConsoleDialog::DEFAULT_IMAGE_BACKGROUND_COLOR = QColor(6, 133, 191);
+
 void OperatorConsoleDialog::setupComboBox()
 {
    // The initial analysis routine is SFRplus
@@ -127,7 +129,7 @@ void OperatorConsoleDialog::set_image_size(const QSize &newSize)
     ui->image->setGeometry(geometry);
     ui->image->updateGeometry();
     QImage newImage(newSize, QImage::Format_RGB32);
-    newImage.fill(QColor(6, 133, 191));
+    newImage.fill(DEFAULT_IMAGE_BACKGROUND_COLOR);
     update_image(newImage);
 
     //

@@ -62,7 +62,7 @@ class OperatorConsoleDialog : public QDialog
 
 private:
     void quit();
-
+    void setupComboBox();
 signals:
     void startTest();
     void stopTest();
@@ -77,7 +77,7 @@ public:
 
 private:
     Ui::OperatorConsoleDialog *ui;
-    void setupComboBox();
+    static const QColor DEFAULT_IMAGE_BACKGROUND_COLOR;
 };
 
 #endif // OPERATORCONSOLEDIALOG_H
