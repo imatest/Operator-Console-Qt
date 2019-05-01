@@ -23,40 +23,8 @@ SOURCES +=  tst_operatorconsoletests.cpp \
     ../app/JSON/JSONWriter.cpp \
     ../app/JSON/libjson.cpp \
     ../app/jsonhelpers.cpp \
-    ../app/JSON/internalJSONNode.cpp \
-    ../app/JSON/JSON_Base64.cpp \
-    ../app/JSON/JSONAllocator.cpp \
-    ../app/JSON/JSONChildren.cpp \
-    ../app/JSON/JSONDebug.cpp \
-    ../app/JSON/JSONIterators.cpp \
-    ../app/JSON/JSONMemory.cpp \
-    ../app/JSON/JSONNode.cpp \
-    ../app/JSON/JSONNode_Mutex.cpp \
-    ../app/JSON/JSONPreparse.cpp \
-    ../app/JSON/JSONStream.cpp \
-    ../app/JSON/JSONValidator.cpp \
-    ../app/JSON/JSONWorker.cpp \
-    ../app/JSON/JSONWriter.cpp \
-    ../app/JSON/libjson.cpp \
-    ../app/jsonhelpers.cpp \
     ../app/imagetest.cpp \
     ../app/sfrplustest.cpp \
-    ../app/JSON/internalJSONNode.cpp \
-    ../app/JSON/JSON_Base64.cpp \
-    ../app/JSON/JSONAllocator.cpp \
-    ../app/JSON/JSONChildren.cpp \
-    ../app/JSON/JSONDebug.cpp \
-    ../app/JSON/JSONIterators.cpp \
-    ../app/JSON/JSONMemory.cpp \
-    ../app/JSON/JSONNode.cpp \
-    ../app/JSON/JSONNode_Mutex.cpp \
-    ../app/JSON/JSONPreparse.cpp \
-    ../app/JSON/JSONStream.cpp \
-    ../app/JSON/JSONValidator.cpp \
-    ../app/JSON/JSONWorker.cpp \
-    ../app/JSON/JSONWriter.cpp \
-    ../app/JSON/libjson.cpp \
-    ../app/acquisitiondeviceinfo.cpp \
     ../app/arbitrarycharttest.cpp \
     ../app/blemishtest.cpp \
     ../app/config.cpp \
@@ -65,14 +33,11 @@ SOURCES +=  tst_operatorconsoletests.cpp \
     ../app/fileacq.cpp \
     ../app/fileacquisition.cpp \
     ../app/imageacquisition.cpp \
-    ../app/imagetest.cpp \
     ../app/imatestlibacq.cpp \
     ../app/inifile.cpp \
     ../app/inisetting.cpp \
-    ../app/jsonhelpers.cpp \
     ../app/passfail.cpp \
     ../app/passfailsettings.cpp \
-    ../app/sfrplustest.cpp \
     ../app/sfrregtest.cpp \
     ../app/threadcontrol.cpp \
     ../app/timer.cpp \
@@ -105,51 +70,8 @@ HEADERS += \
     ../app/jsonhelpers.h \
     ../app/JSONOptions.h \
     ../app/libjson.h \
-    ../app/JSON/JSONDefs/GNU_C.h \
-    ../app/JSON/JSONDefs/Strings_Defs.h \
-    ../app/JSON/JSONDefs/Unknown_C.h \
-    ../app/JSON/JSONDefs/Visual_C.h \
-    ../app/JSON/internalJSONNode.h \
-    ../app/JSON/JSON_Base64.h \
-    ../app/JSON/JSONAllocator.h \
-    ../app/JSON/JSONChildren.h \
-    ../app/JSON/JSONDebug.h \
-    ../app/JSON/JSONDefs.h \
-    ../app/JSON/JSONGlobals.h \
-    ../app/JSON/JSONMemory.h \
-    ../app/JSON/JSONMemoryPool.h \
-    ../app/JSON/JSONNode.h \
-    ../app/JSON/JSONPreparse.h \
-    ../app/JSON/JSONSharedString.h \
-    ../app/JSON/JSONSingleton.h \
-    ../app/JSON/JSONStream.h \
-    ../app/JSON/JSONValidator.h \
-    ../app/JSON/JSONWorker.h \
-    ../app/JSON/NumberToString.h \
     ../app/imagetest.h \
     ../app/sfrplustest.h \
-    ../app/JSON/JSONDefs/GNU_C.h \
-    ../app/JSON/JSONDefs/Strings_Defs.h \
-    ../app/JSON/JSONDefs/Unknown_C.h \
-    ../app/JSON/JSONDefs/Visual_C.h \
-    ../app/JSON/internalJSONNode.h \
-    ../app/JSON/JSON_Base64.h \
-    ../app/JSON/JSONAllocator.h \
-    ../app/JSON/JSONChildren.h \
-    ../app/JSON/JSONDebug.h \
-    ../app/JSON/JSONDefs.h \
-    ../app/JSON/JSONGlobals.h \
-    ../app/JSON/JSONMemory.h \
-    ../app/JSON/JSONMemoryPool.h \
-    ../app/JSON/JSONNode.h \
-    ../app/JSON/JSONPreparse.h \
-    ../app/JSON/JSONSharedString.h \
-    ../app/JSON/JSONSingleton.h \
-    ../app/JSON/JSONStream.h \
-    ../app/JSON/JSONValidator.h \
-    ../app/JSON/JSONWorker.h \
-    ../app/JSON/NumberToString.h \
-    ../app/acquisitiondeviceinfo.h \
     ../app/arbitrarycharttest.h \
     ../app/blemishtest.h \
     ../app/config.h \
@@ -158,7 +80,6 @@ HEADERS += \
     ../app/fileacq.h \
     ../app/fileacquisition.h \
     ../app/imageacquisition.h \
-    ../app/imagetest.h \
     ../app/imatestacquisitionlibrary.h \
     ../app/imatestdefines.h \
     ../app/imatestlibacq.h \
@@ -169,14 +90,10 @@ HEADERS += \
     ../app/imatestwindowspaths.h \
     ../app/inifile.h \
     ../app/inisetting.h \
-    ../app/jsonhelpers.h \
-    ../app/JSONOptions.h \
-    ../app/libjson.h \
     ../app/passfail.h \
     ../app/passfailsettings.h \
     ../app/qso.h \
     ../app/setup_settings.h \
-    ../app/sfrplustest.h \
     ../app/sfrregtest.h \
     ../app/threadcontrol.h \
     ../app/timer.h \
