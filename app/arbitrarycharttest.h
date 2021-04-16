@@ -35,7 +35,7 @@ public:
 	void	Run();
     bool    HaveChartDef() {return m_config != nullptr && !m_config->m_chartDefFilePathName.empty();}
 protected:
-	void ParseResults(string &results);
+    void ParseResults(std::string &results);
 //	void GetResults(const JSONNode& data, const JSONNode &passfail);
 
 };

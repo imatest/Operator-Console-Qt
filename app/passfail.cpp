@@ -609,7 +609,7 @@ bool PassFail::Read(PassFailSettings &settings)
             }
             catch (exception e)
             {
-                string x = "";
+                std::string x = "";
             }
         }
 

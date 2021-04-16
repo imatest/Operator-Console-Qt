@@ -22,8 +22,8 @@ public:
     static bool WriteFile(PassFailSettings &settings);
 
 protected:
-    static void addKeysAndValues(const string& candidateKey, const string& candidateVal, std::vector<string>& keys, std::vector<string>& vals, bool b_addKey);
-    static void addDataTypeAndKey(const string& candidateDT, const string& candidateKey, std::vector<string>& data_types, std::vector<string>& keys);
+    static void addKeysAndValues(const std::string& candidateKey, const std::string& candidateVal, std::vector<std::string>& keys, std::vector<std::string>& vals, bool b_addKey);
+    static void addDataTypeAndKey(const std::string& candidateDT, const std::string& candidateKey, std::vector<std::string>& data_types, std::vector<std::string>& keys);
     static void remove_crlf(const mwString &src, std::string &str);
     static void setValue(vecEntry<long> &entry, QString &value);
     static void setValue(entry<long> &entry, QString &value) {entry.value = value.toLong(); entry.b_isUsed = true;}
@@ -33,9 +33,9 @@ protected:
     static void ProcessSfrplus(QString *section, SFRplus &s);
     static void ProcessOIS(QString *section, OIS &o);
 
-    template <typename T> static const string writeEntValueString(const entry<T>& ent);
-    template <typename T> static const string writeMinMaxEntValueString(const minMaxEntry<T>& ent);
-    template <typename T> static const string writeVecEntValueString(const vecEntry<T>& ent);
+    template <typename T> static const std::string writeEntValueString(const entry<T>& ent);
+    template <typename T> static const std::string writeMinMaxEntValueString(const minMaxEntry<T>& ent);
+    template <typename T> static const std::string writeVecEntValueString(const vecEntry<T>& ent);
 };
 
 #endif // PASSFAIL_H

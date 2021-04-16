@@ -26,14 +26,12 @@
     #define PROGRAMPATH			"C:\\Program Files (x86)\\Imatest\\v4.2\\IT\\bin"
     #endif
 
-
 #elif defined IMATEST_4_3
     #ifdef _M_X64
     #define PROGRAMPATH			"C:\\Program Files\\Imatest\\v4.3\\IT\\bin"
     #else
     #define PROGRAMPATH			"C:\\Program Files (x86)\\Imatest\\v4.3\\IT\\bin"
     #endif
-
 
 #elif defined IMATEST_4_4
     #ifdef _M_X64
@@ -43,25 +41,31 @@
     #endif
 
 #elif defined IMATEST_4_5
-    #ifdef _M_X64
     #define PROGRAMPATH			"C:\\Program Files\\Imatest\\v4.5\\IT\\bin"
-    #else
-    #define PROGRAMPATH			"C:\\Program Files (x86)\\Imatest\\v4.5\\IT\\bin"
-    #endif
+
 
 #elif defined IMATEST_5_0
-    #ifdef _M_X64
     #define PROGRAMPATH			"C:\\Program Files\\Imatest\\v5.0\\IT\\bin"
-    #else
-    #define PROGRAMPATH			"C:\\Program Files (x86)\\Imatest\\v5.0\\IT\\bin"
-    #endif
+
 
 #elif defined IMATEST_5_1
-    #ifdef _M_X64
     #define PROGRAMPATH			"C:\\Program Files\\Imatest\\v5.1\\IT\\bin"
-    #else
-    #define PROGRAMPATH			"C:\\Program Files (x86)\\Imatest\\v5.1\\IT\\bin"
-    #endif
+
+
+#elif defined IMATEST_5_2
+    #define PROGRAMPATH			"C:\\Program Files\\Imatest\\v5.2\\IT\\bin"
+
+#elif defined IMATEST_2020_1
+    #define PROGRAMPATH			"C:\\Program Files\\Imatest\\v2020.1\\IT\\bin"
+
+
+#elif defined IMATEST_2020_2
+
+    #define PROGRAMPATH			"C:\\Program Files\\Imatest\\v2020.2\\IT\\bin"
+
+
+#elif defined IMATEST_2021_1
+    #define PROGRAMPATH			"C:\\Program Files\\Imatest\\v2021.1\\IT\\bin"
 
 #else
 #define PROGRAMPATH			"C:\\Program Files (x86)\\Imatest\\v4.1\\IT\\bin"

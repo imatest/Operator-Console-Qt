@@ -12,7 +12,7 @@ public:
 
 protected:
     void		GetResults(JSONNode &passfail);
-    void		ParseResults(string &results);
+    void		ParseResults(std::string &results);
 
 };
 

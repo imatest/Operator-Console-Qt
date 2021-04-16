@@ -146,7 +146,7 @@ void ArbitraryChartTest::Run()	// we need to override the parent method because 
 		//
 		stringstream ss(stringstream::in | stringstream::out);
 		ss << out;
-		string jsonResults = ss.str();
+        std::string jsonResults = ss.str();
 		ParseResults(jsonResults);
         dynamic_cast<ImageTest*>(this)->SetJSON(jsonResults);	// copy results into m_jsonResults (m_jsonResults is shared between threads, so we don't want to access it directly)
 	}
@@ -167,7 +167,7 @@ void ArbitraryChartTest::Run()	// we need to override the parent method because 
 ///
 /// Parses the JSON output of an ArbitraryChart test to determine the pass/fail status of the various metrics. 
 ///
-void ArbitraryChartTest::ParseResults(string &results)
+void ArbitraryChartTest::ParseResults(std::string &results)
 {
 	JSONNode	passfail;
     JSONNode	data;

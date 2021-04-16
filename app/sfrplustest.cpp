@@ -94,7 +94,7 @@ void SFRplusTest::InitResults()
 ///
 /// Parses the JSON output of an sfrPlus test to determine the pass/fail status of the various metrics. 
 ///
-void SFRplusTest::ParseResults(string &results)
+void SFRplusTest::ParseResults(std::string &results)
 {
 	JSONNode	passfail;
     JSONNode	data;

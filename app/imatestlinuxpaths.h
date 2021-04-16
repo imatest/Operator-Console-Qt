@@ -34,6 +34,18 @@
 #elif defined IMATEST_5_1
 #define PROGRAMPATH			"/usr/local/Imatest/v5.1.26/IT/bin"
 
+#elif defined IMATEST_5_2
+#define PROGRAMPATH			"/usr/local/Imatest/v5.2/IT/bin"
+
+#elif defined IMATEST_2020_1
+#define PROGRAMPATH			"/usr/local/Imatest/v2020.1/IT/bin"
+
+#elif defined IMATEST_2020_2
+#define PROGRAMPATH			"/usr/local/Imatest/v2020.2/IT/bin"
+
+#elif defined IMATEST_2021_1
+#define PROGRAMPATH			"/usr/local/Imatest/v2021.1/IT/bin"
+
 #else
 #define PROGRAMPATH			"/usr/local/Imatest/v5.1.26/IT/bin"
 #endif

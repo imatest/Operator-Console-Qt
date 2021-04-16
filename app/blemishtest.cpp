@@ -67,7 +67,7 @@ BlemishTest::~BlemishTest(void)
 ///
 /// Parses the JSON output of an sfrPlus test to determine the pass/fail status of the various metrics. 
 ///
-void BlemishTest::ParseResults(string &results)
+void BlemishTest::ParseResults(std::string &results)
 {
 	JSONNode	passfail;
     JSONNode	data;

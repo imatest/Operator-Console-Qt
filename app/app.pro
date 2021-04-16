@@ -13,6 +13,7 @@ TEMPLATE = app
 
 IT_VERSION = 2021.1
 MCR_VERSION = 99
+DEFINES += IMATEST_2021_1
 
 win32 {
 IT_INSTALL_ROOT = C:/Program Files/Imatest/v$$IT_VERSION/IT
@@ -44,6 +45,8 @@ CONFIG += c++11 console
 
 INCLUDEPATH += $$PWD
 INCLUDEPATH += $$PWD/JSON
+INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/library/cpp'
+INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/include'
 
 SOURCES += \
         main.cpp \
@@ -171,9 +174,7 @@ RESOURCES += \
     resources.qrc
 }
 
-INCLUDEPATH += $$PWD
-INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/library/cpp'
-INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/include'
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -191,7 +192,7 @@ LIBS += -L$$LOCAL_BUILD_FOLDER/lib -lQt5Core -lQt5Widgets -lQt5Gui -lQt5OpenGL -
 }
 
 
-DEFINES += IMATEST_2021_1
+
 
 INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH'
 DEPENDPATH  += '$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH'

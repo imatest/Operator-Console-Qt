@@ -199,7 +199,7 @@ bool Inifile::ReadSettings(setup_settings& setup)
 //
 // This function writes various items used in the setup dialog to imatest.ini
 //
-void Inifile::WriteSettings(setup_settings& setup, string& iniFilePathName)
+void Inifile::WriteSettings(setup_settings& setup, std::string& iniFilePathName)
 {
     mwArray vararginParam = mwArray(1,4,mxCELL_CLASS);
     mwArray writeKeys = mwArray(8,4,mxCELL_CLASS);

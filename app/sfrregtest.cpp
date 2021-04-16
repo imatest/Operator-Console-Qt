@@ -73,7 +73,7 @@ void SFRregTest::GetResults(JSONNode &passfail)
 ///
 /// Parses the JSON output of an SFRreg test to determine the pass/fail status of the various metrics.
 ///
-void SFRregTest::ParseResults(string &results)
+void SFRregTest::ParseResults(std::string &results)
 {
     JSONNode	passfail;
     JSONNode	data;

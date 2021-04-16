@@ -380,7 +380,7 @@ bool OperatorConsole::InitLibs()
 		{
 			str = "Unable to initialize imatest library.";
 		}
-
+#ifdef SEPARATE_ACQUISITION_LIBRARY
 #if defined(Q_OS_WIN)
         m_flags.imatestAcq = imatest_acquisitionInitialize();
 #else
@@ -390,14 +390,20 @@ bool OperatorConsole::InitLibs()
 		{
 			str = "Unable to initialize imatest acquisition library.";
 		}
+#endif
 	}
+
 
     if (!str.isEmpty())
 	{
         QMessageBox::critical(nullptr, "InitLibs Error", str, QMessageBox::Close);
 	}
 
+#ifdef SEPARATE_ACQUISITION_LIBRARY
 	return m_flags.matlab && m_flags.imatestIT && m_flags.imatestAcq;
+#else
+    return m_flags.matlab && m_flags.imatestIT;
+#endif
 }
 
 void OperatorConsole::CloseLibs()
@@ -412,6 +418,7 @@ void OperatorConsole::CloseLibs()
         m_flags.imatestIT = false;
 	}
 
+#ifdef SEPARATE_ACQUISITION_LIBRARY
 	if (m_flags.imatestAcq)
 	{
 #if defined(Q_OS_WIN)
@@ -421,6 +428,8 @@ void OperatorConsole::CloseLibs()
 #endif
         m_flags.imatestAcq = false;
     }
+#endif
+
 
 	if (m_flags.matlab)
 	{

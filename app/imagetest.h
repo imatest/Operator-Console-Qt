@@ -103,7 +103,7 @@ public:
 	ImageTest(void);
 	virtual ~ImageTest(void);
 
-	virtual void	ParseResults(string &results) = 0;	//!< This must be implemented by subclass
+    virtual void	ParseResults(std::string &results) = 0;	//!< This must be implemented by subclass
 	virtual void	Run();
 	virtual void	Run(void *raw_pixels, int width, int height, const Config *config);
 
@@ -117,7 +117,7 @@ public:
 	void			Init(void *raw_pixels, int width, int height, const Config *config);
 	bool			Passed() {return m_passed;}
 	void			SetBuffer(void *buf) {m_rawPixels = buf;}
-    void			SetJSON(string &src) {m_jsonResults.Set(src);}
+    void			SetJSON(std::string &src) {m_jsonResults.Set(src);}
 
     static void IMA_CALL_CONV ThreadProc(void *param);	//!< param must be a pointer to an ImageTest object
 
@@ -125,7 +125,7 @@ public:
     void			AppendLog(QTextStream &log) {m_log.Append(log);}
     void			AppendLog(QTextStream &log, QString &before, QString &after) {m_log.Append(log.readAll().replace(before, after));}
     void			AppendLog(QTextStream &log, QLatin1String &before, QLatin1String &after) {m_log.Append(log.readAll().replace(before, after));}
-    bool			GetDataNode(string &results, JSONNode &data, bool logErrors=true);
+    bool			GetDataNode(std::string &results, JSONNode &data, bool logErrors=true);
     bool			GetPassFailNode(JSONNode &data, JSONNode &passFail, bool logErrors=true);
     virtual void	InitResults();
     void			ParseFailures(const JSONNode *data);
