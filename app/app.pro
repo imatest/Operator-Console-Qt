@@ -11,8 +11,8 @@ TEMPLATE = app
 
 # The following are some variable specific to the Operator Console's build
 
-IT_VERSION = 5.1
-MCR_VERSION = 93
+IT_VERSION = 2021.1
+MCR_VERSION = 99
 
 win32 {
 IT_INSTALL_ROOT = C:/Program Files/Imatest/v$$IT_VERSION/IT
@@ -191,10 +191,7 @@ LIBS += -L$$LOCAL_BUILD_FOLDER/lib -lQt5Core -lQt5Widgets -lQt5Gui -lQt5OpenGL -
 }
 
 
-INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
-DEPENDPATH += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
-
-DEFINES += IMATEST_5_1
+DEFINES += IMATEST_2021_1
 
 INCLUDEPATH += '$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH'
 DEPENDPATH  += '$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH'
@@ -209,12 +206,6 @@ unix:QMAKE_RPATHDIR += $$IT_INSTALL_ROOT/libs/library/cpp
 INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/library/cpp'
 DEPENDPATH  += '$$IT_INSTALL_ROOT/libs/library/cpp'
 
-win32:LIBS += -L'$$IT_INSTALL_ROOT/libs/acquisition/cpp/' -limatest_acquisition
-unix:LIBS += -L'$$IT_INSTALL_ROOT/libs/acquisition/cpp/' -lImatest_acquisition
-unix:QMAKE_RPATHDIR += $$IT_INSTALL_ROOT/libs/acquisition/cpp
-
-INCLUDEPATH += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
-DEPENDPATH  += '$$IT_INSTALL_ROOT/libs/acquisition/cpp'
 
 win32:LIBS += -L'$$MCR_INSTALL_ROOT/extern/lib/$$ARCH_PATH/' -lmclmcrrt
 unix:LIBS += -L'$$MCR_INSTALL_ROOT/$$ARCH_PATH/' -lmwmclmcrrt
@@ -239,12 +230,12 @@ OUT_FOLDER = 'release'
 }
 
 win32{
-DEPENDENT_LIBS = '$$IT_INSTALL_ROOT/bin/ShaferFilechck$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/library/cpp/imatest_library$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/acquisition/cpp/imatest_acquisition$$LIB_EXT'
+DEPENDENT_LIBS = '$$IT_INSTALL_ROOT/bin/ShaferFilechck$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/library/cpp/imatest_library$$LIB_EXT'
 BUILD_PATH = $$system_quote($$system_path($$OUT_PWD/$$OUT_FOLDER))
 DATA_FOLDER_DEST = $$system_quote($$system_path($$BUILD_PATH/Data))
 }
 unix{
-DEPENDENT_LIBS = '$$IT_INSTALL_ROOT/bin/ShaferFilechck$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/library/cpp/libImatest$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/acquisition/cpp/libImatest_acquisition$$LIB_EXT'
+DEPENDENT_LIBS = '$$IT_INSTALL_ROOT/bin/ShaferFilechck$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/library/cpp/libImatest$$LIB_EXT'
 BUILD_PATH = $$system_quote($$system_path($$OUT_PWD))
 DATA_FOLDER_DEST = $$system_quote($$system_path($$BUILD_PATH))
 }
