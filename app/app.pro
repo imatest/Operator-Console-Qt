@@ -233,7 +233,7 @@ OUT_FOLDER = 'release'
 win32{
 DEPENDENT_LIBS = '$$IT_INSTALL_ROOT/bin/ShaferFilechck$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/library/cpp/imatest_library$$LIB_EXT'
 BUILD_PATH = $$system_quote($$system_path($$OUT_PWD/$$OUT_FOLDER))
-DATA_FOLDER_DEST = $$system_quote($$system_path($$BUILD_PATH/Data))
+DATA_FOLDER_DEST = $$system_quote($$system_path($$OUT_PWD/Data))
 }
 unix{
 DEPENDENT_LIBS = '$$IT_INSTALL_ROOT/bin/ShaferFilechck$$LIB_EXT' '$$IT_INSTALL_ROOT/libs/library/cpp/libImatest$$LIB_EXT'
