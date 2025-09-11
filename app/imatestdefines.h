@@ -78,6 +78,59 @@
 #define INI_V2_FORMAT
 #define LOWER_CASE_INI_SECTIONS
 
+#elif defined IMATEST_2021_2
+
+#define INI_SEPARATE_PARAMS
+#define INI_V2_FORMAT
+#define LOWER_CASE_INI_SECTIONS
+
+#elif defined IMATEST_22_1
+
+#define INI_SEPARATE_PARAMS
+#define INI_V2_FORMAT
+#define LOWER_CASE_INI_SECTIONS
+
+#elif defined IMATEST_22_2
+
+#define INI_SEPARATE_PARAMS
+#define INI_V2_FORMAT
+#define LOWER_CASE_INI_SECTIONS
+
+#elif defined IMATEST_23_1
+
+#define INI_SEPARATE_PARAMS
+#define INI_V2_FORMAT
+#define LOWER_CASE_INI_SECTIONS
+
+#elif defined IMATEST_23_2
+
+#define INI_SEPARATE_PARAMS
+#define INI_V2_FORMAT
+#define LOWER_CASE_INI_SECTIONS
+
+#elif defined IMATEST_24_1
+
+#define INI_SEPARATE_PARAMS
+#define INI_V2_FORMAT
+#define LOWER_CASE_INI_SECTIONS
+
+#elif defined IMATEST_24_2
+
+#define INI_SEPARATE_PARAMS
+#define INI_V2_FORMAT
+#define LOWER_CASE_INI_SECTIONS
+
+#elif defined IMATEST_25_1
+
+#define INI_SEPARATE_PARAMS
+#define INI_V2_FORMAT
+#define LOWER_CASE_INI_SECTIONS
+
+#elif defined IMATEST_25_2
+
+#define INI_SEPARATE_PARAMS
+#define INI_V2_FORMAT
+#define LOWER_CASE_INI_SECTIONS
 
 #else
 

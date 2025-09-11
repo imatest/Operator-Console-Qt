@@ -11,13 +11,13 @@ TEMPLATE = app
 
 # The following are some variable specific to the Operator Console's build
 
-IT_VERSION = 2021.1
-MCR_VERSION = 99
-DEFINES += IMATEST_2021_1
+IT_VERSION = 25.1
+MCR_FOLDER = R2024b
+DEFINES += IMATEST_25_1
 
 win32 {
 IT_INSTALL_ROOT = C:/Program Files/Imatest/v$$IT_VERSION/IT
-MCR_INSTALL_ROOT = C:/Program Files/MATLAB/MATLAB Runtime/v$$MCR_VERSION
+MCR_INSTALL_ROOT = C:/Program Files/MATLAB/MATLAB Runtime/$$MCR_FOLDER
 ARCH = win64
 ARCH_PATH = $$ARCH/microsoft
 }
@@ -26,7 +26,7 @@ IMATEST_INSTALL_ROOT = /usr/local/Imatest
 # This retrieves the most recent version
 FOLDERS = $$system(ls $$IMATEST_INSTALL_ROOT | grep v$$IT_VERSION | sort --version-sort)
 IT_INSTALL_ROOT = $$IMATEST_INSTALL_ROOT/$$last(FOLDERS)/IT
-MCR_INSTALL_ROOT = /usr/local/MATLAB/MATLAB_Runtime/v$$MCR_VERSION
+MCR_INSTALL_ROOT = /usr/local/MATLAB/MATLAB_Runtime/$$MCR_FOLDER
 ARCH = glnxa64
 ARCH_PATH = runtime/$$ARCH
 }
