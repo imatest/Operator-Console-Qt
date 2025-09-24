@@ -15,7 +15,7 @@
 #define INI_SEPARATE_PARAMS
 #define INI_V2_FORMAT
 #define LOWER_CASE_INI_SECTIONS
-#define SEPARATE_ACQUISITION_LIBRARY
+//#define SEPARATE_ACQUISITION_LIBRARY    // Removed to prevent error with missing imatest_acquisition.h (SUP-14312)
 
 #elif defined IMATEST_4_3
 
