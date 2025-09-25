@@ -11,9 +11,9 @@ TEMPLATE = app
 
 # The following are some variable specific to the Operator Console's build
 
-IT_VERSION = 25.2
+IT_VERSION = 26.1
 MCR_FOLDER = R2024b
-DEFINES += IMATEST_25_2
+DEFINES += IMATEST_26_1
 
 win32 {
 IT_INSTALL_ROOT = C:/Program Files/Imatest/v$$IT_VERSION/IT
